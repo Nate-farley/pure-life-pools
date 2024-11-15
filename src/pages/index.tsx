@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import {
@@ -16,314 +16,10 @@ import {
   Button,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import SwipeableViews from "react-swipeable-views";
-
-import { Instagram, Google } from "@mui/icons-material";
-
-const TestimonialsSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    fetch("https://randomuser.me/api/?results=10")
-      .then((response) => response.json())
-      .then((data) => setUsers(data.results));
-  }, []);
-
-  console.log(users);
-
-  const reviews = [
-    {
-      name: "Sarah Johnson",
-      avatar: users[0]?.picture?.large,
-      rating: 5,
-      review:
-        "Exceptional service! They transformed our backyard into a stunning oasis. The attention to detail was remarkable.",
-    },
-    {
-      name: "Mike Thompson",
-      avatar: users[0]?.picture?.large,
-      rating: 5,
-      review:
-        "Professional team that delivered beyond our expectations. The pool installation was seamless.",
-    },
-    {
-      name: "Emily Davis",
-      avatar: users[0]?.picture?.large,
-      rating: 5,
-      review:
-        "Outstanding work on our patio and landscaping. They truly understood our vision and brought it to life.",
-    },
-  ];
-
-  const handleNext = () => {
-    //setCurrentIndex((prev) => (prev + 3 >= reviews.length ? 0 : prev + 3));
-  };
-
-  const handlePrev = () => {
-    // setCurrentIndex((prev) =>
-    //   prev - 3 < 0 ? Math.max(0, reviews.length - 3) : prev - 3
-    // );
-  };
-
-  return (
-    <Box
-      sx={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        py: 20,
-        px: 15,
-        color: "white",
-        //   background: "linear-gradient(rgba(255, 255, 255, 0.6), transparent)",
-      }}
-    >
-      {/* Header Section */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          mb: 6,
-        }}
-      >
-        <Box>
-          <Typography
-            variant="h4"
-            sx={{ color: "#133240", fontWeight: 600, mb: 1 }}
-          >
-            Our Customer Feedback
-          </Typography>
-          <Typography variant="h6" sx={{ color: "#133240", opacity: 0.8 }}>
-            Don't take our word for it. Trust our customers.
-          </Typography>
-        </Box>
-
-        <Box sx={{ display: "flex", gap: 2 }}>
-          <Button
-            onClick={handlePrev}
-            variant="outlined"
-            size="small"
-            sx={{
-              textTransform: "none",
-              borderColor: "#C2C2C2 !important",
-              color: "#133240",
-              "&:hover": {
-                borderColor: "white",
-                backgroundColor: "rgba(255,255,255,0.1)",
-              },
-            }}
-          >
-            Previous
-          </Button>
-          <Button
-            size="small"
-            disableElevation
-            onClick={handleNext}
-            variant="outlined"
-            sx={{
-              textTransform: "none",
-              backgroundColor: "white",
-              color: "#133240",
-              borderColor: "#C2C2C2 !important",
-              "&:hover": {
-                backgroundColor: "rgba(255,255,255,0.9)",
-              },
-            }}
-          >
-            Next
-          </Button>
-        </Box>
-      </Box>
-
-      {/* Reviews Cards */}
-      <Box
-        sx={{
-          display: "flex",
-          gap: 3,
-          overflow: "hidden",
-        }}
-      >
-        {reviews.slice(currentIndex, currentIndex + 3).map((review, index) => (
-          <Paper
-            key={index}
-            elevation={0}
-            sx={{
-              flex: 1,
-              p: 3,
-              backgroundColor: "rgba(255,255,255,0.95)",
-              borderRadius: 2,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-              }}
-            >
-              <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                <Box
-                  sx={{
-                    width: 56,
-                    height: 56,
-                    borderRadius: 2,
-                    overflow: "hidden",
-                    position: "relative",
-                  }}
-                >
-                  <Image
-                    src={review.avatar}
-                    alt={review.name}
-                    fill
-                    style={{ objectFit: "cover" }}
-                  />
-                </Box>
-                <Typography
-                  variant="h6"
-                  sx={{ color: "#262626", fontWeight: 500 }}
-                >
-                  {review.name}
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", gap: 0.5 }}>
-                {[...Array(review.rating)].map((_, i) => (
-                  <Box
-                    key={i}
-                    component="span"
-                    sx={{
-                      color: "#FFB400",
-                      fontSize: 20,
-                    }}
-                  >
-                    ★
-                  </Box>
-                ))}
-              </Box>
-            </Box>
-            <Typography sx={{ color: "#666666", lineHeight: 1.6 }}>
-              {review.review}
-            </Typography>
-          </Paper>
-        ))}
-      </Box>
-    </Box>
-  );
-};
-
-const Footer = () => {
-  const theme = useTheme();
-
-  const menuItems = {
-    Products: ["Liners", "Covers"],
-    Support: ["FAQ", "Contact", "Location"],
-    Company: ["About", "Reviews"],
-  };
-
-  return (
-    <Box sx={{ bgcolor: "#262626", color: "white", py: 6 }}>
-      <Container maxWidth="lg">
-        <Grid container spacing={30}>
-          {/* Contact Form Section */}
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 500 }}>
-              We will reach out to you.
-            </Typography>
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="US+1 (555) 000-0000"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  color: "white",
-                  "& fieldset": {
-                    borderColor: "rgba(255, 255, 255, 0.23)",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "rgba(255, 255, 255, 0.4)",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "white",
-                  },
-                },
-                "& .MuiFormHelperText-root": {
-                  color: "rgba(255, 255, 255, 0.7)",
-                },
-              }}
-              helperText="Leave a US based phone number and we will reach out to you."
-            />
-          </Grid>
-
-          {/* Menu Sections */}
-          {Object.entries(menuItems).map(([category, items]) => (
-            <Grid item xs={12} sm={6} md={2} key={category}>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 500 }}>
-                {category}
-              </Typography>
-              <Stack spacing={1}>
-                {items.map((item) => (
-                  <Link
-                    key={item}
-                    href="#"
-                    underline="none"
-                    sx={{
-                      color: "rgba(255, 255, 255, 0.7)",
-                      "&:hover": {
-                        color: "white",
-                      },
-                      transition: "color 0.2s",
-                    }}
-                  >
-                    {item}
-                  </Link>
-                ))}
-              </Stack>
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* Divider and Social Icons */}
-        <Divider
-          sx={{ mt: 6, mb: 4, borderColor: "rgba(255, 255, 255, 0.12)" }}
-        />
-
-        <Stack
-          direction="row"
-          spacing={2}
-          justifyContent="center"
-          alignItems="center"
-        >
-          <IconButton
-            aria-label="Instagram"
-            sx={{
-              color: "white",
-              "&:hover": {
-                bgcolor: "rgba(255, 255, 255, 0.08)",
-              },
-            }}
-          >
-            <Instagram />
-          </IconButton>
-          <IconButton
-            aria-label="Google"
-            sx={{
-              color: "white",
-              "&:hover": {
-                bgcolor: "rgba(255, 255, 255, 0.08)",
-              },
-            }}
-          >
-            <Google />
-          </IconButton>
-        </Stack>
-      </Container>
-    </Box>
-  );
-};
+import PoolProductGrid from "@/containers/PoolProductGrid";
+import TestimonialsSection from "@/containers/Testimonials";
+import Footer from "@/containers/Footer";
 
 const StyledVideo = styled("video")(({ theme }) => ({
   width: "100%",
@@ -578,7 +274,7 @@ const Home = () => {
               mr: 2,
             }}
           />
-          <Typography fontWeight="bold" variant="h6">
+          <Typography sx={{ color: "#133240" }} fontWeight="bold" variant="h6">
             OPERATING SINCE 1980
           </Typography>
         </Stack>
@@ -587,7 +283,7 @@ const Home = () => {
           <Typography
             fontWeight="bold"
             fontSize={65}
-            sx={{ width: 2000, color: "#2F2F2F" }}
+            sx={{ width: 2000, color: "#133240" }}
           >
             Specializing in pools, pavers, ponds and hardscaping.
           </Typography>
@@ -610,7 +306,7 @@ const Home = () => {
             sx={{
               borderRadius: 20,
               textTransform: "none",
-              backgroundColor: "#2F2F2F",
+              backgroundColor: "#133240",
             }}
           >
             Hire Us
@@ -636,11 +332,11 @@ const Home = () => {
             component="span"
             sx={{ pr: 1, fontWeight: "600", fontSize: 30, color: "#5C83D6" }}
           >
-            Pools
+            Fiber Glass Pools
           </Typography>
           <Typography
             component="span"
-            sx={{ fontWeight: "600", fontSize: 30, color: "#000000" }}
+            sx={{ fontWeight: "600", fontSize: 30, color: "#133240" }}
           >
             from our suppliers
           </Typography>
@@ -660,14 +356,16 @@ const Home = () => {
             size="small"
             sx={{
               backgroundColor: "white",
-              borderColor: "#C2C2C2",
+              borderColor: "#133240",
               textTransform: "none",
-              color: "black",
+              color: "#133240",
             }}
           >
-            See More Fiber Pools
+            See More Fiber Glass Pools
           </Button>
-        </Stack>
+        </Stack> 
+        
+       <PoolProductGrid />
       </Box>
 
       <Box sx={{ position: "relative", width: "100%" }}>

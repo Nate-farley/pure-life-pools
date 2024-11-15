@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       "images.unsplash.com",
       "https://randomuser.me/api/*",
       "randomuser.me",
+      "www.lathampool.com"
     ],
   },
   webpack: (config) => {
