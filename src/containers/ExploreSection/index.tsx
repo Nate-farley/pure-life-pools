@@ -1,6 +1,6 @@
 import { Box, Grid, Typography, Stack } from "@mui/material";
 
-const BlockSection = () => {
+const ExploreSection = () => {
     return (
       <Box sx={{ p: 10, px: 15 }}>
         <Grid container spacing={2} sx={{  }}>
@@ -236,4 +236,4 @@ const BlockSection = () => {
     );
   };
 
-  export default BlockSection
+  export default ExploreSection
