@@ -1,8 +1,7 @@
 import ModernLink from "@/components/ModernLink";
 import { useTheme } from "@emotion/react";
 import { Instagram, Google } from "@mui/icons-material";
-import { Box, Grid, Typography, TextField, Divider, IconButton } from "@mui/material";
-import { Container, Stack } from "react-bootstrap";
+import { Box, Grid, Typography, Container, Stack, TextField, Divider, IconButton } from "@mui/material";
 
 const Footer = () => {
     const theme = useTheme();

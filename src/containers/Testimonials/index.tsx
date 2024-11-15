@@ -1,6 +1,5 @@
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, Button } from "@mui/material";
 import { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
 import  Image  from 'next/image'
 
 const TestimonialsSection = () => {

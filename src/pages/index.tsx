@@ -20,6 +20,7 @@ import SwipeableViews from "react-swipeable-views";
 import PoolProductGrid from "@/containers/PoolProductGrid";
 import TestimonialsSection from "@/containers/Testimonials";
 import Footer from "@/containers/Footer";
+import BlockSection from "@/containers/ExploreSection";
 
 const StyledVideo = styled("video")(({ theme }) => ({
   width: "100%",
@@ -314,16 +315,7 @@ const Home = () => {
         </Box>
       </Box>
 
-      <Box display="flex" alignItems="center">
-        <Box>{/* Map */}</Box>
-        {/* Our Company  and Gallery Blocks*/}
-        <Box>
-          <Stack>
-            <Box>{/* Our Company */}</Box>
-            <Box>{/* Gallery */}</Box>
-          </Stack>
-        </Box>
-      </Box>
+      <BlockSection />
 
       <Box sx={{ p: 10, px: 15, backgroundColor: "#FAFAFA" }}>
         {/* Products Section */}
