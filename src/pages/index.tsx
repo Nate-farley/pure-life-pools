@@ -21,6 +21,7 @@ import PoolProductGrid from '@/containers/PoolProductGrid';
 import TestimonialsSection from '@/containers/Testimonials';
 import Footer from '@/containers/Footer';
 import BlockSection from '@/containers/ExploreSection';
+import NavBar from '@/containers/Navbar/navbar';
 
 
 const StyledVideo = styled('video')(({ theme }) => ({
