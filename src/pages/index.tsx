@@ -403,7 +403,7 @@ const Home = () => {
             }}
           />
           <Typography sx={{ color: '#133240' }} fontWeight="bold" variant="h6">
-            OPERATING SINCE 1980
+            FOUNDED IN 2023
           </Typography>
         </Stack>
 

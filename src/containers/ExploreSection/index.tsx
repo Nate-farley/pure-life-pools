@@ -77,7 +77,7 @@ const ExploreSection = () => {
                   },
                 }}
               >
-               Find Us
+              Location
               </Typography>
             </Box>
           </Box>
@@ -153,7 +153,7 @@ const ExploreSection = () => {
                     },
                   }}
                 >
-                  Pool Design
+                   Design
                 </Typography>
               </Box>
             </Box>
