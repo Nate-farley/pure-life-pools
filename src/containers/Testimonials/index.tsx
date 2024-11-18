@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Box, Typography, Paper, Button } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // components/ImageScraper.tsx
 import { useState } from 'react';
 

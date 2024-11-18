@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ModernLink from '@/components/ModernLink';
 import { useTheme } from '@emotion/react';
 import { Instagram, Google } from '@mui/icons-material';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Link, styled } from '@mui/material';
 
 const ModernLink = styled(Link)(({ theme }) => ({

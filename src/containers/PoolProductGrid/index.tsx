@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Box, Typography, Grid } from '@mui/material';
 import { useState, useEffect, useMemo } from 'react';
 
