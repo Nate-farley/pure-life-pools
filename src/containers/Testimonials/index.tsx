@@ -23,14 +23,14 @@ const TestimonialsSection = () => {
     },
     {
       name: 'Mike Thompson',
-      avatar: users[0]?.picture?.large ?? '',
+      avatar: users[1]?.picture?.large ?? '',
       rating: 5,
       review:
         'Professional team that delivered beyond our expectations. The pool installation was seamless.',
     },
     {
       name: 'Emily Davis',
-      avatar: users[0]?.picture?.large ?? '',
+      avatar: users[2]?.picture?.large ?? '',
       rating: 5,
       review:
         'Outstanding work on our patio and landscaping. They truly understood our vision and brought it to life.',

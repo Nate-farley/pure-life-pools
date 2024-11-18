@@ -22,6 +22,53 @@ import TestimonialsSection from '@/containers/Testimonials';
 import Footer from '@/containers/Footer';
 import BlockSection from '@/containers/ExploreSection';
 
+const TextContainer = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 70%, transparent 100%)',
+  color: 'white',
+  padding: theme.spacing(4, 6),
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(1),
+}));
+
+const AnimatedTypography = styled(Typography)(({ theme }) => ({
+  opacity: 0,
+  transform: 'translateY(20px)',
+  animation: 'fadeInUp 0.8s forwards',
+  '@keyframes fadeInUp': {
+    to: {
+      opacity: 1,
+      transform: 'translateY(0)',
+    },
+  },
+}));
+
+
+const PaginationContainer = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  bottom: '20px',
+  right: '20px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  zIndex: 3,
+}));
+
+// Styled component for the pagination line
+const PaginationLine = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'isActive',
+})(({ theme, isActive }) => ({
+  height: '2px',
+  width: isActive ? '24px' : '12px',
+  backgroundColor: 'white',
+  transition: 'all 0.3s ease',
+  opacity: isActive ? 1 : 0.5,
+}));
+
 const StyledVideo = styled('video')(({ theme }) => ({
   width: '100%',
   height: '100%',
@@ -76,10 +123,10 @@ const Home = () => {
   const [activeStep, setActiveStep] = useState(0);
 
   const videos = [
-    '/assets/videos/placeholder/pool_woman.mp4',
-    '/assets/videos/placeholder/pool_woman.mp4',
-    '/assets/videos/placeholder/pool_woman.mp4',
-    '/assets/videos/placeholder/pool_woman.mp4',
+    '/assets/videos/latham/latham-marketing-video-1.mp4',
+    '/assets/videos/latham/latham-marketing-video-2.mp4',
+    '/assets/videos/latham/latham-marketing-video-3.mp4',
+    '/assets/videos/latham/latham-marketing-video-4.mp4',
   ];
 
   const stockPhotos = [
@@ -93,22 +140,22 @@ const Home = () => {
     {
       title: 'Pools',
       description: 'Custom-built pools to transform your space.',
-      image: stockPhotos[0],
+      image: "/assets/images/fiber-glass-pool-service.jpg"
     },
     {
       title: 'Hardscaping',
       description: 'Elegant designs with stone and pavers.',
-      image: stockPhotos[1],
+      image: "/assets/images/hardscape-service.jpeg"
     },
     {
       title: 'Pavers',
       description: 'Durable and stylish paving solutions.',
-      image: stockPhotos[2],
+      image: "/assets/images/pavers.png"
     },
     {
       title: 'Lawncare',
       description: 'Maintaining lush, healthy lawns.',
-      image: stockPhotos[3],
+      image: "/assets/images/koi-pond-service.jpg"
     },
   ];
 
@@ -128,19 +175,51 @@ const Home = () => {
     setActiveStep(step);
   };
 
+
+  const handleVideoError = (e) => {
+    console.error('Video loading error:', e);
+  };
+
+  const handleVideoEnd = () => {
+    setActiveStep((prevStep) => {
+      // If we're at the last video, go back to the first one
+      if (prevStep === videos.length - 1) {
+        return 0;
+      }
+      // Otherwise, go to next video
+      return prevStep + 1;
+    });
+  };
+
+  // Update your useEffect to add the ended event listener
   useEffect(() => {
     videos.forEach((_, index) => {
       const videoElement = videoRefs[index].current;
       if (videoElement) {
+        // Add ended event listener to current video
         if (index === activeStep) {
           videoElement.play();
+          videoElement.addEventListener('ended', handleVideoEnd);
         } else {
           videoElement.pause();
           videoElement.currentTime = 0;
+          // Remove event listener from other videos
+          videoElement.removeEventListener('ended', handleVideoEnd);
         }
       }
     });
+
+    // Cleanup function to remove event listeners
+    return () => {
+      videos.forEach((_, index) => {
+        const videoElement = videoRefs[index].current;
+        if (videoElement) {
+          videoElement.removeEventListener('ended', handleVideoEnd);
+        }
+      });
+    };
   }, [activeStep]);
+  
 
   return (
     <Box
@@ -159,83 +238,104 @@ const Home = () => {
       </Head>
 
       {/* Video Carousel Section */}
-      <Box sx={{ position: 'relative', width: '100%', mb: 2 }}>
-        <Paper
-          elevation={0}
-          sx={{
-            position: 'relative',
-            backgroundColor: 'background.paper',
-            overflow: 'hidden',
-          }}
-        >
-          <SwipeableViews
-            axis="x"
-            index={activeStep}
-            onChangeIndex={handleStepChange}
-            enableMouseEvents
-          >
-            {videos.map((video, index) => (
-              <Box
-                key={index}
-                sx={{
-                  position: 'relative',
-                  width: '100vw',
-                  height: '100vh',
-                  // 16:9 aspect ratio
-                }}
-              >
-                <StyledVideo ref={videoRefs[index]} playsInline muted loop>
-                  <source src={video} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </StyledVideo>
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    bgcolor: 'rgba(0,0,0,0.5)',
-                    color: 'white',
-                    padding: 2,
-                  }}
-                >
-                  <Typography variant="h6">Welcome to Pure Life</Typography>
-                </Box>
-              </Box>
-            ))}
-          </SwipeableViews>
-
-          {/* <MobileStepper
-              steps={videos.length}
-              position="static"
-              activeStep={activeStep}
-              sx={{
-                bgcolor: "transparent",
-                position: "absolute",
-                bottom: 0,
-                width: "100%",
-              }}
-              nextButton={
-                <IconButton
-                  onClick={handleNext}
-                  disabled={activeStep === videos.length - 1}
-                  sx={{ color: "white" }}
-                >
-                  <KeyboardArrowRight />
-                </IconButton>
-              }
-              backButton={
-                <IconButton
-                  onClick={handleBack}
-                  disabled={activeStep === 0}
-                  sx={{ color: "white" }}
-                >
-                  <KeyboardArrowLeft />
-                </IconButton>
-              }
-            /> */}
-        </Paper>
-      </Box>
+      <Box sx={{ position: 'relative', width: '100%', height: '100%', mb: 2, overflow: 'hidden' }}>
+  <Paper
+    elevation={0}
+    sx={{
+      position: 'relative',
+      backgroundColor: 'background.paper',
+      overflow: 'hidden',
+    }}
+  >
+    <SwipeableViews
+      axis="x"
+      index={activeStep}
+      onChangeIndex={handleStepChange}
+      enableMouseEvents
+    >
+      {videos.map((video, index) => (
+       <Box
+       key={index}
+       sx={{
+         position: 'relative',
+         width: '100vw',
+         height: '100vh',
+         overflow: 'hidden'
+       }}
+     >
+       <StyledVideo onError={handleVideoError} ref={videoRefs[index]} playsInline muted>
+         <source src={video} type="video/mp4" />
+         Your browser does not support the video tag.
+       </StyledVideo>
+       
+       <TextContainer>
+         <Stack spacing={1} sx={{ maxWidth: '600px' }}>
+           {/* Headline */}
+           <AnimatedTypography
+             variant="h4"
+             sx={{
+               fontWeight: 600,
+               letterSpacing: '0.02em',
+               animationDelay: '0.2s',
+               fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+               fontFamily: 'var(--font-primary)', 
+             }}
+           >
+             Welcome to Pure Life
+           </AnimatedTypography>
+           
+           {/* Divider line */}
+           <Box
+             sx={{
+               width: '60px',
+               height: '3px',
+               bgcolor: '#5C83D6', // TODO: Move brand color to mui_theme
+               mb: 2,
+               animation: 'expandWidth 0.8s forwards',
+               '@keyframes expandWidth': {
+                 from: { width: '0px' },
+                 to: { width: '60px' },
+               },
+             }}
+           />
+           
+           {/* Subtext */}
+           <AnimatedTypography
+             variant="subtitle1"
+             sx={{
+               fontWeight: 300,
+               opacity: 0.9,
+               animationDelay: '0.4s',
+               lineHeight: 1.6,
+               fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+             }}
+           >
+             Transform your outdoor space into a stunning oasis with our custom pool designs and expert craftsmanship
+           </AnimatedTypography>
+         </Stack>
+     
+         {/* Pagination - positioned relative to the TextContainer */}
+         <PaginationContainer>
+           {videos.map((_, i) => (
+             <PaginationLine
+               key={i}
+               isActive={i === activeStep}
+               onClick={() => handleStepChange(i)}
+               sx={{ 
+                 cursor: 'pointer',
+                 '&:hover': {
+                   opacity: 0.8,
+                 }
+               }}
+             />
+           ))}
+         </PaginationContainer>
+       </TextContainer>
+     </Box>
+      ))}
+    </SwipeableViews>
+  </Paper>
+</Box>
 
       {/* Photo Gallery Section */}
       <Grid container spacing={2} sx={{ px: 2 }}>
