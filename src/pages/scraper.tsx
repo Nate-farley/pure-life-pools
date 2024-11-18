@@ -7,7 +7,7 @@ export default function ImageScraper() {
     'https://www.lathampool.com/fiberglass-pool-shapes/',
   );
   const [className, setClassName] = useState('product-card__image__inner');
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<Array<Object>>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -96,7 +96,7 @@ export default function ImageScraper() {
           <p>Successfully Downloaded: {results.successfulDownloads}</p>
 
           <div className="grid grid-cols-2 gap-4">
-            {results.results.map((result: any, index: number) => (
+            {results.results.map((result: Object, index: number) => (
               <div
                 key={index}
                 className={`p-4 rounded-md ${
