@@ -2,7 +2,9 @@
 import { useState } from 'react';
 
 export default function ImageScraper() {
-  const [url, setUrl] = useState('https://www.lathampool.com/fiberglass-pool-shapes/');
+  const [url, setUrl] = useState(
+    'https://www.lathampool.com/fiberglass-pool-shapes/',
+  );
   const [className, setClassName] = useState('product-card__image__inner');
   const [results, setResults] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -12,7 +14,7 @@ export default function ImageScraper() {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch('/api/scrape', {
         method: 'POST',
@@ -21,13 +23,13 @@ export default function ImageScraper() {
         },
         body: JSON.stringify({ url, className }),
       });
-      
+
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       if (!response.ok) {
         throw new Error(data.message || 'Something went wrong');
       }
-      
+
       setResults(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -35,7 +37,6 @@ export default function ImageScraper() {
       setIsLoading(false);
     }
   };
-
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -54,7 +55,7 @@ export default function ImageScraper() {
             placeholder="https://example.com"
           />
         </div>
-        
+
         <div>
           <label htmlFor="className" className="block text-sm font-medium">
             Image Class Name
@@ -69,7 +70,7 @@ export default function ImageScraper() {
             placeholder="product-card__image__inner"
           />
         </div>
-        
+
         <button
           type="submit"
           disabled={isLoading}
@@ -92,7 +93,7 @@ export default function ImageScraper() {
           <h2 className="text-lg font-semibold">Results</h2>
           <p>Total Images Found: {results.totalImages}</p>
           <p>Successfully Downloaded: {results.successfulDownloads}</p>
-          
+
           <div className="grid grid-cols-2 gap-4">
             {results.results.map((result: any, index: number) => (
               <div
