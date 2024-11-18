@@ -40,28 +40,28 @@ export default function NavBar() {
           
             <Button
               variant='text'
-              sx={{ fontWeight: 'bold', my: 2, color: 'white', display: 'block' }}
+              sx={{ fontWeight: 'bold', my: 2, color: 'black', display: 'block' }}
             >
               Home
             </Button>
             <Button
           
           variant='text'
-          sx={{ fontWeight: 'bold', my: 2, color: 'white', display: 'block' }}
+          sx={{ fontWeight: 'bold', my: 2, color: 'black', display: 'block' }}
         >
              Product
             </Button>
              <Button
           
           variant='text'
-          sx={{ fontWeight: 'bold', my: 2, color: 'white', display: 'block' }}
+          sx={{ fontWeight: 'bold', my: 2, color: 'black', display: 'block' }}
             >
             Review 
             </Button>
             <Button
           
           variant='text'
-          sx={{ fontWeight: 'bold', my: 2, color: 'white', display: 'block' }}
+          sx={{ fontWeight: 'bold', my: 2, color: 'black', display: 'block' }}
             >
            Contact US
             </Button>

@@ -22,7 +22,7 @@ const ExploreSection = () => {
             {/* Background Image */}
             <Box
               component="img"
-              src="https://picsum.photos/800/600"
+              src="/assets/images/GoogleMap.png"
               alt="Left block"
               sx={{
                 width: '100%',
@@ -77,7 +77,7 @@ const ExploreSection = () => {
                   },
                 }}
               >
-                Our Services
+               Find Us
               </Typography>
             </Box>
           </Box>
@@ -102,7 +102,7 @@ const ExploreSection = () => {
             >
               <Box
                 component="img"
-                src="https://picsum.photos/800/300"
+                 src="/assets/images/PoolDesign.png"
                 alt="Top block"
                 sx={{
                   width: '100%',
@@ -174,7 +174,7 @@ const ExploreSection = () => {
             >
               <Box
                 component="img"
-                src="https://picsum.photos/800/301"
+                src="/assets/images/Installation.png"
                 alt="Bottom block"
                 sx={{
                   width: '100%',
