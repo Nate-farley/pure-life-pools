@@ -156,8 +156,8 @@ const Home = () => {
       image: "/assets/images/pavers.png"
     },
     {
-      title: 'Lawncare',
-      description: 'Maintaining lush, healthy lawns.',
+      title: 'Ponds',
+      description: 'Stylish ponds.',
       image: "/assets/images/koi-pond-service.jpg"
     },
   ];
@@ -231,6 +231,7 @@ const Home = () => {
         width: '100vw',
         display: 'flex',
         flexDirection: 'column',
+         position: 'relative'
       }}
     >
      
@@ -403,7 +404,7 @@ const Home = () => {
             }}
           />
           <Typography sx={{ color: '#133240' }} fontWeight="bold" variant="h6">
-            FOUNDED IN 2023
+            FOUNDED IN 2015
           </Typography>
         </Stack>
 
