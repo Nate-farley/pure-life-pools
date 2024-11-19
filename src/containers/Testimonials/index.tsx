@@ -68,6 +68,7 @@ const TestimonialsSection = () => {
 
   const reviewsToShow = testimonials.slice(currentIndex, currentIndex + visibleCount).map((review, index) => ({
     ...review,
+    // @ts-ignore
     avatar: users[currentIndex + index]?.picture?.large ?? '/api/placeholder/56/56'
   }));
 

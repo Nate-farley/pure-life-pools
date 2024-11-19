@@ -7,7 +7,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write"
+    "format": "prettier --write .",
+    "deploy-prod": "vercel --prod",
+    "deploy-preview": "vercel",
+    "vercel-build": "next build",
+    "pull-env": "vercel env pull .env.local",
+    "deploy-staging": "vercel --environment=preview",
+    "check-build": "next build && next export",
+    "logs": "vercel logs",
+    "inspect": "vercel inspect",
+    "list": "vercel list",
+    "remove": "vercel remove",
+    "domains": "vercel domains list"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
