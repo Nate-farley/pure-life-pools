@@ -95,7 +95,7 @@ const FoundedSection = () => {
               }
             }}
           >
-            Hire Us
+            Contract Us
           </Button>
         </Box>
       </Box>

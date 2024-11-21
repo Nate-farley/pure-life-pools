@@ -17,7 +17,7 @@ const Footer = () => {
   const theme = useTheme();
 
   const menuItems = {
-    Products: ['Liners', 'Covers'],
+    Products: ['Pools'],
     Support: ['FAQ', 'Contact', 'Location'],
     Company: ['About', 'Reviews'],
   };

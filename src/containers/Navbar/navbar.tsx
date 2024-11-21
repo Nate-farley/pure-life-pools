@@ -11,17 +11,26 @@ import {
   ListItemButton,
   ListItemText,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import Image from 'next/image';
 import { Menu as MenuIcon, X as CloseIcon } from 'lucide-react';
 
 export default function NavBar() {
-  const theme = useTheme()
+  const theme = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const menuItems = ['Home', 'Product', 'Review', 'Contact US'];
+  const menuItems = ['Home', 'Pools', 'Review', 'Contact US'];
+
+  const onClickNavbarItem = (page: string) => {
+    switch (page.toLowerCase()) {
+      case 'pools':
+        // Navigate to pools
+        break;
+      default:
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,49 +48,52 @@ export default function NavBar() {
 
   return (
     <>
-      <AppBar 
-        position="fixed" 
+      <AppBar
+        position="fixed"
         sx={{
           backgroundColor: '#133240',
           boxShadow: scrolled ? '0px 2px 4px rgba(0, 0, 0, 0.1)' : 'none',
           transition: 'all 0.3s ease-in-out',
-          width: "100%",
+          width: '100%',
           zIndex: 9999,
-          background: scrolled 
+          background: scrolled
             ? '#133240'
             : 'linear-gradient(180deg, rgba(19,50,64,0.6) 0%, rgba(19,50,64,0.2) 100%)',
         }}
       >
-        <Toolbar 
-          disableGutters 
+        <Toolbar
+          disableGutters
           sx={{
-            display: "flex", 
-            flexDirection: "row", 
-            alignItems: "center", 
-            justifyContent: "space-between", 
-            width: "100%", 
-            minHeight: "70px",
-            px: { xs: 2, sm: 3, md: 4 } 
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            minHeight: '70px',
+            px: { xs: 2, sm: 3, md: 4 },
           }}
         >
           <Image
             src="/assets/images/plpLogo.png"
-            alt='Logo'
+            alt="Logo"
             width="80"
             height="50"
           />
 
           {/* Desktop Menu */}
-          <Box sx={{ 
-            display: { xs: 'none', md: 'flex' }, 
-            gap: 2,
-            flex: 1,  
-            justifyContent: 'center'  
-          }}>
+          <Box
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              gap: 2,
+              flex: 1,
+              justifyContent: 'center',
+            }}
+          >
             {menuItems.map((page) => (
               <Button
+                onClick={(page) => onClickNavbarItem(page)}
                 key={page}
-                variant='text'
+                variant="text"
                 sx={{
                   fontWeight: 'bold',
                   color: 'white',
@@ -100,12 +112,12 @@ export default function NavBar() {
 
           {/* Mobile Menu Button */}
           <IconButton
-            sx={{ 
-              display: { xs: 'flex', md: 'none' }, 
+            sx={{
+              display: { xs: 'flex', md: 'none' },
               color: 'white',
               '&:hover': { color: '#5C83D6' },
               zIndex: 10000,
-              ml: 'auto'  
+              ml: 'auto',
             }}
             onClick={toggleMobileMenu}
             edge="end"
@@ -126,8 +138,8 @@ export default function NavBar() {
             width: '100%',
             maxWidth: 300,
             backgroundColor: '#133240',
-            color: 'white'
-          }
+            color: 'white',
+          },
         }}
       >
         <Box sx={{ pt: 2, pb: 2 }}>
@@ -135,20 +147,21 @@ export default function NavBar() {
             {menuItems.map((item) => (
               <ListItem key={item} disablePadding>
                 <ListItemButton
+                  onClick={(page) => onClickNavbarItem(page)}
                   sx={{
                     py: 2,
                     '&:hover': {
                       backgroundColor: 'rgba(92, 131, 214, 0.1)',
-                    }
+                    },
                   }}
                 >
-                  <ListItemText 
+                  <ListItemText
                     primary={item}
                     primaryTypographyProps={{
-                      sx: { 
+                      sx: {
                         fontWeight: 'bold',
-                        fontSize: '1.1rem'
-                      }
+                        fontSize: '1.1rem',
+                      },
                     }}
                   />
                 </ListItemButton>
