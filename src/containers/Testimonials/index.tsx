@@ -132,7 +132,7 @@ const TestimonialsSection = () => {
               </Typography>
             </Box>
 
-            {!isMobile && (
+            {/* {!isMobile && (
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <Button
         
@@ -169,7 +169,7 @@ const TestimonialsSection = () => {
                   Next
                 </Button>
               </Box>
-            )}
+            )} */}
           </Box>
 
           <Box
@@ -203,7 +203,7 @@ const TestimonialsSection = () => {
                   }}
                 >
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Box
+                    {/* <Box
                       sx={{
                         width: 56,
                         height: 56,
@@ -219,7 +219,7 @@ const TestimonialsSection = () => {
                         sizes="56px"
                         style={{ objectFit: 'cover' }}
                       />
-                    </Box>
+                    </Box> */}
                     <Typography
                       variant="h6"
                       sx={{

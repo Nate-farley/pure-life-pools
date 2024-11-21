@@ -1,7 +1,7 @@
 import { Box, Typography, Stack, Button, Container } from '@mui/material';
 import PoolProductGrid from './index';
 
-const PoolProductsSection = () => {
+const PoolProductsSection = ({ router }) => {
   return (
     <Box 
       sx={{ 
@@ -65,6 +65,7 @@ const PoolProductsSection = () => {
           </Typography>
 
           <Button
+            onClick={() => router?.push('/pools')}
             variant="outlined"
             size="small"
             sx={{

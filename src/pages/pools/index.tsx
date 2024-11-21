@@ -140,6 +140,7 @@ const ProductsPage = () => {
         }
 
         const data = await response.json();
+        console.log(data)
         const angleOnlyImages = data.results.filter((img) =>
           img.filename.includes('angle'),
         );
@@ -155,10 +156,13 @@ const ProductsPage = () => {
   }, []);
 
   const images = [
-    'https://picsum.photos/1200/800?random=1',
-    'https://picsum.photos/1200/800?random=2',
-    'https://picsum.photos/1200/800?random=3',
-    'https://picsum.photos/1200/800?random=4',
+    '/assets/images/products-page/product-page-image-one.jpg',
+    '/assets/images/products-page/product-page-image-two.jpg',
+    '/assets/images/products-page/product-page-image-three.jpg',
+    '/assets/images/products-page/product-page-image-four.jpg',
+    '/assets/images/products-page/product-page-image-five.jpg',
+    '/assets/images/products-page/product-page-image-six.jpg',
+    '/assets/images/products-page/product-page-image-seven.jpg',
   ];
 
   useEffect(() => {

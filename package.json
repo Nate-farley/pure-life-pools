@@ -32,6 +32,7 @@
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-router-dom": "^6.28.0",
     "react-swipeable-views": "^0.14.0"
   },
   "devDependencies": {

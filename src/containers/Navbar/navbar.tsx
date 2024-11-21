@@ -15,20 +15,36 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { Menu as MenuIcon, X as CloseIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function NavBar() {
   const theme = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const menuItems = ['Home', 'Pools', 'Review', 'Contact US'];
+  // TODO: Add pages for reviews, contact
+  const menuItems = ['Home', 'Pools', 'Financing'/*, 'Review', 'Contact US'*/];
+  const router = useRouter()
 
   const onClickNavbarItem = (page: string) => {
-    switch (page.toLowerCase()) {
+    switch (String(page).toLowerCase()) {
+      case 'home':
+        router.push('/');
+        break;
       case 'pools':
-        // Navigate to pools
+        router.push('/pools');
+        break;
+      case 'financing':
+        router.push('/financing');
+        break;
+      case 'review':
+        router.push('/review');
+        break;
+      case 'contact us':
+        router.push('/contact');
         break;
       default:
+        router.push('/');
     }
   };
 
@@ -62,70 +78,71 @@ export default function NavBar() {
         }}
       >
         <Toolbar
-          disableGutters
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            minHeight: '70px',
-            px: { xs: 2, sm: 3, md: 4 },
-          }}
-        >
-          <Image
-            src="/assets/images/plpLogo.png"
-            alt="Logo"
-            width="80"
-            height="50"
-          />
+  disableGutters
+  sx={{
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    minHeight: '70px',
+    px: { xs: 2, sm: 3, md: 4 },
+  }}
+>
+  <Image
+    src="/assets/images/plpLogo.png"
+    alt="Logo"
+    width="80"
+    height="50"
+  />
 
-          {/* Desktop Menu */}
-          <Box
-            sx={{
-              display: { xs: 'none', md: 'flex' },
-              gap: 2,
-              flex: 1,
-              justifyContent: 'center',
-            }}
-          >
-            {menuItems.map((page) => (
-              <Button
-                onClick={(page) => onClickNavbarItem(page)}
-                key={page}
-                variant="text"
-                sx={{
-                  fontWeight: 'bold',
-                  color: 'white',
-                  display: 'block',
-                  '&:hover': {
-                    backgroundColor: 'transparent',
-                    color: '#5C83D6',
-                  },
-                  transition: 'color 0.3s ease-in-out',
-                }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
+  {/* Desktop Menu - Fixed Version */}
+  <Box
+    sx={{
+      display: { xs: 'none', md: 'flex' },
+      gap: 2,
+      position: 'absolute', // Add this
+      left: '50%', // Add this
+      transform: 'translateX(-50%)', // Add this
+      // Remove flex: 1
+    }}
+  >
+    {menuItems.map((page) => (
+      <Button
+        onClick={() => onClickNavbarItem(page)}
+        key={page}
+        variant="text"
+        sx={{
+          fontWeight: 'bold',
+          color: 'white',
+          display: 'block',
+          '&:hover': {
+            backgroundColor: 'transparent',
+            color: '#5C83D6',
+          },
+          transition: 'color 0.3s ease-in-out',
+        }}
+      >
+        {page}
+      </Button>
+    ))}
+  </Box>
 
-          {/* Mobile Menu Button */}
-          <IconButton
-            sx={{
-              display: { xs: 'flex', md: 'none' },
-              color: 'white',
-              '&:hover': { color: '#5C83D6' },
-              zIndex: 10000,
-              ml: 'auto',
-            }}
-            onClick={toggleMobileMenu}
-            edge="end"
-            aria-label="menu"
-          >
-            {mobileMenuOpen ? <CloseIcon size={24} /> : <MenuIcon size={24} />}
-          </IconButton>
-        </Toolbar>
+  {/* Mobile Menu Button */}
+  <IconButton
+    sx={{
+      display: { xs: 'flex', md: 'none' },
+      color: 'white',
+      '&:hover': { color: '#5C83D6' },
+      zIndex: 10000,
+    }}
+    onClick={toggleMobileMenu}
+    edge="end"
+    aria-label="menu"
+  >
+    {mobileMenuOpen ? <CloseIcon size={24} /> : <MenuIcon size={24} />}
+  </IconButton>
+</Toolbar>
       </AppBar>
 
       {/* Mobile Menu Drawer */}
@@ -147,7 +164,7 @@ export default function NavBar() {
             {menuItems.map((item) => (
               <ListItem key={item} disablePadding>
                 <ListItemButton
-                  onClick={(page) => onClickNavbarItem(page)}
+                  onClick={() => onClickNavbarItem(item)}
                   sx={{
                     py: 2,
                     '&:hover': {

@@ -25,6 +25,7 @@ import BlockSection from '@/containers/ExploreSection';
 import NavBar from '@/containers/Navbar/navbar';
 import PoolProductsSection from '@/containers/PoolProductGrid/PoolProductSection';
 import FoundedSection from '@/containers/FoundedSection';
+import { useRouter } from 'next/navigation';
 
 const TextContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
@@ -124,6 +125,10 @@ const HoverOverlay = styled(Box)(({ theme }) => ({
 }));
 
 const Home = () => {
+  // React hooks
+  const router = useRouter()
+
+  // State
   const [activeStep, setActiveStep] = useState(0);
 
   const videos = [
@@ -246,7 +251,7 @@ const Home = () => {
         sx={{
           position: 'relative',
           width: '100%',
-          height: '100%',
+          height: '100vh',
           mb: 2,
           overflow: 'hidden',
         }}
@@ -254,9 +259,11 @@ const Home = () => {
         <Paper
           elevation={0}
           sx={{
+            borderRadius: 0,
             position: 'relative',
             backgroundColor: 'background.paper',
             overflow: 'hidden',
+            height: '100%'
           }}
         >
           <SwipeableViews
@@ -271,7 +278,7 @@ const Home = () => {
                 sx={{
                   position: 'relative',
                   width: '100%',
-                  height: '100%',
+                  height: '100vh',
                   overflow: 'hidden',
                 }}
               >
@@ -407,7 +414,7 @@ const Home = () => {
 
       <BlockSection />
 
-      <PoolProductsSection />
+      <PoolProductsSection router={router} />
 
       <TestimonialsSection />
 
