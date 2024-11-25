@@ -23,7 +23,7 @@ export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   // TODO: Add pages for reviews, contact
-  const menuItems = ['Home', 'Pools', 'Financing'/*, 'Review', 'Contact US'*/];
+  const menuItems = ['Home', 'Pools', 'Financing', "Contact Us"/*, 'Review'*/];
   const router = useRouter()
 
   const onClickNavbarItem = (page: string) => {
@@ -84,7 +84,7 @@ export default function NavBar() {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '100%',
+  //  width: '100%',
     minHeight: '70px',
     px: { xs: 2, sm: 3, md: 4 },
   }}
@@ -101,10 +101,9 @@ export default function NavBar() {
     sx={{
       display: { xs: 'none', md: 'flex' },
       gap: 2,
-      position: 'absolute', // Add this
-      left: '50%', // Add this
-      transform: 'translateX(-50%)', // Add this
-      // Remove flex: 1
+   //   position: 'absolute', 
+    //  left: '50%', 
+   //   transform: 'translateX(-50%)', 
     }}
   >
     {menuItems.map((page) => (
@@ -126,6 +125,8 @@ export default function NavBar() {
         {page}
       </Button>
     ))}
+
+
   </Box>
 
   {/* Mobile Menu Button */}
@@ -142,6 +143,8 @@ export default function NavBar() {
   >
     {mobileMenuOpen ? <CloseIcon size={24} /> : <MenuIcon size={24} />}
   </IconButton>
+
+ {!isMobile && <Box />}
 </Toolbar>
       </AppBar>
 

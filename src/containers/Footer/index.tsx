@@ -12,8 +12,10 @@ import {
   Divider,
   IconButton,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 
 const Footer = () => {
+  const router = useRouter()
   const theme = useTheme();
 
   const menuItems = {
@@ -73,7 +75,7 @@ const Footer = () => {
                 {' '}
                 {/* Increased spacing between items */}
                 {items.map((item) => (
-                  <ModernLink key={item} href="#" underline="none">
+                  <ModernLink key={item} href={item.toLowerCase()} underline="none">
                     {item}
                   </ModernLink>
                 ))}
@@ -94,6 +96,7 @@ const Footer = () => {
           alignItems="center"
         >
           <IconButton
+          onClick={() => router.push('/')}
             aria-label="Instagram"
             sx={{
               color: 'white',
@@ -105,6 +108,7 @@ const Footer = () => {
             <Instagram />
           </IconButton>
           <IconButton
+            onClick={() => router.push('/')}
             aria-label="Google"
             sx={{
               color: 'white',

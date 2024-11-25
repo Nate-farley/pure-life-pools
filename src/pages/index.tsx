@@ -27,6 +27,40 @@ import PoolProductsSection from '@/containers/PoolProductGrid/PoolProductSection
 import FoundedSection from '@/containers/FoundedSection';
 import { useRouter } from 'next/navigation';
 
+// Marketing videos 
+const videos = [
+  '/assets/videos/latham/latham-marketing-video-3.mp4',
+  '/assets/videos/latham/latham-marketing-video-1.mp4',
+
+  '/assets/videos/latham/latham-marketing-video-4.mp4',
+  '/assets/videos/latham/latham-marketing-video-3.mp4',
+];
+
+// Array of services containing (title, description and image) for each
+const services = [
+  {
+    title: 'Pools',
+    description: 'Custom-built pools to transform your space.',
+    image: '/assets/images/fiber-glass-pool-service.jpg',
+  },
+  {
+    title: 'Hardscaping',
+    description: 'Elegant designs with stone and pavers.',
+    image: '/assets/images/hardscape-service.jpeg',
+  },
+  {
+    title: 'Pavers',
+    description: 'Durable and stylish paving solutions.',
+    image: '/assets/images/pavers.png',
+  },
+  {
+    title: 'Ponds',
+    description:
+      'Create a peaceful oasis with our custom water features and koi ponds. Transform your garden into a tranquil retreat with expert design and installation.',
+    image: '/assets/images/koi-pond-service.jpg',
+  },
+];
+
 const TextContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   bottom: 0,
@@ -130,44 +164,6 @@ const Home = () => {
 
   // State
   const [activeStep, setActiveStep] = useState(0);
-
-  const videos = [
-    '/assets/videos/latham/latham-marketing-video-4.mp4',
-    '/assets/videos/latham/latham-marketing-video-1.mp4',
-    '/assets/videos/latham/latham-marketing-video-3.mp4',
-    '/assets/videos/latham/latham-marketing-video-4.mp4',
-  ];
-
-  const stockPhotos = [
-    'https://picsum.photos/200/',
-    'https://picsum.photos/200/',
-    'https://picsum.photos/200/',
-    'https://picsum.photos/200/',
-  ];
-
-  const services = [
-    {
-      title: 'Pools',
-      description: 'Custom-built pools to transform your space.',
-      image: '/assets/images/fiber-glass-pool-service.jpg',
-    },
-    {
-      title: 'Hardscaping',
-      description: 'Elegant designs with stone and pavers.',
-      image: '/assets/images/hardscape-service.jpeg',
-    },
-    {
-      title: 'Pavers',
-      description: 'Durable and stylish paving solutions.',
-      image: '/assets/images/pavers.png',
-    },
-    {
-      title: 'Ponds',
-      description:
-        'Create a peaceful oasis with our custom water features and koi ponds. Transform your garden into a tranquil retreat with expert design and installation.',
-      image: '/assets/images/koi-pond-service.jpg',
-    },
-  ];
 
   const videoRefs = Array(videos.length)
     .fill(null)

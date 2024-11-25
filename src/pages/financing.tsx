@@ -1,3 +1,4 @@
+// @ts-nocheck
 // pages/financing.tsx
 import { Box, Container, Typography, Grid, Button, Card, CardContent, Stack, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -51,7 +52,7 @@ const Financing = () => {
         "Terms up to 20 years",
         "No dealer fees"
       ],
-      link: "https://www.hfsfinancial.net/",
+      link: "https://www.hfsfinancial.net/promo/6732802388d461610e9b6932/",
       imageUrl: "/assets/images/financing/financing-image-one.jpg"
     },
     {
@@ -66,6 +67,19 @@ const Financing = () => {
       ],
       link: "https://www.lyonfinancial.net/",
       imageUrl: "/assets/images/financing/financing-image-two.jpg" 
+    },
+    {
+      name: "LightStream",
+      description: "Offering low-interest unsecured loans for pool financing with a quick and easy online process.",
+      features: [
+        "No fees or prepayment penalties",
+        "Same-day funding available",
+        "Fixed rates starting at competitive APRs",
+        "Loan amounts from $5,000 to $100,000",
+        "Terms from 2 to 12 years"
+      ],
+      link: "https://www.lightstream.com/pool-financing",
+      imageUrl: "/assets/images/fiber-glass-pool-service.jpg"
     }
   ];
 
@@ -153,6 +167,7 @@ const Financing = () => {
                     {/* Logo/Image */}
                     <Box sx={{ height: 200, position: 'relative' }}>
                       <Image
+                      priority
                         src={option.imageUrl}
                         alt={`${option.name} logo`}
                         fill

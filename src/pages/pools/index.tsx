@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect, useMemo } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import {
@@ -9,10 +10,12 @@ import {
   InputAdornment,
   Grid,
   Button,
+  useMediaQuery,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { Search } from 'lucide-react';
 import NavBar from '@/containers/Navbar/navbar';
+import Footer from '@/containers/Footer';
 
 const TextContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
@@ -40,6 +43,7 @@ const PaginationContainer = styled(Box)(() => ({
 
 const PaginationLine = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isActive',
+  // @ts-ignore
 })(({ isActive }) => ({
   height: '2px',
   width: isActive ? '70px' : '12px',
@@ -102,6 +106,9 @@ const ScrollTopButton = styled(Box)(({ theme }) => ({
 }));
 
 const ProductsPage = () => {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [activeStep, setActiveStep] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [poolImages, setPoolImages] = useState([]);
@@ -140,7 +147,7 @@ const ProductsPage = () => {
         }
 
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         const angleOnlyImages = data.results.filter((img) =>
           img.filename.includes('angle'),
         );
@@ -186,13 +193,28 @@ const ProductsPage = () => {
     return match ? match[1] : '';
   };
 
-  const filteredPools = useMemo(() => {
-    return poolImages.filter((img) => {
-      const name = extractPoolName(img.filename);
-      if (!name) return false;
-      return name.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-  }, [poolImages, searchTerm]);
+  const poolImagePairs = useMemo(() => {
+    const productImages = [
+      'aruba', 'astoria_collection', 'axiom_12', 'axiom_12_deluxe', 'axiom_14',
+      'axiom_16', 'barcelona', 'bay_isle', 'bermuda', 'cambridge', 'cancun',
+      'cancun_deluxe', 'cape_cod', 'caribbean', 'claremont', 'corinthian_12',
+      'corinthian_14', 'corinthian_16', 'coronado', 'delray', 'enchantment_9.17',
+      'enchantment_9.21', 'enchantment_9.24', 'fiji', 'genesis', 'jamaica',
+      'java', 'key_west', 'kingston', 'laguna', 'laguna_deluxe', 'lake_shore',
+      'milan', 'monaco', 'olympia_12', 'olympia_14', 'olympia_16',
+      'pleasant_cove', 'providence_14', 'st_lucia', 'st_thomas', 'synergy',
+      'tuscan_11.20', 'tuscan_13.24', 'tuscan_14.27', 'tuscan_14.30',
+      'tuscan_14.40', 'valencia', 'vista_isle'
+    ];
+
+    return productImages.map(name => ({
+      name: name.split('_').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(' '),
+      angleImage: `/assets/images/product_images/${name}_angle.jpg`,
+      viewImage: `/assets/images/product_images/${name}_view.jpg`
+    }));
+  }, []);
 
   return (
     <Box sx={{ flex: 1 }}>
@@ -223,6 +245,44 @@ const ProductsPage = () => {
             height: '100%',
           }}
         >
+           <Box
+                  sx={{
+                    position: 'absolute',
+                    top: { xs: '50%', md: 100 }, // Center vertically on mobile, 100px from top on desktop
+                    left: { xs: '50%', md: 100 }, // Center horizontally on mobile, 100px from left on desktop
+                    transform: { xs: 'translate(-50%, -50%)', md: 'none' }, // Center transform on mobile
+                    zIndex: 2,
+                    width: { xs: '90%', sm: '80%', md: 600 }, // Responsive width
+                  }}
+                >
+                  <Typography
+                    variant="h1"
+                    sx={{
+                      color: 'white',
+                      fontWeight: 700,
+                      fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+                      mb: 2,
+                      textAlign: { xs: 'center', md: 'left' }, // Center text on mobile
+                    }}
+                  >
+                    Affordable Pool Covers and Vinyl Liners
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: 'white',
+                      fontWeight: 300,
+                      opacity: 0.8,
+                      lineHeight: 1.4,
+                      fontSize: { xs: '1rem', sm: '1.2rem', md: '1.5rem' },
+                      textAlign: { xs: 'center', md: 'left' }, // Center text on mobile
+                    }}
+                  >
+                    Transform your pool with our premium selection of custom-fit
+                    covers and designer liners, backed by industry-leading
+                    warranties
+                  </Typography>
+                </Box>
           <SwipeableViews
             axis="x"
             index={activeStep}
@@ -259,40 +319,7 @@ const ProductsPage = () => {
                     },
                   }}
                 />
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 100,
-                    left: 100,
-                    zIndex: 2,
-                    width: 600,
-                  }}
-                >
-                  <Typography
-                    variant="h1"
-                    sx={{
-                      color: 'white',
-                      fontWeight: 700,
-                      fontSize: '3rem',
-                      mb: 2,
-                    }}
-                  >
-                    Affordable Pool Covers and Vinyl Liners
-                  </Typography>
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      color: 'white',
-                      fontWeight: 300,
-                      opacity: 0.8,
-                      lineHeight: 1.4,
-                    }}
-                  >
-                    Transform your pool with our premium selection of custom-fit
-                    covers and designer liners, backed by industry-leading
-                    warranties
-                  </Typography>
-                </Box>
+               
                 <TextContainer>
                   <Stack spacing={1} sx={{ maxWidth: '600px' }}>
                     <Typography
@@ -322,18 +349,20 @@ const ProductsPage = () => {
               </Box>
             ))}
           </SwipeableViews>
-          <PreviewBox elevation={6}>
-            <Box
-              sx={{
-                width: '100%',
-                height: '100%',
-                backgroundImage: `url(${images[getNextImageIndex()]})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                filter: 'brightness(0.7)',
-              }}
-            />
-          </PreviewBox>
+          {!isMobile && (
+            <PreviewBox elevation={6}>
+              <Box
+                sx={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url(${images[getNextImageIndex()]})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  filter: 'brightness(0.7)',
+                }}
+              />
+            </PreviewBox>
+          )}
         </Paper>
       </Box>
 
@@ -360,7 +389,7 @@ const ProductsPage = () => {
         </Box>
 
         <Grid container spacing={2}>
-          {filteredPools.map((pool, index) => (
+          {poolImagePairs.map((pool, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
               <Box
                 sx={{
@@ -370,12 +399,16 @@ const ProductsPage = () => {
                   borderRadius: 1,
                   border: '1px solid #eee',
                   overflow: 'hidden',
+                  '&:hover .pool-view': {
+                    opacity: 1,
+                  },
                 }}
               >
+                {/* Base angle image */}
                 <Box
                   component="img"
-                  src={pool.url}
-                  alt="Pool shape"
+                  src={pool.angleImage}
+                  alt={`${pool.name} angle view`}
                   sx={{
                     position: 'absolute',
                     top: 0,
@@ -385,6 +418,26 @@ const ProductsPage = () => {
                     objectFit: 'cover',
                   }}
                 />
+
+                {/* Hover view image */}
+                <Box
+                  component="img"
+                  src={pool.viewImage}
+                  alt={`${pool.name} actual view`}
+                  className="pool-view"
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease-in-out',
+                  }}
+                />
+
+                {/* Title overlay */}
                 <Box
                   sx={{
                     position: 'absolute',
@@ -405,7 +458,7 @@ const ProductsPage = () => {
                       lineHeight: 1.2,
                     }}
                   >
-                    {extractPoolName(pool.filename)}
+                    {pool.name}
                   </Typography>
                 </Box>
               </Box>
@@ -413,6 +466,8 @@ const ProductsPage = () => {
           ))}
         </Grid>
       </Box>
+
+      <Footer />
     </Box>
   );
 };
