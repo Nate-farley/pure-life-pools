@@ -283,6 +283,7 @@ const Home = () => {
                   ref={videoRefs[index]}
                   playsInline
                   muted
+                  preload='auto'
                 >
                   <source src={video} type="video/mp4" />
                   Your browser does not support the video tag.
@@ -368,7 +369,8 @@ const Home = () => {
                 alt={`${service.title} Image`}
                 fill
                 sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 25vw"
-                priority={index < 2}
+                priority
+                fetchPriority='high'
                 style={{ objectFit: 'cover' }}
               />
               <ImageOverlay>

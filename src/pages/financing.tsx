@@ -168,6 +168,7 @@ const Financing = () => {
                     <Box sx={{ height: 200, position: 'relative' }}>
                       <Image
                       priority
+                      preload
                         src={option.imageUrl}
                         alt={`${option.name} logo`}
                         fill

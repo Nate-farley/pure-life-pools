@@ -106,7 +106,7 @@ const ScrollTopButton = styled(Box)(({ theme }) => ({
 }));
 
 const ProductsPage = () => {
-  const theme = useTheme()
+  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [activeStep, setActiveStep] = useState(0);
@@ -114,6 +114,8 @@ const ProductsPage = () => {
   const [poolImages, setPoolImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const [loadedImages, setLoadedImages] = useState({});
 
   useEffect(() => {
     const handleScroll = () => {
@@ -128,42 +130,8 @@ const ProductsPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    const fetchPoolImages = async () => {
-      try {
-        const response = await fetch('/api/scrape', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            url: 'https://www.lathampool.com/fiberglass-pool-shapes/',
-            className: 'product-card__image__inner',
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch pool images');
-        }
-
-        const data = await response.json();
-        console.log(data);
-        const angleOnlyImages = data.results.filter((img) =>
-          img.filename.includes('angle'),
-        );
-        setPoolImages(angleOnlyImages);
-      } catch (error) {
-        console.error('Error fetching pool images:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPoolImages();
-  }, []);
-
   const images = [
-    '/assets/images/products-page/product-page-image-one.jpg',
+    //'/assets/images/products-page/product-page-image-one.jpg',
     '/assets/images/products-page/product-page-image-two.jpg',
     '/assets/images/products-page/product-page-image-three.jpg',
     '/assets/images/products-page/product-page-image-four.jpg',
@@ -171,6 +139,20 @@ const ProductsPage = () => {
     '/assets/images/products-page/product-page-image-six.jpg',
     '/assets/images/products-page/product-page-image-seven.jpg',
   ];
+
+  useEffect(() => {
+    // Preload all images
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        setLoadedImages(prev => ({
+          ...prev,
+          [src]: true
+        }));
+      };
+    });
+  }, [images]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -185,7 +167,9 @@ const ProductsPage = () => {
   };
 
   const handleStepChange = (step) => {
-    setActiveStep(step);
+    if (loadedImages[images[step]]) {
+      setActiveStep(step);
+    }
   };
 
   const extractPoolName = (filename) => {
@@ -195,24 +179,64 @@ const ProductsPage = () => {
 
   const poolImagePairs = useMemo(() => {
     const productImages = [
-      'aruba', 'astoria_collection', 'axiom_12', 'axiom_12_deluxe', 'axiom_14',
-      'axiom_16', 'barcelona', 'bay_isle', 'bermuda', 'cambridge', 'cancun',
-      'cancun_deluxe', 'cape_cod', 'caribbean', 'claremont', 'corinthian_12',
-      'corinthian_14', 'corinthian_16', 'coronado', 'delray', 'enchantment_9.17',
-      'enchantment_9.21', 'enchantment_9.24', 'fiji', 'genesis', 'jamaica',
-      'java', 'key_west', 'kingston', 'laguna', 'laguna_deluxe', 'lake_shore',
-      'milan', 'monaco', 'olympia_12', 'olympia_14', 'olympia_16',
-      'pleasant_cove', 'providence_14', 'st_lucia', 'st_thomas', 'synergy',
-      'tuscan_11.20', 'tuscan_13.24', 'tuscan_14.27', 'tuscan_14.30',
-      'tuscan_14.40', 'valencia', 'vista_isle'
+      'aruba',
+      'astoria_collection',
+      'axiom_12',
+      'axiom_12_deluxe',
+      'axiom_14',
+      'axiom_16',
+      'barcelona',
+      'bay_isle',
+      'bermuda',
+      'cambridge',
+      'cancun',
+      'cancun_deluxe',
+      'cape_cod',
+      'caribbean',
+      'claremont',
+      'corinthian_12',
+      'corinthian_14',
+      'corinthian_16',
+      'coronado',
+      'delray',
+      'enchantment_9.17',
+      'enchantment_9.21',
+      'enchantment_9.24',
+      'fiji',
+      'genesis',
+      'jamaica',
+      'java',
+      'key_west',
+      'kingston',
+      'laguna',
+      'laguna_deluxe',
+      'lake_shore',
+      'milan',
+      'monaco',
+      'olympia_12',
+      'olympia_14',
+      'olympia_16',
+      'pleasant_cove',
+      'providence_14',
+      'st_lucia',
+      'st_thomas',
+      'synergy',
+      'tuscan_11.20',
+      'tuscan_13.24',
+      'tuscan_14.27',
+      'tuscan_14.30',
+      'tuscan_14.40',
+      'valencia',
+      'vista_isle',
     ];
 
-    return productImages.map(name => ({
-      name: name.split('_').map(word => 
-        word.charAt(0).toUpperCase() + word.slice(1)
-      ).join(' '),
+    return productImages.map((name) => ({
+      name: name
+        .split('_')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' '),
       angleImage: `/assets/images/product_images/${name}_angle.jpg`,
-      viewImage: `/assets/images/product_images/${name}_view.jpg`
+      viewImage: `/assets/images/product_images/${name}_view.jpg`,
     }));
   }, []);
 
@@ -245,44 +269,43 @@ const ProductsPage = () => {
             height: '100%',
           }}
         >
-           <Box
-                  sx={{
-                    position: 'absolute',
-                    top: { xs: '50%', md: 100 }, // Center vertically on mobile, 100px from top on desktop
-                    left: { xs: '50%', md: 100 }, // Center horizontally on mobile, 100px from left on desktop
-                    transform: { xs: 'translate(-50%, -50%)', md: 'none' }, // Center transform on mobile
-                    zIndex: 2,
-                    width: { xs: '90%', sm: '80%', md: 600 }, // Responsive width
-                  }}
-                >
-                  <Typography
-                    variant="h1"
-                    sx={{
-                      color: 'white',
-                      fontWeight: 700,
-                      fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
-                      mb: 2,
-                      textAlign: { xs: 'center', md: 'left' }, // Center text on mobile
-                    }}
-                  >
-                    Affordable Pool Covers and Vinyl Liners
-                  </Typography>
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      color: 'white',
-                      fontWeight: 300,
-                      opacity: 0.8,
-                      lineHeight: 1.4,
-                      fontSize: { xs: '1rem', sm: '1.2rem', md: '1.5rem' },
-                      textAlign: { xs: 'center', md: 'left' }, // Center text on mobile
-                    }}
-                  >
-                    Transform your pool with our premium selection of custom-fit
-                    covers and designer liners, backed by industry-leading
-                    warranties
-                  </Typography>
-                </Box>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: { xs: '50%', md: 100 }, // Center vertically on mobile, 100px from top on desktop
+              left: { xs: '50%', md: 100 }, // Center horizontally on mobile, 100px from left on desktop
+              transform: { xs: 'translate(-50%, -50%)', md: 'none' }, // Center transform on mobile
+              zIndex: 2,
+              width: { xs: '90%', sm: '80%', md: 600 }, // Responsive width
+            }}
+          >
+            <Typography
+              variant="h1"
+              sx={{
+                color: 'white',
+                fontWeight: 700,
+                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+                mb: 2,
+                textAlign: { xs: 'center', md: 'left' }, // Center text on mobile
+              }}
+            >
+              Affordable Pool Covers and Vinyl Liners
+            </Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                color: 'white',
+                fontWeight: 300,
+                opacity: 0.8,
+                lineHeight: 1.4,
+                fontSize: { xs: '1rem', sm: '1.2rem', md: '1.5rem' },
+                textAlign: { xs: 'center', md: 'left' }, // Center text on mobile
+              }}
+            >
+              Transform your pool with our premium selection of custom-fit
+              covers and designer liners, backed by industry-leading warranties
+            </Typography>
+          </Box>
           <SwipeableViews
             axis="x"
             index={activeStep}
@@ -298,28 +321,30 @@ const ProductsPage = () => {
                   position: 'relative',
                 }}
               >
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundImage: `url(${image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    '&::after': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    },
-                  }}
-                />
-               
+              <Box
+  sx={{
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundImage: `url(${image})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    opacity: loadedImages[image] ? 1 : 0, // Add this line
+    transition: 'opacity 0.3s ease', // Add this line
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+  }}
+/>
+
                 <TextContainer>
                   <Stack spacing={1} sx={{ maxWidth: '600px' }}>
                     <Typography
@@ -351,16 +376,19 @@ const ProductsPage = () => {
           </SwipeableViews>
           {!isMobile && (
             <PreviewBox elevation={6}>
-              <Box
-                sx={{
-                  width: '100%',
-                  height: '100%',
-                  backgroundImage: `url(${images[getNextImageIndex()]})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  filter: 'brightness(0.7)',
-                }}
-              />
+           <Box
+      sx={{
+        width: '100%',
+        height: '100%',
+        backgroundImage: `url(${loadedImages[images[getNextImageIndex()]] 
+          ? images[getNextImageIndex()] 
+          : images[activeStep]})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'brightness(0.7)',
+        transition: 'background-image 0.3s ease',
+      }}
+    />
             </PreviewBox>
           )}
         </Paper>
@@ -420,22 +448,26 @@ const ProductsPage = () => {
                 />
 
                 {/* Hover view image */}
-                <Box
-                  component="img"
-                  src={pool.viewImage}
-                  alt={`${pool.name} actual view`}
-                  className="pool-view"
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    opacity: 0,
-                    transition: 'opacity 0.3s ease-in-out',
-                  }}
-                />
+
+                {!pool.name.toLowerCase().includes('corinthian') &&
+                  !pool.name.toLowerCase().includes('cove') && (
+                    <Box
+                      component="img"
+                      src={pool.viewImage}
+                      // alt={`${pool.name} actual view`}
+                      className="pool-view"
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        opacity: 0,
+                        transition: 'opacity 0.3s ease-in-out',
+                      }}
+                    />
+                  )}
 
                 {/* Title overlay */}
                 <Box

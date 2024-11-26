@@ -90,6 +90,7 @@ export default function NavBar() {
   }}
 >
   <Image
+      preload
     src="/assets/images/plpLogo.png"
     alt="Logo"
     width="80"
