@@ -1,5 +1,6 @@
 // @ts-nocheck
-import React, { useState, useEffect, useMemo } from 'react';
+'use client'
+import React, { useState, useEffect, useMemo, memo, useCallback, useRef } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import {
   Box,
@@ -11,19 +12,35 @@ import {
   Grid,
   Button,
   useMediaQuery,
+  Fade,
+  CircularProgress,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { Search } from 'lucide-react';
 import NavBar from '@/containers/Navbar/navbar';
 import Footer from '@/containers/Footer';
+import { NextSeo } from 'next-seo';
+import Head from 'next/head';
+import { Info } from '@mui/icons-material';
+import specs from '../../scrape/pool-spec.json'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+// Carousel images constant
+const CAROUSEL_IMAGES = [
+  '/assets/images/products-page/product-page-image-two.jpg',
+  '/assets/images/products-page/product-page-image-three.jpg',
+  '/assets/images/products-page/product-page-image-four.jpg',
+  '/assets/images/products-page/product-page-image-five.jpg',
+  '/assets/images/products-page/product-page-image-six.jpg',
+  '/assets/images/products-page/product-page-image-seven.jpg',
+];
 
+// Styled components
 const TextContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   bottom: 0,
   left: 0,
   right: 0,
-  background:
-    'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 70%, transparent 100%)',
+  background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 70%, transparent 100%)',
   color: 'white',
   padding: theme.spacing(4, 6),
   display: 'flex',
@@ -43,7 +60,6 @@ const PaginationContainer = styled(Box)(() => ({
 
 const PaginationLine = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isActive',
-  // @ts-ignore
 })(({ isActive }) => ({
   height: '2px',
   width: isActive ? '70px' : '12px',
@@ -89,7 +105,7 @@ const ScrollTopButton = styled(Box)(({ theme }) => ({
   bottom: 20,
   right: 20,
   zIndex: 9999,
-  cursor: 'pointer',
+  cursor: 'none',
   backgroundColor: '#133240',
   color: 'white',
   padding: '12px',
@@ -105,18 +121,322 @@ const ScrollTopButton = styled(Box)(({ theme }) => ({
   },
 }));
 
+const PoolImageContainer = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  width: '100%',
+  paddingTop: '100%',
+  borderRadius: theme.shape.borderRadius,
+  border: `1px solid ${theme.palette.divider}`,
+  overflow: 'hidden',
+}));
+
+const ImageOverlay = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  transition: 'opacity 0.3s ease-in-out',
+}));
+
+const SpecsOverlay = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  opacity: 0,
+  transition: 'opacity 0.3s ease-in-out',
+  '&:hover': {
+    opacity: 1,
+  },
+}));
+
+const TitleOverlay = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+  padding: theme.spacing(1.5, 2),
+  borderTop: `1px solid ${theme.palette.divider}`,
+}));
+
+// Optimized PoolCard component
+const PoolCard = memo(({ pool }) => {
+ //const [specs, setSpecs] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const hoverTimeoutRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setIsHovering(true);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsHovering(false);
+      setShowSpecs(false);
+    }, 100); // Small delay to prevent flickering
+  };
+
+  const handleInfoMouseEnter = (e) => {
+    e.stopPropagation();
+    setShowSpecs(true);
+  };
+
+  const handleInfoMouseLeave = (e) => {
+    e.stopPropagation();
+    setShowSpecs(false);
+  };
+
+  const getSpecsKey = (poolName) => {
+    console.log(poolName)
+    console.log(poolName.toLowerCase()
+    .replace(/\s+/g, '-')  // Replace spaces with hyphens
+    .replace(/\./g, '-'))
+    return poolName.toLowerCase()
+    .replace(/\s+/g, '-')  // Replace spaces with hyphens
+    .replace(/\./g, '-');
+  };
+
+  console.log(`key: `, getSpecsKey(pool.name))
+  const poolSpecs = specs?.data?.[getSpecsKey(pool.name)];
+console.log(specs)
+const [showSpecs, setShowSpecs] = useState(false);
+  return (
+    <Box>
+   
+    <PoolImageContainer>
+      
+      <ImageOverlay
+        component="img"
+        src={pool.angleImage}
+        alt={`${pool.name} angle view`}
+        loading="lazy"
+      />
+
+{!pool.name.toLowerCase().includes('corinthian') && 
+ !pool.name.toLowerCase().includes('cove') && (
+  <ImageOverlay
+  component="img"
+  src={pool.viewImage}
+  alt={`${pool.name} view`}
+  sx={{
+    opacity: 0,
+    zIndex: 2,
+    ':hover': {  // Target the parent Box component
+      opacity: 1,
+    },
+  }}
+  loading="lazy"
+/>
+)}
+
+
+<TitleOverlay sx={{ zIndex: 999,  }}>  {/* Ensure title bar stays on top */}
+  <Box sx={{ 
+    display: 'flex', 
+    alignItems: 'center', 
+    justifyContent: 'space-between',
+    
+    position: 'relative',  // Add this
+  }}>
+    <Typography 
+      variant="subtitle1" 
+      sx={{ 
+        color: '#2F2F2F', 
+        fontWeight: 700,
+        fontSize: '1rem',
+        lineHeight: 1.2
+      }}
+    >
+      {pool.name}
+    </Typography>
+    <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                backgroundColor: '#f5f5f5',
+                borderRadius: '6px',
+                padding: '6px 12px',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer',
+                '&:hover': {
+                  backgroundColor: '#eaeaea',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                }
+              }}
+              onMouseEnter={handleInfoMouseEnter}
+              onMouseLeave={handleInfoMouseLeave}
+            >
+              <InfoOutlinedIcon 
+                sx={{ 
+                  color: '#133240',
+                  fontSize: 16
+                }} 
+              />
+              <Typography 
+                variant="caption" 
+                sx={{ 
+                  color: '#133240',
+                  fontWeight: 500,
+                  letterSpacing: '0.02em'
+                }}
+              >
+                View Specs
+              </Typography>
+            </Box>
+  </Box>
+</TitleOverlay>
+
+       {/* Specs Overlay */}
+       <Box
+     className="specs-overlay"
+     sx={{
+       position: 'absolute',
+       top: 0,
+       left: 0,
+       right: 0,
+       bottom: 0,
+       bgcolor: 'rgba(255, 255, 255, 0.95)',
+       display: 'flex',
+       flexDirection: 'column',
+       justifyContent: 'center',
+       alignItems: 'center',
+       opacity: showSpecs ? 1 : 0,
+       zIndex: showSpecs ? 4 : 1,
+       transition: 'opacity 0.3s ease-in-out',
+       p: 3,
+       pointerEvents: showSpecs ? 'auto' : 'none'
+     }}
+      >
+        <Typography 
+          variant="h6" 
+          sx={{ 
+            color: '#133240', 
+            mb: 2,
+            fontWeight: 600 
+          }}
+        >
+          {pool.name}
+        </Typography>
+        
+        {poolSpecs ? (
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: 1.5,
+            width: '100%' 
+          }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between',
+              borderBottom: '1px solid rgba(19, 50, 64, 0.1)',
+              pb: 1
+            }}>
+              <Typography 
+                variant="body2" 
+                sx={{ color: '#666' }}
+              >
+                Size
+              </Typography>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: '#133240',
+                  fontWeight: 500 
+                }}
+              >
+                {poolSpecs.size}
+              </Typography>
+            </Box>
+            
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between',
+              borderBottom: '1px solid rgba(19, 50, 64, 0.1)',
+              pb: 1
+            }}>
+              <Typography 
+                variant="body2" 
+                sx={{ color: '#666' }}
+              >
+                Depth
+              </Typography>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: '#133240',
+                  fontWeight: 500 
+                }}
+              >
+                {poolSpecs.depth}
+              </Typography>
+            </Box>
+            
+            {poolSpecs.gallons !== 'N/A' && (
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'space-between',
+                pb: 1
+              }}>
+                <Typography 
+                  variant="body2" 
+                  sx={{ color: '#666' }}
+                >
+                  Capacity
+                </Typography>
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    color: '#133240',
+                    fontWeight: 500 
+                  }}
+                >
+                  {poolSpecs.gallons}
+                </Typography>
+              </Box>
+            )}
+          </Box>
+        ) : (
+          <Typography 
+            variant="body1" 
+            sx={{ color: '#666' }}
+          >
+            Specifications not available
+          </Typography>
+        )}
+      </Box>
+    </PoolImageContainer>
+    </Box>
+  );
+});
+
+PoolCard.displayName = 'PoolCard';
+
 const ProductsPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [activeStep, setActiveStep] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [poolImages, setPoolImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadedImages, setLoadedImages] = useState({});
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  const [loadedImages, setLoadedImages] = useState({});
-
+  // Scroll handler
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 200);
@@ -130,52 +450,42 @@ const ProductsPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const images = [
-    //'/assets/images/products-page/product-page-image-one.jpg',
-    '/assets/images/products-page/product-page-image-two.jpg',
-    '/assets/images/products-page/product-page-image-three.jpg',
-    '/assets/images/products-page/product-page-image-four.jpg',
-    '/assets/images/products-page/product-page-image-five.jpg',
-    '/assets/images/products-page/product-page-image-six.jpg',
-    '/assets/images/products-page/product-page-image-seven.jpg',
-  ];
-
+  // Image preloading
   useEffect(() => {
-    // Preload all images
-    images.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        setLoadedImages(prev => ({
-          ...prev,
-          [src]: true
-        }));
-      };
-    });
-  }, [images]);
+    const preloadImages = () => {
+      CAROUSEL_IMAGES.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+          setLoadedImages((prev) => ({
+            ...prev,
+            [src]: true,
+          }));
+        };
+      });
+    };
 
+    preloadImages();
+  }, []);
+
+  // Carousel autoplay
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveStep((prevStep) => (prevStep + 1) % images.length);
+      setActiveStep((prevStep) => (prevStep + 1) % CAROUSEL_IMAGES.length);
     }, 2500);
 
     return () => clearInterval(timer);
-  }, [images.length]);
+  }, []);
 
-  const getNextImageIndex = () => {
-    return (activeStep + 1) % images.length;
-  };
+  const getNextImageIndex = useCallback(() => {
+    return (activeStep + 1) % CAROUSEL_IMAGES.length;
+  }, [activeStep]);
 
-  const handleStepChange = (step) => {
-    if (loadedImages[images[step]]) {
+  const handleStepChange = useCallback((step) => {
+    if (loadedImages[CAROUSEL_IMAGES[step]]) {
       setActiveStep(step);
     }
-  };
-
-  const extractPoolName = (filename) => {
-    const match = filename.match(/._([^_]+)-angle/);
-    return match ? match[1] : '';
-  };
+  }, [loadedImages]);
 
   const poolImagePairs = useMemo(() => {
     const productImages = [
@@ -242,7 +552,76 @@ const ProductsPage = () => {
 
   return (
     <Box sx={{ flex: 1 }}>
+      <NextSeo
+        title="Premium Fiberglass Pools & Liners Palm Bay FL | Pure Life Pools"
+        description="Explore our collection of premium fiberglass pools, pool covers, and vinyl liners in Palm Bay, Florida and Brevard County. Custom pool installations with industry-leading warranties."
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          url: "https://purelifepools.com/pools",
+          title: 'Premium Fiberglass Pools & Liners Palm Bay FL | Pure Life Pools',
+          description: 'Explore our collection of premium fiberglass pools, pool covers, and vinyl liners in Palm Bay, Florida and Brevard County. Custom pool installations with industry-leading warranties.',
+          images: [
+            { url: '/assets/images/products-page/product-page-image-one.jpg' }
+          ],
+        }}
+        additionalMetaTags={[
+          {
+            name: 'keywords',
+            content: 'fiberglass pools, swimming pools, pool covers, vinyl liners, Palm Bay, Florida, Brevard County, pool installation, outdoor kitchens, patios, fire pits, pergolas, artificial turf, landscape'
+          },
+          {
+            property: 'article:modified_time',
+            content: '2024-05-06T21:53:36+00:00'
+          }
+        ]}
+      />
+      <Head>
+        <script type="application/ld+json">
+          {JSON.stringify({
+          '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            itemListElement: poolImagePairs.map((pool, index) => ({
+              '@type': 'Product',
+              position: index + 1,
+              name: pool.name,
+              image: pool.angleImage,
+              description: `${pool.name} fiberglass pool in Palm Bay, FL`,
+              offers: {
+                '@type': 'Offer',
+                availability: 'https://schema.org/InStock'
+              },
+              brand: {
+                '@type': 'Brand',
+                name: 'Pure Life Pools'
+              }
+            }))
+          })}
+        </script>
+        
+        {/* Local Business Schema Markup for SEO */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'LocalBusiness',
+            name: 'Pure Life Pools',
+            telephone: '+1-321-831-3115',
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: 'Palm Bay',
+              addressRegion: 'FL',
+              addressCountry: 'US'
+            },
+            image: '/assets/images/products-page/product-page-image-one.jpg',
+            priceRange: '$$',
+            areaServed: 'Palm Bay, Florida'
+          })}
+        </script>
+      </Head>
+
       <NavBar />
+
+      {/* Scroll to top button - only shows when scrolled down */}
       {showScrollTop && (
         <ScrollTopButton onClick={scrollToTop}>
           <svg
@@ -259,6 +638,8 @@ const ProductsPage = () => {
           </svg>
         </ScrollTopButton>
       )}
+
+      {/* Hero section with carousel */}
       <Box sx={{ position: 'relative', width: '100%', height: '85vh' }}>
         <Paper
           elevation={0}
@@ -269,14 +650,15 @@ const ProductsPage = () => {
             height: '100%',
           }}
         >
+          {/* Hero content overlay */}
           <Box
             sx={{
               position: 'absolute',
-              top: { xs: '50%', md: 100 }, // Center vertically on mobile, 100px from top on desktop
-              left: { xs: '50%', md: 100 }, // Center horizontally on mobile, 100px from left on desktop
-              transform: { xs: 'translate(-50%, -50%)', md: 'none' }, // Center transform on mobile
+              top: { xs: '50%', md: 100 },
+              left: { xs: '50%', md: 100 },
+              transform: { xs: 'translate(-50%, -50%)', md: 'none' },
               zIndex: 2,
-              width: { xs: '90%', sm: '80%', md: 600 }, // Responsive width
+              width: { xs: '90%', sm: '80%', md: 600 },
             }}
           >
             <Typography
@@ -286,7 +668,7 @@ const ProductsPage = () => {
                 fontWeight: 700,
                 fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
                 mb: 2,
-                textAlign: { xs: 'center', md: 'left' }, // Center text on mobile
+                textAlign: { xs: 'center', md: 'left' },
               }}
             >
               Affordable Pool Covers and Vinyl Liners
@@ -299,20 +681,22 @@ const ProductsPage = () => {
                 opacity: 0.8,
                 lineHeight: 1.4,
                 fontSize: { xs: '1rem', sm: '1.2rem', md: '1.5rem' },
-                textAlign: { xs: 'center', md: 'left' }, // Center text on mobile
+                textAlign: { xs: 'center', md: 'left' },
               }}
             >
               Transform your pool with our premium selection of custom-fit
               covers and designer liners, backed by industry-leading warranties
             </Typography>
           </Box>
+
+          {/* Image carousel */}
           <SwipeableViews
             axis="x"
             index={activeStep}
             onChangeIndex={handleStepChange}
             enableMouseEvents
           >
-            {images.map((image, index) => (
+            {CAROUSEL_IMAGES.map((image, index) => (
               <Box
                 key={index}
                 sx={{
@@ -321,29 +705,29 @@ const ProductsPage = () => {
                   position: 'relative',
                 }}
               >
-              <Box
-  sx={{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundImage: `url(${image})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    opacity: loadedImages[image] ? 1 : 0, // Add this line
-    transition: 'opacity 0.3s ease', // Add this line
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    },
-  }}
-/>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundImage: `url(${image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    opacity: loadedImages[image] ? 1 : 0,
+                    transition: 'opacity 0.3s ease',
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    },
+                  }}
+                />
 
                 <TextContainer>
                   <Stack spacing={1} sx={{ maxWidth: '600px' }}>
@@ -360,8 +744,10 @@ const ProductsPage = () => {
                       solutions
                     </Typography>
                   </Stack>
+                  
+                  {/* Carousel pagination dots */}
                   <PaginationContainer>
-                    {images.map((_, i) => (
+                    {CAROUSEL_IMAGES.map((_, i) => (
                       <PaginationLine
                         key={i}
                         isActive={i === activeStep}
@@ -374,26 +760,31 @@ const ProductsPage = () => {
               </Box>
             ))}
           </SwipeableViews>
+
+          {/* Preview box for next slide (desktop only) */}
           {!isMobile && (
             <PreviewBox elevation={6}>
-           <Box
-      sx={{
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${loadedImages[images[getNextImageIndex()]] 
-          ? images[getNextImageIndex()] 
-          : images[activeStep]})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        filter: 'brightness(0.7)',
-        transition: 'background-image 0.3s ease',
-      }}
-    />
+              <Box
+                sx={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url(${
+                    loadedImages[CAROUSEL_IMAGES[getNextImageIndex()]]
+                      ? CAROUSEL_IMAGES[getNextImageIndex()]
+                      : CAROUSEL_IMAGES[activeStep]
+                  })`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  filter: 'brightness(0.7)',
+                  transition: 'background-image 0.3s ease',
+                }}
+              />
             </PreviewBox>
           )}
         </Paper>
       </Box>
 
+      {/* Pool collection section */}
       <Box sx={{ px: 8, py: 6 }}>
         <Box
           sx={{
@@ -416,84 +807,11 @@ const ProductsPage = () => {
           </Box>
         </Box>
 
+        {/* Pool grid display */}
         <Grid container spacing={2}>
           {poolImagePairs.map((pool, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
-              <Box
-                sx={{
-                  position: 'relative',
-                  width: '100%',
-                  paddingTop: '100%',
-                  borderRadius: 1,
-                  border: '1px solid #eee',
-                  overflow: 'hidden',
-                  '&:hover .pool-view': {
-                    opacity: 1,
-                  },
-                }}
-              >
-                {/* Base angle image */}
-                <Box
-                  component="img"
-                  src={pool.angleImage}
-                  alt={`${pool.name} angle view`}
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-
-                {/* Hover view image */}
-
-                {!pool.name.toLowerCase().includes('corinthian') &&
-                  !pool.name.toLowerCase().includes('cove') && (
-                    <Box
-                      component="img"
-                      src={pool.viewImage}
-                      // alt={`${pool.name} actual view`}
-                      className="pool-view"
-                      sx={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        opacity: 0,
-                        transition: 'opacity 0.3s ease-in-out',
-                      }}
-                    />
-                  )}
-
-                {/* Title overlay */}
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    padding: '12px 16px',
-                    borderTop: '1px solid rgba(0, 0, 0, 0.1)',
-                  }}
-                >
-                  <Typography
-                    variant="subtitle1"
-                    sx={{
-                      color: '#2F2F2F',
-                      fontWeight: 500,
-                      fontSize: '1rem',
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    {pool.name}
-                  </Typography>
-                </Box>
-              </Box>
+              <PoolCard pool={pool} />
             </Grid>
           ))}
         </Grid>

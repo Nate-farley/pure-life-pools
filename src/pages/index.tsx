@@ -1,4 +1,5 @@
 // @ts-nocheck
+'use client'
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -15,6 +16,7 @@ import {
   Divider,
   Stack,
   Button,
+  useMediaQuery,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import SwipeableViews from 'react-swipeable-views';
@@ -127,6 +129,7 @@ const ImageWrapper = styled(Box)(({ theme }) => ({
   '&:hover img': {
     transform: 'scale(1.05)',
   },
+  cursor: 'pointer'
 }));
 
 const StyledImage = styled(Image)(({ theme }) => ({
@@ -224,6 +227,19 @@ const Home = () => {
     };
   }, [activeStep]);
 
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+  const handleOnClickService = (service) => {
+    console.log(service)
+    switch(service.title?.toLowerCase()) {
+      case 'pools':
+        router.push('/pools')
+        break;
+      default:
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -234,11 +250,25 @@ const Home = () => {
         position: 'relative',
       }}
     >
-      <Head>
-        <title>Pure Life</title>
-        <meta name="description" content="Pool, Pavers, Hardscaping and Ponds" />
+   <Head>
+        <title>Pure Life Pool & Pavers | +1-321-831-3115</title>
+        <meta name="description" content="We can upgrade your home with gorgeous elements like fiber glass pools, patios, koi fish ponds, pergolas, artificial turf, landscape & lighting." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://purelifepools.com/" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Pure Life Pool & Pavers | +1-321-831-3115" />
+        <meta property="og:description" content="We can upgrade your home with gorgeous elements like fiber glass pools, patios, koi fish ponds, pergolas, artificial turf, landscape & lighting." />
+        <meta property="og:image" content="http://purelifedesigns.co/wp-content/uploads/2024/03/pool-hardscape-683x1024.jpeg" />
+        <meta property="og:url" content="https://purelifepools.com/" />
+        
+        {/* Article Modified Time */}
+        <meta property="article:modified_time" content="2024-05-06T21:53:36+00:00" />
       </Head>
 
       <NavBar />
@@ -246,8 +276,8 @@ const Home = () => {
       <Box
         sx={{
           position: 'relative',
-          width: '100%',
-          height: '100vh',
+          width: isMobile ? 'auto': '100%',
+          height: isMobile ? 'auto' : '100vh',
           mb: 2,
           overflow: 'hidden',
         }}
@@ -273,8 +303,8 @@ const Home = () => {
                 key={index}
                 sx={{
                   position: 'relative',
-                  width: '100%',
-                  height: '100vh',
+                  width: isMobile ? 'auto' : '100vw',
+                  height: isMobile ? 'auto' : '100vh',
                   overflow: 'hidden',
                 }}
               >
@@ -289,7 +319,7 @@ const Home = () => {
                   Your browser does not support the video tag.
                 </StyledVideo>
 
-                <TextContainer>
+                <TextContainer >
                   <Stack spacing={1} sx={{ maxWidth: '600px' }}>
                     {/* Headline */}
                     <AnimatedTypography
@@ -321,19 +351,24 @@ const Home = () => {
                     />
 
                     {/* Subtext */}
-                    <AnimatedTypography
-                      variant="subtitle1"
-                      sx={{
-                        fontWeight: 300,
-                        opacity: 0.9,
-                        animationDelay: '0.4s',
-                        lineHeight: 1.6,
-                        fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
-                      }}
-                    >
-                      Transform your outdoor space into a stunning oasis with
-                      our custom pool designs and expert craftsmanship
-                    </AnimatedTypography>
+                    {
+                      !isMobile && (
+                        <AnimatedTypography
+                        variant="subtitle1"
+                        sx={{
+                          fontWeight: 300,
+                          opacity: 0.9,
+                          animationDelay: '0.4s',
+                          lineHeight: 1.6,
+                          fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                        }}
+                      >
+                        Transform your outdoor space into a stunning oasis with
+                        our custom pool designs and expert craftsmanship
+                      </AnimatedTypography>
+                      )
+                    }
+                  
                   </Stack>
 
                   {/* Pagination - positioned relative to the TextContainer */}
@@ -362,8 +397,8 @@ const Home = () => {
       {/* Photo Gallery Section */}
       <Grid container spacing={2} sx={{ px: 2 }}>
         {services.map((service, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <ImageWrapper>
+          <Grid  item xs={12} sm={6} md={3} key={index}>
+            <ImageWrapper onClick={() => handleOnClickService(service)}>
               <StyledImage
                 src={service.image}
                 alt={`${service.title} Image`}
@@ -408,9 +443,39 @@ const Home = () => {
         ))}
       </Grid>
 
+
       <FoundedSection />
 
+      
+
       <BlockSection />
+
+      <Box
+        sx={{
+          my: 4,
+          mb: 12,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+        }}
+      >
+  
+      
+
+        <Typography
+          variant="body1"
+          sx={{
+            maxWidth: '800px',
+            mx: 'auto',
+            color: 'text.secondary',
+            lineHeight: 1.8,
+            fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+          }}
+        >
+          As Central Florida's premier pool and outdoor living specialist since 2015, Pure Life Pools transforms ordinary backyards into extraordinary retreats. Our licensed professionals combine innovative design with meticulous craftsmanship to create stunning outdoor spaces that perfectly match your lifestyle and exceed your expectations.
+        </Typography>
+      </Box>
 
       <PoolProductsSection router={router} />
 

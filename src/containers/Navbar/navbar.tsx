@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect } from 'react';
 import {
   AppBar,
@@ -12,6 +13,7 @@ import {
   ListItemText,
   useMediaQuery,
   useTheme,
+  Typography,
 } from '@mui/material';
 import Image from 'next/image';
 import { Menu as MenuIcon, X as CloseIcon } from 'lucide-react';
@@ -90,7 +92,8 @@ export default function NavBar() {
   }}
 >
   <Image
-      preload
+    priority
+    
     src="/assets/images/plpLogo.png"
     alt="Logo"
     width="80"
@@ -112,7 +115,12 @@ export default function NavBar() {
         onClick={() => onClickNavbarItem(page)}
         key={page}
         variant="text"
+        disableElevation
+        disableFocusRipple
+        disableRipple
+        disableTouchRipple
         sx={{
+          textTransform: 'none',
           fontWeight: 'bold',
           color: 'white',
           display: 'block',
@@ -145,7 +153,11 @@ export default function NavBar() {
     {mobileMenuOpen ? <CloseIcon size={24} /> : <MenuIcon size={24} />}
   </IconButton>
 
- {!isMobile && <Box />}
+ {!isMobile && <Box>
+  <Typography variant='body2' fontWeight={'700'}>
+  +1 (321) 831-3115
+  </Typography>
+  </Box>}
 </Toolbar>
       </AppBar>
 

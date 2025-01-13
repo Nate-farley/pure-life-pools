@@ -1,6 +1,9 @@
 import { Box, Stack, Typography, Button, Container } from '@mui/material';
+import { useRouter } from 'next/router';
 
 const FoundedSection = () => {
+  const router = useRouter()
+  
   return (
     <Container maxWidth="lg">
       <Box
@@ -80,6 +83,7 @@ const FoundedSection = () => {
           }}
         >
           <Button
+            onClick={() => router.push('/contact')}
             variant="contained"
             disableElevation
             disableRipple
