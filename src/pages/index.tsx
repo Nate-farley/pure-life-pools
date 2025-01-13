@@ -36,7 +36,6 @@ const videos = [
   '/assets/videos/latham/latham-marketing-video-3.mp4',
 ];
 
-// Array of services containing (title, description and image) for each
 const services = [
   {
     title: 'Pools',
