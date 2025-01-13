@@ -21,8 +21,21 @@ const Footer = () => {
   const menuItems = {
     Products: ['Pools'],
     Support: ['FAQ', 'Contact', 'Location'],
-    Company: ['About', 'Reviews'],
+    Company: ['About', 'Leave a Review'],
   };
+
+  const getHref = item => {
+    switch (item.toLowerCase()) {
+      case "location":
+        router.push('https://maps.app.goo.gl/md8GxJmSxDZSJ7Kq9')
+        break;
+      case "leave a review":
+        router.push('https://maps.app.goo.gl/md8GxJmSxDZSJ7Kq9')
+        break; 
+      default:
+        return item;
+    }
+  }
 
   return (
     <Box sx={{ bgcolor: '#262626', color: 'white', py: 6 }}>
@@ -75,7 +88,7 @@ const Footer = () => {
                 {' '}
                 {/* Increased spacing between items */}
                 {items.map((item) => (
-                  <ModernLink key={item} href={item.toLowerCase()} underline="none">
+                  <ModernLink key={item} onClick={() => getHref(item.toLowerCase())} underline="none">
                     {item}
                   </ModernLink>
                 ))}
