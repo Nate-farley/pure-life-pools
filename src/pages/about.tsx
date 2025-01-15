@@ -1,11 +1,12 @@
 //@ts-nocheck
-'use client'; // Add this line only if using App Router
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import NavBar from '@/containers/Navbar/navbar';
 import { Fade, Paper, Typography, Box, Chip, Card } from '@mui/material';
 import Footer from '@/containers/Footer';
+
 const perspectiveImages = [
   '/downloaded_images/1732569924035_39_FG-THUMBS_0010_Nirvana-5-OceanBlueG3-perspective.jpg',
   '/downloaded_images/1732569924135_41_FG-THUMBS_0009_Nirvana-6-OceanBlueG3-perspective.jpg',
@@ -24,7 +25,6 @@ const ImageCarousel = () => {
   const getPoolName = (path: string) => {
     const match = path.match(/THUMBS_\d+_([\w-]+)-OceanBlue/);
     if (match) {
-      // Replace hyphen with space and format
       return match[1].replace('-', ' ');
     }
     return '';
@@ -36,7 +36,7 @@ const ImageCarousel = () => {
       setTimeout(() => {
         setIndex((prev) => (prev + 1) % perspectiveImages.length);
         setShow(true);
-      }, 400);
+      }, 800);
     }, 5000);
 
     return () => clearInterval(interval);
@@ -54,7 +54,7 @@ const ImageCarousel = () => {
       <div className="absolute top-4 left-4 z-10">
         <Chip
           sx={{
-            backgroundColor: '#fafafa',
+            backgroundColor: '#dbdbdb',
             backdropFilter: 'blur(8px)',
             color: '#133240',
             fontWeight: 500,
@@ -65,7 +65,6 @@ const ImageCarousel = () => {
             boxShadow: '0 2px 4px rgba(0,0,0,0.04)',
             transition: 'all 0.2s ease-in-out',
             '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 0.95)',
               boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
               transform: 'translateY(-1px)',
             },
@@ -85,8 +84,13 @@ interface StatCardProps {
 const StatCard: React.FC<StatCardProps> = ({ number, label }) => (
   <Card
     variant="outlined"
-    sx={{ borderRadius: 3, borderColor: '#eee' }}
-    className="bg-white p-8 rounded-2xl"
+    sx={{
+      borderRadius: 3,
+      background: 'rgba(255, 255, 255, 0.7)',
+      backdropFilter: 'blur(8px)',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+    }}
+    className="p-8 rounded-2xl"
   >
     <div style={{ color: '#133240' }} className="text-4xl font-bold mb-2">
       {number}
@@ -97,13 +101,23 @@ const StatCard: React.FC<StatCardProps> = ({ number, label }) => (
 
 const AboutPage: React.FC = () => {
   return (
-    <section>
+    <section className="relative">
+      {/* Fixed Background with Glass Effect */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-95 to-white" />
+        <div className="absolute inset-0">
+          <div className="absolute top-[10%] left-[2%] w-[40rem] h-[40rem] rounded-full bg-blue-200/50 blur-3xl" />
+          <div className="absolute bottom-[20%] right-[1%] w-[45rem] h-[45rem] rounded-full bg-teal-200/25 blur-3xl" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-[40%] right-[30%] w-[35rem] h-[35rem] rounded-full bg-purple-200/50 blur-3xl " style={{ animationDelay: '4s' }} />
+        </div>
+      </div>
+
       <NavBar />
-      <div className="pt-20 bg-gray-50 min-h-screen">
+      
+      <div className="relative pt-20 min-h-screen">
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Left Column */}
-
             <div className="space-y-6">
               <Paper
                 variant="outlined"
@@ -111,20 +125,19 @@ const AboutPage: React.FC = () => {
                   height: '100%',
                   borderRadius: '24px',
                   p: 4,
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(209, 213, 219, 0.3)',
-                  boxShadow:
-                    '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
-                  transition: 'all 0.3s ease-in-out',
+                  background: 'transparent',
+                  backgroundColor: 'transparent',
+                  backdropFilter: 'blur(8px)',
+                  border: '3px solid rgba(255, 255, 255, 1)',
+                  boxShadow: 'none',
+          
                   '&:hover': {
-                    boxShadow:
-                      '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04)',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.08)',
                     transform: 'translateY(-2px)',
                   },
                 }}
               >
-                <div style={{ color: '#133240' }} className="pb-10 font-medium">
+                <div style={{ color: '#133240' }} className="pb-10 font-bold">
                   How It Started
                 </div>
                 <h1 className="text-5xl font-bold leading-tight">
@@ -155,22 +168,19 @@ const AboutPage: React.FC = () => {
             </div>
 
             {/* Right Column */}
-
             <div className="space-y-8">
               <Paper
                 variant="outlined"
                 sx={{
                   borderRadius: '24px',
                   p: 4,
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(209, 213, 219, 0.3)',
-                  boxShadow:
-                    '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                  background: 'transparent',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  boxShadow: 'none',
                   transition: 'all 0.3s ease-in-out',
                   '&:hover': {
-                    boxShadow:
-                      '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04)',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.08)',
                     transform: 'translateY(-2px)',
                   },
                 }}
@@ -187,8 +197,8 @@ const AboutPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-20 w-full flex items-center justify-center bg-gray-50">
-          <div className="text-center space-y-3">
+        <div className="mt-20 mb-20 w-full flex items-center justify-center">
+          <div className="text-center space-y-3 bg-white/70 backdrop-blur-sm p-6 rounded-xl">
             <p className="font-extralight text-gray-400">105 Ring Avenue NE</p>
             <p className="font-light text-gray-500">Palm Bay, FL 32789</p>
             <p className="font-medium text-gray-700">United States</p>
