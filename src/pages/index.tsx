@@ -29,6 +29,84 @@ import PoolProductsSection from '@/containers/PoolProductGrid/PoolProductSection
 import FoundedSection from '@/containers/FoundedSection';
 import { useRouter } from 'next/navigation';
 
+const handleVideoError = (e) => {
+  console.error('Video loading error:', e.target.error);
+  console.log('Failed video source:', e.target.currentSrc);
+};
+
+const VideoPlayer = ({ src, isActive, onEnded, index }) => {
+  const videoRef = useRef(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    
+    if (!video) return;
+
+    const playVideo = async () => {
+      try {
+        video.currentTime = 0;
+        await video.load();
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
+      } catch (err) {
+        console.error('Playback error:', err);
+        setError(err.message);
+      }
+    };
+
+    if (isActive) {
+      playVideo();
+    } else {
+      video.pause();
+      video.currentTime = 0;
+    }
+
+    return () => {
+      if (video) {
+        video.pause();
+        video.removeEventListener('ended', onEnded);
+      }
+    };
+  }, [isActive, src]);
+
+  return (
+    <>
+      <StyledVideo
+        ref={videoRef}
+        playsInline
+        muted
+        autoPlay={isActive}
+        loop
+        preload="auto"
+        onError={handleVideoError}
+        onEnded={onEnded}
+      >
+        <source src={src} type="video/mp4" />
+      </StyledVideo>
+      {error && (
+        <Box 
+          sx={{ 
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            width: '100%', 
+            textAlign: 'center',
+            bgcolor: 'rgba(0,0,0,0.5)',
+            color: 'white',
+            p: 2
+          }}
+        >
+          Error loading video: {error}
+        </Box>
+      )}
+    </>
+  );
+};
+
+
 // Marketing videos
 const videos = [
   '/assets/videos/latham/latham-marketing-video-3.mp4',
@@ -316,16 +394,12 @@ const Home = () => {
                   overflow: 'hidden',
                 }}
               >
-                <StyledVideo
-                  onError={handleVideoError}
-                  ref={videoRefs[index]}
-                  playsInline
-                  muted
-                  preload="auto"
-                >
-                  <source src={video} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </StyledVideo>
+             <VideoPlayer
+        src={video}
+        isActive={index === activeStep}
+        onEnded={handleVideoEnd}
+        index={index}
+      />
 
                 <TextContainer>
                   <Stack spacing={1} sx={{ maxWidth: '600px' }}>
