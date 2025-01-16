@@ -30,7 +30,7 @@ const PoolProductsSection = ({ router }: { router: any }) => {
               mr: 1
             }}
           >
-            Fiber Glass Pools
+            Fiberglass Pools
           </Typography>
           <Typography
             component="span"
@@ -65,6 +65,7 @@ const PoolProductsSection = ({ router }: { router: any }) => {
           </Typography>
 
           <Button
+          title="See fiberglass pools"
             onClick={() => router?.push('/pools')}
             variant="outlined"
             size="small"
@@ -82,7 +83,7 @@ const PoolProductsSection = ({ router }: { router: any }) => {
               }
             }}
           >
-            See More Fiber Glass Pools
+            See More Fiberglass Pools
           </Button>
         </Stack>
 

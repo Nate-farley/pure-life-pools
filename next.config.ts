@@ -1,4 +1,4 @@
-import type { NextConfig } from 'next';
+import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
@@ -10,6 +10,21 @@ const nextConfig: NextConfig = {
       'www.lathampool.com',
       "images.pexels.com"
     ],
+  },
+  compress: true,
+  poweredByHeader: false,
+  async headers() {
+    return [
+      {
+        source: '/sitemap.xml',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/xml',
+          },
+        ],
+      },
+    ];
   },
   webpack: (config) => {
     config.module.rules.push({

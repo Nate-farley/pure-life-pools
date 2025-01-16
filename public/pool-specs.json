@@ -1,0 +1,243 @@
+{
+  "aruba": {
+    "size": "11′ x 22′",
+    "depth": "3′ 6″ to 5′ *",
+    "gallons": "N/A"
+  },
+  "astoria-collection": null,
+  "axiom-12": {
+    "size": "12′ x 26′",
+    "depth": "4′ to 5′ *",
+    "gallons": "N/A"
+  },
+  "axiom-12-deluxe": {
+    "size": "12′ x 26′",
+    "depth": "4′ to 4′ – 8″; Spa 3′ *",
+    "gallons": "N/A"
+  },
+  "axiom-14": {
+    "size": "14′ x 30′",
+    "depth": "4′ 6″ to 6′ *",
+    "gallons": "N/A"
+  },
+  "axiom-16": {
+    "size": "16′ x 35′",
+    "depth": "4′ 6″ to 6′ 6″ *",
+    "gallons": "N/A"
+  },
+  "barcelona": {
+    "size": "16′ x 38′",
+    "depth": "3′ 6″ to 7′ *",
+    "gallons": "N/A"
+  },
+  "bay-isle": {
+    "size": "14′ – 6″ x 30′",
+    "depth": "3′ to 6′ – 6″ *",
+    "gallons": "N/A"
+  },
+  "bermuda": {
+    "size": "12′ x 26′",
+    "depth": "3′ 6″ to 5′ 6″ *",
+    "gallons": "N/A"
+  },
+  "cambridge": {
+    "size": "16′ x 36′",
+    "depth": "3′ – 6″ to 7′ *",
+    "gallons": "N/A"
+  },
+  "cancun": {
+    "size": "16′ x 35′",
+    "depth": "3′ – 6″ to 6′ – 6″ *",
+    "gallons": "N/A"
+  },
+  "cancun-deluxe": {
+    "size": "16′ x 35′",
+    "depth": "4′ 3″ to 6′ 6″; Spa 3′ *",
+    "gallons": "N/A"
+  },
+  "cape-cod": {
+    "size": "14′ x 31′",
+    "depth": "3′ 6″ to 6′ *",
+    "gallons": "N/A"
+  },
+  "caribbean": {
+    "size": "16′ x 40′",
+    "depth": "3′ 6″ to 6′ 6″ *",
+    "gallons": "N/A"
+  },
+  "claremont": {
+    "size": "14′ x 33′",
+    "depth": "3′ 6″ to 5′ 4″ *",
+    "gallons": "N/A"
+  },
+  "corinthian-12": {
+    "size": "12′ x 25′",
+    "depth": "3′ 6″ to 5′ 5″ *",
+    "gallons": "N/A"
+  },
+  "corinthian-14": {
+    "size": "14′ x 30′",
+    "depth": "3′ 6″ to 6″ *",
+    "gallons": "N/A"
+  },
+  "corinthian-16": {
+    "size": "15′ 10″ x 40′",
+    "depth": "3′ 6″ to 7′ *",
+    "gallons": "N/A"
+  },
+  "coronado": {
+    "size": "15′ x 34′",
+    "depth": "3′ – 6″ to 6′ – 6″ *",
+    "gallons": "N/A"
+  },
+  "delray": {
+    "size": "12′ x 25′",
+    "depth": "4′ 6″ *",
+    "gallons": "N/A"
+  },
+  "enchantment-9-17": {
+    "size": "9′ – 1″ x 17′ – 5″",
+    "depth": "4′ – 9″ *",
+    "gallons": "N/A"
+  },
+  "enchantment-9-21": {
+    "size": "9′ – 1″ x 20′ – 7″",
+    "depth": "4′ – 9″ *",
+    "gallons": "N/A"
+  },
+  "enchantment-9-24": {
+    "size": "9′ – 1″ x 23′ – 10″",
+    "depth": "4′ – 9″ *",
+    "gallons": "N/A"
+  },
+  "fiji": {
+    "size": "15′ x 34′",
+    "depth": "3′ 6″ to 6′ *",
+    "gallons": "N/A"
+  },
+  "genesis": {
+    "size": "16′ x 40′ 2″",
+    "depth": "3′ 9″ to 8′ 6″ *",
+    "gallons": "N/A"
+  },
+  "jamaica": {
+    "size": "10′ x 20′",
+    "depth": "3′ – 2″ to 5′ *",
+    "gallons": "N/A"
+  },
+  "java": {
+    "size": "12′ x 27′",
+    "depth": "3′ – 6″ to 5′ – 6″ *",
+    "gallons": "N/A"
+  },
+  "key-west": {
+    "size": "12′ x 25′ 7″",
+    "depth": "3′ 7″ to 6′ *",
+    "gallons": "N/A"
+  },
+  "kingston": {
+    "size": "16′ x 38′",
+    "depth": "3′ 6″ to 5′ 10″ *",
+    "gallons": "N/A"
+  },
+  "laguna": {
+    "size": "14′ x 30′",
+    "depth": "3′ 6″ to 6′ *",
+    "gallons": "N/A"
+  },
+  "laguna-deluxe": {
+    "size": "14′ x 30′",
+    "depth": "4′ to 6′ *",
+    "gallons": "N/A"
+  },
+  "lake-shore": {
+    "size": "16′ x 33′",
+    "depth": "3′ – 7″ to 5′ – 5″ *",
+    "gallons": "N/A"
+  },
+  "milan": {
+    "size": "10′ x 16′",
+    "depth": "4′ *",
+    "gallons": "N/A"
+  },
+  "monaco": {
+    "size": "16′ x 40′",
+    "depth": "3′ 6″ to 8′ *",
+    "gallons": "N/A"
+  },
+  "olympia-12": {
+    "size": "12′ x 26′",
+    "depth": "3′ 6″ to 5′ 6″ *",
+    "gallons": "N/A"
+  },
+  "olympia-14": {
+    "size": "14′ x 30′",
+    "depth": "3′ 6″ to 6′ *",
+    "gallons": "N/A"
+  },
+  "olympia-16": {
+    "size": "16′ x 35′",
+    "depth": "3′ 6″ to 6′ 6″ *",
+    "gallons": "N/A"
+  },
+  "pleasant-cove": {
+    "size": "11’x22′",
+    "depth": "3′ 6″ to 5′ 6″ *",
+    "gallons": "N/A"
+  },
+  "providence-14": {
+    "size": "14′ x 30′",
+    "depth": "3’6″ to 6’1″",
+    "gallons": "N/A"
+  },
+  "st-lucia": {
+    "size": "12′ x 24′",
+    "depth": "3′-6″ to 5′ *",
+    "gallons": "N/A"
+  },
+  "st-thomas": {
+    "size": "14′ x 31′ 6″",
+    "depth": "3′ 7″ to 7′ *",
+    "gallons": "N/A"
+  },
+  "synergy": {
+    "size": "16′ x 40′ – 2″",
+    "depth": "3′ – 9″ to 6′ – 3″ *",
+    "gallons": "N/A"
+  },
+  "tuscan-11-20": {
+    "size": "11′ – 1″ x 20′ – 3″",
+    "depth": "3′ – 11″ to 5′ – 2″ *",
+    "gallons": "N/A"
+  },
+  "tuscan-13-24": {
+    "size": "12′ – 10″ x 23′ – 7″",
+    "depth": "3′ – 11″ to 5′ – 5″ *",
+    "gallons": "N/A"
+  },
+  "tuscan-14-27": {
+    "size": "13′ – 9″ x 26′ – 10″",
+    "depth": "3′ – 11″ to 5′ – 9″ *",
+    "gallons": "N/A"
+  },
+  "tuscan-14-30": {
+    "size": "13′ – 9″ x 30′ – 1″",
+    "depth": "3′ – 11″ to 5′ – 11″ *",
+    "gallons": "N/A"
+  },
+  "tuscan-14-40": {
+    "size": "13′ – 9″ x 39′ – 11″",
+    "depth": "3′ – 7″ to 6′ – 2″ *",
+    "gallons": "N/A"
+  },
+  "valencia": {
+    "size": "14′ – 6″ x 28′",
+    "depth": "3′ – 7″ to 5′ 10″ *",
+    "gallons": "N/A"
+  },
+  "vista-isle": {
+    "size": "12′ x 28′ – 6″",
+    "depth": "3′ 6″ to 5′ 10″ *",
+    "gallons": "N/A"
+  }
+}

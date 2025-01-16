@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Box, Typography, Paper, Button, useTheme, useMediaQuery, Container } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  useTheme,
+  useMediaQuery,
+  Container,
+} from '@mui/material';
 import Image from 'next/image';
 
 const TestimonialsSection = () => {
@@ -13,28 +21,33 @@ const TestimonialsSection = () => {
     {
       name: 'Sarah Johnson',
       rating: 5,
-      review: 'Exceptional service! They transformed our backyard into a stunning oasis. The attention to detail was remarkable.',
+      review:
+        'Exceptional service! They transformed our backyard into a stunning oasis. The attention to detail was remarkable.',
     },
     {
       name: 'Mike Thompson',
       rating: 5,
-      review: 'Professional team that delivered beyond our expectations. The pool installation was seamless.',
+      review:
+        'Professional team that delivered beyond our expectations. The pool installation was seamless.',
     },
     {
       name: 'Emily Davis',
       rating: 5,
-      review: 'Outstanding work on our patio and landscaping. They truly understood our vision and brought it to life.',
+      review:
+        'Outstanding work on our patio and landscaping. They truly understood our vision and brought it to life.',
     },
     {
       name: 'John Smith',
       rating: 5,
-      review: 'Incredible work ethic and attention to detail. Our new pool is exactly what we wanted.',
+      review:
+        'Incredible work ethic and attention to detail. Our new pool is exactly what we wanted.',
     },
     {
       name: 'Lisa Wilson',
       rating: 5,
-      review: 'The team was professional, punctual, and delivered amazing results. Highly recommend!',
-    }
+      review:
+        'The team was professional, punctual, and delivered amazing results. Highly recommend!',
+    },
   ];
 
   useEffect(() => {
@@ -59,21 +72,27 @@ const TestimonialsSection = () => {
   const maxIndex = testimonials.length - visibleCount;
 
   const handleNext = () => {
-    setCurrentIndex(prev => Math.min(prev + 1, maxIndex));
+    setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
   };
 
   const handlePrev = () => {
-    setCurrentIndex(prev => Math.max(prev - 1, 0));
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
   };
 
-  const reviewsToShow = testimonials.slice(currentIndex, currentIndex + visibleCount).map((review, index) => ({
-    ...review,
-    // @ts-ignore
-    avatar: users[currentIndex + index]?.picture?.large ?? '/api/placeholder/56/56'
-  }));
+  const reviewsToShow = testimonials
+    .slice(currentIndex, currentIndex + visibleCount)
+    .map((review, index) => ({
+      ...review,
+      // @ts-ignore
+      avatar:
+      //@ts-ignore
+        users[currentIndex + index]?.picture?.large ?? '/api/placeholder/56/56',
+    }));
 
   return (
     <Box
+      component="section"
+      aria-label="Customer Testimonials"
       sx={{
         width: '100%',
         position: 'relative',
@@ -98,6 +117,7 @@ const TestimonialsSection = () => {
           }}
         >
           <Box
+            component="header"
             sx={{
               display: 'flex',
               flexDirection: { xs: 'column', sm: 'row' },
@@ -110,22 +130,23 @@ const TestimonialsSection = () => {
           >
             <Box>
               <Typography
+                component="h2"
                 variant="h4"
                 sx={{
                   color: '#133240',
                   fontWeight: 600,
                   mb: 1,
-                  fontSize: { xs: '1.5rem', md: '2.125rem' }
+                  fontSize: { xs: '1.5rem', md: '2.125rem' },
                 }}
               >
                 Our Customer Feedback
               </Typography>
               <Typography
-                variant="h6"
+                variant="h3"
                 sx={{
                   color: '#133240',
                   opacity: 0.8,
-                  fontSize: { xs: '1rem', md: '1.25rem' }
+                  fontSize: { xs: '1rem', md: '1.25rem' },
                 }}
               >
                 Don't take our word for it. Trust our customers.
@@ -173,6 +194,8 @@ const TestimonialsSection = () => {
           </Box>
 
           <Box
+            role="list"
+            aria-label="Customer Reviews"
             sx={{
               display: 'flex',
               flexDirection: { xs: 'column', sm: isTablet ? 'column' : 'row' },
@@ -182,6 +205,7 @@ const TestimonialsSection = () => {
           >
             {reviewsToShow.map((review, index) => (
               <Paper
+                component="article"
                 key={currentIndex + index}
                 elevation={0}
                 sx={{
@@ -203,35 +227,22 @@ const TestimonialsSection = () => {
                   }}
                 >
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    {/* <Box
-                      sx={{
-                        width: 56,
-                        height: 56,
-                        borderRadius: 2,
-                        overflow: 'hidden',
-                        position: 'relative',
-                      }}
-                    >
-                      <Image
-                        src={review.avatar}
-                        alt={review.name}
-                        fill
-                        sizes="56px"
-                        style={{ objectFit: 'cover' }}
-                      />
-                    </Box> */}
                     <Typography
                       variant="h6"
                       sx={{
                         color: '#262626',
                         fontWeight: 600,
-                        fontSize: { xs: '1rem', md: '1.25rem' }
+                        fontSize: { xs: '1rem', md: '1.25rem' },
                       }}
                     >
                       {review.name}
                     </Typography>
                   </Box>
-                  <Box sx={{ display: 'flex', gap: 0.5 }}>
+                  <Box
+                    sx={{ display: 'flex', gap: 0.5 }}
+                    role="img"
+                    aria-label={`Rating: ${review.rating} out of 5 stars`}
+                  >
                     {[...Array(review.rating)].map((_, i) => (
                       <Box
                         key={i}
@@ -250,7 +261,7 @@ const TestimonialsSection = () => {
                   sx={{
                     color: '#666666',
                     lineHeight: 1.6,
-                    fontSize: { xs: '0.875rem', md: '1rem' }
+                    fontSize: { xs: '0.875rem', md: '1rem' },
                   }}
                 >
                   {review.review}

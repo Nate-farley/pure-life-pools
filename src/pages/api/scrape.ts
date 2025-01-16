@@ -1,125 +1,169 @@
-// src/pages/api/scrape.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
-import * as cheerio from 'cheerio';
-import * as path from 'path';
-import * as fs from 'fs/promises';
+import { JSDOM } from 'jsdom';
+import path from 'path';
+import fs from 'fs/promises';
 
-async function getExistingImages() {
+interface PoolSpecs {
+  size: string;
+  depth: string;
+  gallons: string;
+}
+
+interface PoolData {
+  [poolName: string]: PoolSpecs | null;
+}
+
+const pools = [
+  'aruba',
+  'astoria-collection',
+  'axiom-12',
+  'axiom-12-deluxe',
+  'axiom-14',
+  'axiom-16',
+  'barcelona',
+  'bay-isle',
+  'bermuda',
+  'cambridge',
+  'cancun',
+  'cancun-deluxe',
+  'cape-cod',
+  'caribbean',
+  'claremont',
+  'corinthian-12',
+  'corinthian-14',
+  'corinthian-16',
+  'coronado',
+  'delray',
+  'enchantment-9-17',
+  'enchantment-9-21',
+  'enchantment-9-24',
+  'fiji',
+  'genesis',
+  'jamaica',
+  'java',
+  'key-west',
+  'kingston',
+  'laguna',
+  'laguna-deluxe',
+  'lake-shore',
+  'milan',
+  'monaco',
+  'olympia-12',
+  'olympia-14',
+  'olympia-16',
+  'pleasant-cove',
+  'providence-14',
+  'st-lucia',
+  'st-thomas',
+  'synergy',
+  'tuscan-11-20',
+  'tuscan-13-24',
+  'tuscan-14-27',
+  'tuscan-14-30',
+  'tuscan-14-40',
+  'valencia',
+  'vista-isle',
+];
+
+async function getExistingSpecs(): Promise<PoolData | null> {
   try {
-    const outputDir = path.join(process.cwd(), 'public', 'downloaded_images');
+    const filePath = path.join(process.cwd(), 'public', 'pool-specs.json');
+    await fs.access(filePath);
+    const data = await fs.readFile(filePath, 'utf-8');
+    return JSON.parse(data);
+  } catch {
+    return null;
+  }
+}
 
-    // Check if directory exists
-    try {
-      await fs.access(outputDir);
-    } catch {
-      // Directory doesn't exist, create it
-      await fs.mkdir(outputDir, { recursive: true });
-      return [];
+async function fetchPoolSpecs(poolName: string): Promise<PoolSpecs | null> {
+  try {
+    console.log(`Fetching specs for ${poolName}...`);
+    const response = await axios.get(`https://www.lathampool.com/products/${poolName}/`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+    
+    const dom = new JSDOM(response.data);
+    const document = dom.window.document;
+    
+    const specsSection = document.querySelector('.accordion__body_inner');
+    
+    if (!specsSection) {
+      console.error(`No specs section found for ${poolName}`);
+      return null;
     }
-
-    // Read directory
-    const files = await fs.readdir(outputDir);
-
-    // Return files in the expected format
-    return files.map((filename) => ({
-      success: true,
-      filename,
-      url: `/downloaded_images/${filename}`,
-    }));
+    
+    const content = specsSection.textContent || '';
+   // <strong>Gallons Approx:</strong>
+    return {
+      size: content.match(/Size:\s*(.*?)\s*(?=Depth|$)/i)?.[1]?.trim() || 'N/A',
+      depth: content.match(/Depth:\s*(.*?)\s*(?=Gallons|$)/i)?.[1]?.trim() || 'N/A',
+      gallons: content.match(/Gallons Approx:\s*(.*?)(?=$)/i)?.[1]?.trim() || 'N/A'
+    };
   } catch (error) {
-    console.error('Error reading existing images:', error);
-    return [];
+    console.error(`Error fetching ${poolName}:`, error);
+    return null;
   }
 }
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) {
-  if (req.method !== 'POST') {
+  if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    // First check for existing images
-    const existingImages = await getExistingImages();
-
-    // If we have existing images, return them
-    if (existingImages.length > 0) {
-      console.log('Returning cached images:', existingImages.length);
+    // Check for existing specs
+    const existingSpecs = await getExistingSpecs();
+    if (existingSpecs) {
+      console.log('Returning cached pool specs');
       return res.status(200).json({
-        message: 'Images retrieved from cache',
-        results: existingImages,
-        fromCache: true,
+        message: 'Pool specs retrieved from cache',
+        data: existingSpecs,
+        fromCache: true
       });
     }
 
-    // If no existing images, proceed with web scraping
-    const { url, className } = req.body;
-
-    if (!url || !className) {
-      return res.status(400).json({ error: 'URL and className are required' });
+    // Scrape new specs
+    const poolData: PoolData = {};
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    
+    for (const poolName of pools) {
+      const specs = await fetchPoolSpecs(poolName);
+      poolData[poolName] = specs;
+      await delay(1000); // Be respectful to the server
     }
-
-    const webpageResponse = await axios.get(url, {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      },
-    });
-
-    const $ = cheerio.load(webpageResponse.data);
-    const imageElements = $(`.${className}`);
-    const outputDir = path.join(process.cwd(), 'public', 'downloaded_images');
-
-    const results = [];
-    let index = 0;
-
-    for (const element of imageElements) {
-      const srcAttr = $(element).attr('src');
-      if (!srcAttr) continue;
-
-      try {
-        const imageUrl = new URL(srcAttr, url).toString();
-        const filename = `${Date.now()}_${index}_${path.basename(imageUrl)}`;
-        const filepath = path.join(outputDir, filename);
-
-        const imageResponse = await axios({
-          method: 'GET',
-          url: imageUrl,
-          responseType: 'arraybuffer',
-        });
-
-        await fs.writeFile(filepath, imageResponse.data);
-
-        results.push({
-          success: true,
-          filename,
-          url: `/downloaded_images/${filename}`,
-        });
-
-        index++;
-      } catch (error) {
-        console.error(`Failed to process image ${srcAttr}:`, error);
-        results.push({
-          success: false,
-          error: error instanceof Error ? error.message : 'Unknown error',
-          url: srcAttr,
-        });
-      }
+    
+    // Save to JSON file
+    const outputDir = path.join(process.cwd(), 'public');
+    try {
+      await fs.access(outputDir);
+    } catch {
+      await fs.mkdir(outputDir, { recursive: true });
     }
-
+    
+    await fs.writeFile(
+      path.join(outputDir, 'pool-specs.json'),
+      JSON.stringify(poolData, null, 2),
+      'utf-8'
+    );
+    
     return res.status(200).json({
-      message: 'Images processed',
-      results,
-      fromCache: false,
+      message: 'Pool specs scraped successfully',
+      data: poolData,
+      fromCache: false
     });
+
   } catch (error) {
     console.error('API error:', error);
     return res.status(500).json({
       error: 'Internal server error',
-      details: error instanceof Error ? error.message : 'Unknown error',
+      details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 }
