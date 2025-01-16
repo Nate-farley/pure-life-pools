@@ -31,7 +31,6 @@ import { useRouter } from 'next/navigation';
 const videos = [
   '/assets/videos/latham/latham-marketing-video-3.mp4',
   '/assets/videos/latham/latham-marketing-video-1.mp4',
-
   '/assets/videos/latham/latham-marketing-video-4.mp4',
   '/assets/videos/latham/latham-marketing-video-3.mp4',
 ];
@@ -234,10 +233,24 @@ const Home = () => {
       }}
     >
       <Head>
-        <title>Pure Life</title>
-        <meta name="description" content="Pool, Pavers, Hardscaping and Ponds" />
+        <title>Pure Life Pool & Pavers | +1-321-831-3115</title>
+        <meta name="description" content="We can upgrade your home with gorgeous elements like fiber glass pools, patios, koi fish ponds, pergolas, artificial turf, landscape & lighting." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://purelifepools.com/" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Pure Life Pool & Pavers | +1-321-831-3115" />
+        <meta property="og:description" content="We can upgrade your home with gorgeous elements like fiber glass pools, patios, koi fish ponds, pergolas, artificial turf, landscape & lighting." />
+        <meta property="og:image" content="http://purelifedesigns.co/wp-content/uploads/2024/03/pool-hardscape-683x1024.jpeg" />
+        <meta property="og:url" content="https://purelifepools.com/" />
+        
+        {/* Article Modified Time */}
+        <meta property="article:modified_time" content="2024-05-06T21:53:36+00:00" />
       </Head>
 
       <NavBar />
