@@ -208,9 +208,9 @@ const PoolCard = memo(({ pool }) => {
     .replace(/\./g, '-');
   };
 
-  console.log(`key: `, getSpecsKey(pool.name))
+
   const poolSpecs = specs?.data?.[getSpecsKey(pool.name)];
-console.log(specs)
+
 const [showSpecs, setShowSpecs] = useState(false);
   return (
     <Box>
@@ -553,8 +553,8 @@ const ProductsPage = () => {
   return (
     <Box sx={{ flex: 1 }}>
       <NextSeo
-        title="Premium Fiberglass Pools & Liners Palm Bay FL | Pure Life Pools"
-        description="Explore our collection of premium fiberglass pools, pool covers, and vinyl liners in Palm Bay, Florida and Brevard County. Custom pool installations with industry-leading warranties."
+        title="Premium Fiberglass Pools & Liners Palm Bay FL"
+        description="Explore our collection of premium fiberglass pools, pool covers, and vinyl liners in Palm Bay, Florida, Melbourne and Titusville. Custom pool installations with industry-leading warranties for Brevard County."
         openGraph={{
           type: 'website',
           locale: 'en_US',
@@ -568,7 +568,7 @@ const ProductsPage = () => {
         additionalMetaTags={[
           {
             name: 'keywords',
-            content: 'fiberglass pools, swimming pools, pool covers, vinyl liners, Palm Bay, Florida, Brevard County, pool installation, outdoor kitchens, patios, fire pits, pergolas, artificial turf, landscape'
+            content: 'fiberglass pools, Melbourne, Titusville, swimming pools, pool covers, vinyl liners, Palm Bay, Florida, Brevard County, pool installation, outdoor kitchens, patios, fire pits, pergolas, artificial turf, landscape'
           },
           {
             property: 'article:modified_time',

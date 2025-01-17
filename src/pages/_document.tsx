@@ -4,11 +4,11 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Favicon and App Icons */}
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        {/* Basic Favicon */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
-        {/* PNG icons for different sizes - using same logo */}
+        {/* PNG Icons for modern browsers */}
         <link
           rel="icon"
           type="image/png"
@@ -21,13 +21,13 @@ export default function Document() {
           sizes="16x16"
           href="/assets/images/plpLogo.png"
         />
-
-        {/* Apple Touch Icons - using same logo */}
         <link
-          rel="apple-touch-icon"
-          sizes="180x180"
+          rel="icon"
+          type="image/png"
+          sizes="48x48"
           href="/assets/images/plpLogo.png"
         />
+
         <link
           rel="apple-touch-icon"
           sizes="152x152"
@@ -38,43 +38,70 @@ export default function Document() {
           sizes="120x120"
           href="/assets/images/plpLogo.png"
         />
-
-        {/* Android/Chrome */}
-        <meta name="application-name" content="Pure Life Pools" />
-
-        {/* Safari */}
         <link
-          rel="mask-icon"
+          rel="apple-touch-icon"
+          sizes="76x76"
           href="/assets/images/plpLogo.png"
-          color="#5bbad5"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="60x60"
+          href="/assets/images/plpLogo.png"
         />
 
+        {/* Safari Pinned Tab */}
+        <link
+          rel="mask-icon"
+          href="/icons/safari-pinned-tab.svg"
+          color="#133240"
+        />
+
+<link rel="icon" type="image/png" href="/assets/images/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
+<link rel="shortcut icon" href="/assets/images/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+
         {/* Microsoft */}
+        <meta name="msapplication-TileColor" content="#133240" />
         <meta
           name="msapplication-TileImage"
           content="/assets/images/plpLogo.png"
         />
-        <meta name="msapplication-TileColor" content="#ffffff" />
+        <meta
+          name="msapplication-square70x70logo"
+          content="/assets/images/plpLogo.png"
+        />
+        <meta
+          name="msapplication-square150x150logo"
+          content="/assets/images/plpLogo.png"
+        />
+        <meta
+          name="msapplication-wide310x150logo"
+          content="/assets/images/plpLogo.png"
+        />
+        <meta
+          name="msapplication-square310x310logo"
+          content="/assets/images/plpLogo.png"
+        />
 
-        {/* Theme Colors */}
-        <meta name="theme-color" content="#ffffff" />
-
-        {/* App name */}
-        <meta name="apple-mobile-web-app-title" content="Pure Life Pools" />
-
-        {/* Web App Manifest */}
+        {/* PWA Manifest */}
         <link rel="manifest" href="/manifest.json" />
 
-        {/* Theme Color */}
+        {/* Theme Colors */}
         <meta name="theme-color" content="#133240" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
 
         {/* Structured Data */}
         <script type="application/ld+json">
           {`{
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
-            "name": "Pure Life Pools",
-            "image": "https://www.purelifepools.com/assets/images/plpLogo.png,
+            "name": "Pure Life Pools | +1-321-831-3115",
+            "image": "https://www.purelifepools.com/assets/images/plpLogo.png",
             "telephone": "+1-321-831-3115",
             "email": "info@purelifepools.com",
             "address": {
@@ -111,7 +138,7 @@ export default function Document() {
               "opens": "10:00",
               "closes": "17:00"
             },
-            "description": "Premier fiberglass pool installation in Palm Bay and Melbourne Florida and Brevard County. Custom pool designs, professional installation, and financing options available.",
+            "description": "Premier fiberglass pool installation in Palm Bay, Melbourne and Titusville Florida. Custom pool designs, professional installation, and financing options available for Brevard County.",
             "priceRange": "$$",
             "sameAs": [
               "https://www.facebook.com/people/Pure-Life-Pools/61568311550769/"

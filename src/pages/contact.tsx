@@ -324,15 +324,15 @@ const ContactPage: React.FC = () => {
   return (
     <Box style={{ flex: 1 }}>
       <NextSeo
-      title="Contact Pure Life Pools | Fiberglass Pool Installation Palm Bay FL"
+      title="Contact Pure Life Pools"
       description="Get expert fiberglass pool installation in Palm Bay, FL and Brevard County. Request a free consultation for custom pool designs, installation, and financing. Visit our showroom at 105 Ring Avenue NE or call (321) 831-3115."
       canonical="https://purelifepools.com/contact"
       openGraph={{
-        title: 'Contact Pure Life Pools | Fiberglass Pool Installation Palm Bay FL',
+        title: 'Contact Pure Life Pools',
         description: 'Get expert fiberglass pool installation in Palm Bay, FL and Brevard County. Request a free consultation for custom pool designs, installation, and financing.',
         type: 'website',
         locale: 'en_US',
-        siteName: 'Pure Life Pools'
+        siteName: "Pure Life Pools  | +1-321-831-3115"
       }}
       additionalMetaTags={[
         {
@@ -341,60 +341,6 @@ const ContactPage: React.FC = () => {
         }
       ]}
     />
-    <Head>
-      <script type="application/ld+json">
-        {JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'ContactPage',
-          description: 'Contact Pure Life Pools for expert fiberglass pool installation in Palm Bay, FL and Brevard County',
-          provider: {
-            '@type': 'LocalBusiness',
-            name: 'Pure Life Pools',
-            description: 'Premier fiberglass pool installer in Palm Bay, Florida and Brevard County',
-            address: {
-              '@type': 'PostalAddress',
-              streetAddress: '105 Ring Avenue NE',
-              addressLocality: 'Palm Bay',
-              addressRegion: 'FL',
-              postalCode: '32907',
-              addressCountry: 'US'
-            },
-            geo: {
-              '@type': 'GeoCoordinates',
-              latitude: '28.0345',
-              longitude: '-80.5887'
-            },
-            telephone: '(321) 831-3115',
-            email: 'info@purelifepools.com',
-            openingHoursSpecification: {
-              '@type': 'OpeningHoursSpecification',
-              dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-              opens: '10:00',
-              closes: '17:00'
-            },
-            sameAs: []
-          },
-          mainEntity: {
-            '@type': 'WebForm',
-            name: 'Pool Consultation Request Form',
-            description: 'Request a consultation for fiberglass pool installation in Palm Bay'
-          },
-          review: testimonials.map(testimonial => ({
-            '@type': 'Review',
-            reviewRating: {
-              '@type': 'Rating',
-              ratingValue: testimonial.rating,
-              bestRating: '5'
-            },
-            author: {
-              '@type': 'Person',
-              name: testimonial.name
-            },
-            reviewBody: testimonial.review
-          }))
-        })}
-      </script>
-    </Head>
       <NavBar />
 
       <Container maxWidth="lg" sx={{ py: 8, mt: 6 }}>

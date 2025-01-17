@@ -40,7 +40,7 @@ const VideoPlayer = ({ src, isActive, onEnded, index }) => {
 
   useEffect(() => {
     const video = videoRef.current;
-    
+
     if (!video) return;
 
     const playVideo = async () => {
@@ -87,16 +87,16 @@ const VideoPlayer = ({ src, isActive, onEnded, index }) => {
         <source src={src} type="video/mp4" />
       </StyledVideo>
       {error && (
-        <Box 
-          sx={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            width: '100%', 
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
             textAlign: 'center',
             bgcolor: 'rgba(0,0,0,0.5)',
             color: 'white',
-            p: 2
+            p: 2,
           }}
         >
           Error loading video: {error}
@@ -105,7 +105,6 @@ const VideoPlayer = ({ src, isActive, onEnded, index }) => {
     </>
   );
 };
-
 
 // Marketing videos
 const videos = [
@@ -317,249 +316,229 @@ const Home = () => {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        width: '100vw',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-      }}
-    >
-      <Head>
-        <title>Pure Life Pool & Pavers | +1-321-831-3115</title>
-        <meta
-          name="description"
-          content="We can upgrade your home with gorgeous elements like fiber glass pools, patios, koi fish ponds, pergolas, artificial turf, landscape & lighting."
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://purelifepools.com/" />
-
-        {/* Open Graph Meta Tags */}
-        <meta
-          property="og:title"
-          content="Pure Life Pool & Pavers | +1-321-831-3115"
-        />
-        <meta
-          property="og:description"
-          content="We can upgrade your home with gorgeous elements like fiber glass pools, patios, koi fish ponds, pergolas, artificial turf, landscape & lighting."
-        />
-
-        <meta property="og:url" content="https://purelifepools.com/" />
-
-        {/* Article Modified Time */}
-        <meta
-          property="article:modified_time"
-          content="2024-05-06T21:53:36+00:00"
-        />
-      </Head>
-
-      <NavBar />
-      {/* Video Carousel Section */}
+    <>
+      <NextSeo
+        title="Custom Fiberglass Pools in Palm Bay, Melbourne and Titusville Florida"
+        description="Specializing in fiber gass pools in Brevard county and surrounding areas: Palm Bay, Melbourne and Titusville."
+      />
       <Box
         sx={{
+          minHeight: '100vh',
+          width: '100vw',
+          display: 'flex',
+          flexDirection: 'column',
           position: 'relative',
-          width: isMobile ? 'auto' : '100%',
-          height: isMobile ? 'auto' : '100vh',
-          mb: 2,
-          overflow: 'hidden',
         }}
       >
-        <Paper
-          elevation={0}
+        <NavBar />
+        {/* Video Carousel Section */}
+        <Box
           sx={{
-            borderRadius: 0,
             position: 'relative',
-            backgroundColor: 'background.paper',
+            width: isMobile ? 'auto' : '100%',
+            height: isMobile ? 'auto' : '100vh',
+            mb: 2,
             overflow: 'hidden',
-            height: '100%',
           }}
         >
-          <SwipeableViews
-            axis="x"
-            index={activeStep}
-            onChangeIndex={handleStepChange}
-            enableMouseEvents
+          <Paper
+            elevation={0}
+            sx={{
+              borderRadius: 0,
+              position: 'relative',
+              backgroundColor: 'background.paper',
+              overflow: 'hidden',
+              height: '100%',
+            }}
           >
-            {videos.map((video, index) => (
-              <Box
-                key={index}
-                sx={{
-                  position: 'relative',
-                  width: isMobile ? 'auto' : '100vw',
-                  height: isMobile ? 'auto' : '100vh',
-                  overflow: 'hidden',
-                }}
-              >
-             <VideoPlayer
-        src={video}
-        isActive={index === activeStep}
-        onEnded={handleVideoEnd}
-        index={index}
-      />
+            <SwipeableViews
+              axis="x"
+              index={activeStep}
+              onChangeIndex={handleStepChange}
+              enableMouseEvents
+            >
+              {videos.map((video, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    position: 'relative',
+                    width: isMobile ? 'auto' : '100vw',
+                    height: isMobile ? 'auto' : '100vh',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <VideoPlayer
+                    src={video}
+                    isActive={index === activeStep}
+                    onEnded={handleVideoEnd}
+                    index={index}
+                  />
 
-                <TextContainer>
-                  <Stack spacing={1} sx={{ maxWidth: '600px' }}>
-                    {/* Headline */}
-                    <AnimatedTypography
-                      variant="h4"
-                      sx={{
-                        fontWeight: 600,
-                        letterSpacing: '0.02em',
-                        animationDelay: '0.2s',
-                        fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
-                        fontFamily: 'var(--font-primary)',
-                      }}
-                    >
-                      Welcome to Pure Life
-                    </AnimatedTypography>
-
-                    {/* Divider line */}
-                    <Box
-                      sx={{
-                        width: '60px',
-                        height: '3px',
-                        bgcolor: '#5C83D6', // TODO: Move brand color to mui_theme
-                        mb: 2,
-                        animation: 'expandWidth 0.8s forwards',
-                        '@keyframes expandWidth': {
-                          from: { width: '0px' },
-                          to: { width: '60px' },
-                        },
-                      }}
-                    />
-
-                    {/* Subtext */}
-                    {!isMobile && (
+                  <TextContainer>
+                    <Stack spacing={1} sx={{ maxWidth: '600px' }}>
+                      {/* Headline */}
                       <AnimatedTypography
-                        variant="subtitle1"
+                        variant="h4"
                         sx={{
-                          fontWeight: 300,
-                          opacity: 0.9,
-                          animationDelay: '0.4s',
-                          lineHeight: 1.6,
-                          fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                          fontWeight: 600,
+                          letterSpacing: '0.02em',
+                          animationDelay: '0.2s',
+                          fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+                          fontFamily: 'var(--font-primary)',
                         }}
                       >
-                        Transform your outdoor space into a stunning oasis with
-                        our custom pool designs and expert craftsmanship
+                        Welcome to Pure Life
                       </AnimatedTypography>
-                    )}
-                  </Stack>
 
-                  {/* Pagination - positioned relative to the TextContainer */}
-                  <PaginationContainer>
-                    {videos.map((_, i) => (
-                      <PaginationLine
-                        key={i}
-                        isActive={i === activeStep}
-                        onClick={() => handleStepChange(i)}
+                      {/* Divider line */}
+                      <Box
                         sx={{
-                          cursor: 'pointer',
-                          '&:hover': {
-                            opacity: 0.8,
+                          width: '60px',
+                          height: '3px',
+                          bgcolor: '#5C83D6', // TODO: Move brand color to mui_theme
+                          mb: 2,
+                          animation: 'expandWidth 0.8s forwards',
+                          '@keyframes expandWidth': {
+                            from: { width: '0px' },
+                            to: { width: '60px' },
                           },
                         }}
                       />
-                    ))}
-                  </PaginationContainer>
-                </TextContainer>
-              </Box>
-            ))}
-          </SwipeableViews>
-        </Paper>
-      </Box>
 
-      {/* Photo Gallery Section */}
-      <Grid container spacing={2} sx={{ px: 2 }}>
-        {services.map((service, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <ImageWrapper onClick={() => handleOnClickService(service)}>
-              <StyledImage
-                src={service.image}
-                alt={`${service.title} Image`}
-                fill
-                sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 25vw"
-                priority
-                fetchPriority="high"
-                style={{ objectFit: 'cover' }}
-              />
-              <ImageOverlay>
-                <Typography
-                  color="white"
-                  variant="h6"
-                  align="center"
-                  sx={{
-                    fontWeight: 600,
-                    textDecoration: 'underline',
-                    textUnderlineOffset: 10,
-                    px: 2,
-                  }}
-                >
-                  {service.title}
-                </Typography>
-              </ImageOverlay>
-              <HoverOverlay className="overlay">
-                <Typography
-                  variant="body2"
-                  color="text.primary"
-                  sx={{
-                    fontWeight: 600,
-                    mb: 1,
-                  }}
-                >
-                  {service.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {service.description}
-                </Typography>
-              </HoverOverlay>
-            </ImageWrapper>
-          </Grid>
-        ))}
-      </Grid>
+                      {/* Subtext */}
+                      {!isMobile && (
+                        <AnimatedTypography
+                          variant="subtitle1"
+                          sx={{
+                            fontWeight: 300,
+                            opacity: 0.9,
+                            animationDelay: '0.4s',
+                            lineHeight: 1.6,
+                            fontSize: {
+                              xs: '0.9rem',
+                              sm: '1rem',
+                              md: '1.1rem',
+                            },
+                          }}
+                        >
+                          Transform your outdoor space into a stunning oasis
+                          with our custom pool designs and expert craftsmanship
+                        </AnimatedTypography>
+                      )}
+                    </Stack>
 
-      <FoundedSection />
+                    {/* Pagination - positioned relative to the TextContainer */}
+                    <PaginationContainer>
+                      {videos.map((_, i) => (
+                        <PaginationLine
+                          key={i}
+                          isActive={i === activeStep}
+                          onClick={() => handleStepChange(i)}
+                          sx={{
+                            cursor: 'pointer',
+                            '&:hover': {
+                              opacity: 0.8,
+                            },
+                          }}
+                        />
+                      ))}
+                    </PaginationContainer>
+                  </TextContainer>
+                </Box>
+              ))}
+            </SwipeableViews>
+          </Paper>
+        </Box>
 
-      <BlockSection />
+        {/* Photo Gallery Section */}
+        <Grid container spacing={2} sx={{ px: 2 }}>
+          {services.map((service, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <ImageWrapper onClick={() => handleOnClickService(service)}>
+                <StyledImage
+                  src={service.image}
+                  alt={`${service.title} Image`}
+                  fill
+                  sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 25vw"
+                  priority
+                  fetchPriority="high"
+                  style={{ objectFit: 'cover' }}
+                />
+                <ImageOverlay>
+                  <Typography
+                    color="white"
+                    variant="h6"
+                    align="center"
+                    sx={{
+                      fontWeight: 600,
+                      textDecoration: 'underline',
+                      textUnderlineOffset: 10,
+                      px: 2,
+                    }}
+                  >
+                    {service.title}
+                  </Typography>
+                </ImageOverlay>
+                <HoverOverlay className="overlay">
+                  <Typography
+                    variant="body2"
+                    color="text.primary"
+                    sx={{
+                      fontWeight: 600,
+                      mb: 1,
+                    }}
+                  >
+                    {service.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {service.description}
+                  </Typography>
+                </HoverOverlay>
+              </ImageWrapper>
+            </Grid>
+          ))}
+        </Grid>
 
-      <Box
-        sx={{
-          my: 4,
-          mb: 12,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-        }}
-      >
-        <Typography
-          variant="body1"
+        <FoundedSection />
+
+        <BlockSection />
+
+        <Box
           sx={{
-            maxWidth: '800px',
-            mx: 'auto',
-            color: 'text.secondary',
-            lineHeight: 1.8,
-            fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+            my: 4,
+            mb: 12,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
           }}
         >
-          As Central Florida's premier pool and outdoor living specialist since
-          2015, Pure Life Pools transforms ordinary backyards into extraordinary
-          retreats. Our licensed professionals combine innovative design with
-          meticulous craftsmanship to create stunning outdoor spaces that
-          perfectly match your lifestyle and exceed your expectations.
-        </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              maxWidth: '800px',
+              mx: 'auto',
+              color: 'text.secondary',
+              lineHeight: 1.8,
+              fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+            }}
+          >
+            As Central Florida's premier pool and outdoor living specialist
+            since 2015, Pure Life Pools transforms ordinary backyards into
+            extraordinary retreats. Our licensed professionals combine
+            innovative design with meticulous craftsmanship to create stunning
+            outdoor spaces that perfectly match your lifestyle and exceed your
+            expectations.
+          </Typography>
+        </Box>
+
+        <PoolProductsSection router={router} />
+
+        <TestimonialsSection />
+
+        <Footer />
       </Box>
-
-      <PoolProductsSection router={router} />
-
-      <TestimonialsSection />
-
-      <Footer />
-    </Box>
+    </>
   );
 };
 
