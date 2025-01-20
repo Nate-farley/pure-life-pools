@@ -28,6 +28,7 @@ import NavBar from '@/containers/Navbar/navbar';
 import PoolProductsSection from '@/containers/PoolProductGrid/PoolProductSection';
 import FoundedSection from '@/containers/FoundedSection';
 import { useRouter } from 'next/navigation';
+import { NextSeo } from 'next-seo';
 
 const handleVideoError = (e) => {
   console.error('Video loading error:', e.target.error);
@@ -319,7 +320,7 @@ const Home = () => {
     <>
       <NextSeo
         title="Custom Fiberglass Pools in Palm Bay, Melbourne and Titusville Florida"
-        description="Specializing in fiber gass pools in Brevard county and surrounding areas: Palm Bay, Melbourne and Titusville."
+        description="Pure Life Pools specializes in transforming outdoor spaces in Palm Bay, Melbourne, and Titusville, Florida. Our services include custom fiberglass pool installation, pond creation, and hardscaping. Enhance your home's beauty and value with our expert craftsmanship and attention to detail."
       />
       <Box
         sx={{
