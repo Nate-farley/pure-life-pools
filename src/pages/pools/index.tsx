@@ -562,7 +562,7 @@ const ProductsPage = () => {
           title: 'Premium Fiberglass Pools & Liners Palm Bay FL | Pure Life Pools',
           description: 'Explore our collection of premium fiberglass pools, pool covers, and vinyl liners in Palm Bay, Florida and Brevard County. Custom pool installations with industry-leading warranties.',
           images: [
-            { url: '/assets/images/products-page/product-page-image-one.jpg' }
+            { url: 'https://purelifepools.com/assets/images/favicon-96x96.png' }
           ],
         }}
         additionalMetaTags={[

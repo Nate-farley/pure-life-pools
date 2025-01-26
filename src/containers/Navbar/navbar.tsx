@@ -25,7 +25,7 @@ export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   // TODO: Add pages for reviews, contact
-  const menuItems = ['Home', 'Pools', 'Financing', "Contact Us"/*, 'Review'*/];
+  const menuItems = ['Home', 'Pools', 'Financing', "Contact Us", "Our Company", "Gallery"/*, 'Review'*/];
   const router = useRouter()
 
   const onClickNavbarItem = (page: string) => {
@@ -44,6 +44,11 @@ export default function NavBar() {
         break;
       case 'contact us':
         router.push('/contact');
+        break;
+      case 'our company':
+        router.push('/about')
+      case 'gallery':
+        router.push('/gallery')
         break;
       default:
         router.push('/');

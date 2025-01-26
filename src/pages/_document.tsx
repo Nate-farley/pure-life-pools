@@ -56,11 +56,24 @@ export default function Document() {
           color="#133240"
         />
 
-<link rel="icon" type="image/png" href="/assets/images/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
-<link rel="shortcut icon" href="/assets/images/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
+        <link
+          rel="icon"
+          type="image/png"
+          href="/assets/images/favicon-96x96.png"
+          sizes="96x96"
+        />
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href="/assets/images/favicon.svg"
+        />
+        <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/assets/images/apple-touch-icon.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
 
         {/* Microsoft */}
         <meta name="msapplication-TileColor" content="#133240" />
@@ -98,10 +111,32 @@ export default function Document() {
         {/* Structured Data */}
         <script type="application/ld+json">
           {`{
+        "@context": "https://schema.org",
+        "@type": "Organization",
+            "name": "Pure Life Pools | +1-321-831-3115",
+      "url": "https://www.purelifepools.com",
+      "logo": "https://www.purelifepools.com/assets/images/web-app-manifest-512x512.png",
+           "image": "https://www.purelifepools.com/assets/images/web-app-manifest-512x512.png",
+            "telephone": "+1-321-831-3115",
+            "email": "info@purelifepools.com",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "105 Ring Avenue NE",
+              "addressLocality": "Palm Bay",
+              "addressRegion": "FL",
+              "postalCode": "32907",
+              "addressCountry": "US"
+            },
+             "description": "Premier fiberglass pool installation in Palm Bay, Melbourne and Titusville Florida. Custom pool designs, professional installation, and financing options available for Brevard County.",
+    }`}
+        </script>
+
+        <script type="application/ld+json">
+          {`{
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
             "name": "Pure Life Pools | +1-321-831-3115",
-            "image": "https://www.purelifepools.com/assets/images/plpLogo.png",
+            "image": "https://www.purelifepools.com/assets/images/web-app-manifest-512x512.png",
             "telephone": "+1-321-831-3115",
             "email": "info@purelifepools.com",
             "address": {
@@ -139,7 +174,6 @@ export default function Document() {
               "closes": "17:00"
             },
             "description": "Premier fiberglass pool installation in Palm Bay, Melbourne and Titusville Florida. Custom pool designs, professional installation, and financing options available for Brevard County.",
-            "priceRange": "$$",
             "sameAs": [
               "https://www.facebook.com/people/Pure-Life-Pools/61568311550769/"
             ]

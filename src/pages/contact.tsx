@@ -331,7 +331,11 @@ const ContactPage: React.FC = () => {
         title: 'Contact Pure Life Pools',
         description: 'Get expert fiberglass pool installation in Palm Bay, FL and Brevard County. Request a free consultation for custom pool designs, installation, and financing.',
         type: 'website',
-        locale: 'en_US',
+        
+        locale: 'en_US',      
+        images: [
+          { url: 'https://purelifepools.com/assets/images/favicon-96x96.png' }
+        ],
         siteName: "Pure Life Pools  | +1-321-831-3115"
       }}
       additionalMetaTags={[

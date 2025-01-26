@@ -103,14 +103,14 @@ const AboutPage: React.FC = () => {
   return (
     <section className="relative">
       {/* Fixed Background with Glass Effect */}
-      <div className="fixed inset-0 -z-10 overflow-hidden">
+      {/* <div className="fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-95 to-white" />
         <div className="absolute inset-0">
           <div className="absolute top-[10%] left-[2%] w-[40rem] h-[40rem] rounded-full bg-blue-200/50 blur-3xl" />
           <div className="absolute bottom-[20%] right-[1%] w-[45rem] h-[45rem] rounded-full bg-teal-200/25 blur-3xl" style={{ animationDelay: '2s' }} />
           <div className="absolute top-[40%] right-[30%] w-[35rem] h-[35rem] rounded-full bg-purple-200/50 blur-3xl " style={{ animationDelay: '4s' }} />
         </div>
-      </div>
+      </div> */}
 
       <NavBar />
       
@@ -124,9 +124,9 @@ const AboutPage: React.FC = () => {
                 sx={{
                   height: '100%',
                   borderRadius: '24px',
-                  p: 4,
-                  background: 'transparent',
-                  backgroundColor: 'transparent',
+            
+
+                  backgroundColor: 'white',
                   backdropFilter: 'blur(8px)',
                   border: '3px solid rgba(255, 255, 255, 1)',
                   boxShadow: 'none',
@@ -137,33 +137,45 @@ const AboutPage: React.FC = () => {
                   },
                 }}
               >
-                <div style={{ color: '#133240' }} className="pb-10 font-bold">
-                  How It Started
-                </div>
-                <h1 className="text-5xl font-bold leading-tight">
-                  Our Dream is to
-                  <br />
-                  Provide you with
-                  <br />
-                  <Typography
-                    variant="h3"
-                    fontWeight="bold"
-                    sx={{ color: '#133240' }}
-                  >
-                    Your Dream Pool Experience
-                  </Typography>
-                </h1>
-                <p className="pt-10 text-gray-600 leading-relaxed">
-                  Kawruh was founded by Robert Anderson, a passionate lifelong
-                  learner, and Maria Sanchez, a visionary educator. Their shared
-                  dream was to create a digital haven of knowledge accessible to
-                  all. United by their belief in the transformational power of
-                  education, they embarked on a journey to build 'Kawruh.' With
-                  relentless dedication, they gathered a team of experts and
-                  launched this innovative platform, creating a global community
-                  of eager learners, all connected by the desire to explore,
-                  learn, and grow
-                </p>
+           
+                <div className="max-w-4xl mx-auto px-4 py-12">
+              
+      <h1 className="text-4xl font-bold text-plp-blue mb-8">Welcome to Pure Life Pools</h1>
+      
+      <div className="space-y-8">
+        <p className="text-gray-600 leading-relaxed">
+          At Pure Life Pools, we're Brevard County's premier fiberglass pool installation experts, serving Palm Bay, Melbourne, Titusville, and surrounding areas since our founding. Our commitment to excellence has made us the trusted choice for homeowners looking to transform their backyards into personal paradise retreats.
+        </p>
+
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Expertise</h2>
+          <p className="text-gray-600 leading-relaxed">
+            We specialize in custom fiberglass pool designs and professional installations that perfectly match Florida's unique landscape and lifestyle. Our team brings decades of combined experience in pool construction, ensuring every project meets the highest standards of quality and durability.
+          </p>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Local Focus, Superior Service</h2>
+          <p className="text-gray-600 leading-relaxed">
+            Based in Palm Bay, Florida, we're deeply rooted in the Brevard County community. Our local expertise means we understand the specific requirements and challenges of pool installation in Florida's climate and soil conditions. We serve customers within a 50-mile radius, covering all major areas of Brevard County.
+          </p>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Approach</h2>
+          <p className="text-gray-600 leading-relaxed mb-4">
+            We believe in creating more than just pools – we're crafting lifestyle experiences for families. Every project begins with a thorough consultation to understand your vision, space, and budget.
+          </p>
+          <p className="text-gray-600 leading-relaxed">Our process includes:</p>
+          <ul className="list-disc list-inside text-gray-600 mt-2 space-y-2 pl-4">
+            <li>Custom design planning tailored to your property</li>
+            <li>Professional installation by certified experts</li>
+            <li>Comprehensive project management from start to finish</li>
+            <li>Flexible financing options to make your dream pool affordable</li>
+          </ul>
+        </div>
+      </div>
+    </div>
               </Paper>
             </div>
 

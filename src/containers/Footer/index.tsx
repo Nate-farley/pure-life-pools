@@ -22,18 +22,19 @@ const Footer = () => {
   const menuItems = {
     "Quick Links": ["Google Maps"],
     Products: ['Pools'],
-    Support: ['FAQ', 'Contact', 'Location'],
+    Support: ['FAQ', 'Contact', 'Location', 'Privacy Policy'],
     Company: ['About', 'Leave a Review'],
   };
 
   const getHref = item => {
     switch (item.toLowerCase()) {
       case "location":
-        router.push('https://maps.app.goo.gl/md8GxJmSxDZSJ7Kq9')
-        break;
       case "leave a review":
         router.push('https://maps.app.goo.gl/md8GxJmSxDZSJ7Kq9')
         break; 
+      case "privacy policy":
+        router.push('/privacy_policy')
+        break;
       default:
         return item;
     }
@@ -53,7 +54,7 @@ const Footer = () => {
 </Typography>  
 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
   <strong>Hours:</strong> Monday - Friday: 10AM - 5PM
-</Typography>
+</Typography>''
 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
   <strong>Service Area:</strong> Palm Bay, Melbourne, Vero Beach, and surrounding Brevard County
 </Typography>

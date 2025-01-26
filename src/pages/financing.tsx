@@ -108,7 +108,7 @@ const Financing = () => {
           title: 'Fiberglass Pool Financing Palm Bay FL | Pure Life Pools',
           description: 'Expert fiberglass pool financing in Palm Bay, FL. Flexible payment plans from 4.99% APR through HFS Financial, Lyon Financial & LightStream.',
           images: [
-            { url: '/assets/images/financing/financing-image-three.jpg' }
+            { url: 'https://purelifepools.com/assets/images/favicon-96x96.png' }
           ],
           type: 'website',
           locale: 'en_US',
@@ -122,45 +122,7 @@ const Financing = () => {
         ]}
       />
  <Head>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Service',
-            name: 'Fiberglass Pool Financing Services',
-            provider: {
-              '@type': 'LocalBusiness',
-              name: 'Pure Life Pools',
-              description: 'Premier fiberglass pool installer in Palm Bay, Florida offering flexible financing options',
-              areaServed: {
-                '@type': 'City',
-                name: 'Palm Bay',
-                '@context': 'Florida'
-              }
-            },
-            hasOfferCatalog: {
-              '@type': 'OfferCatalog',
-              name: 'Fiberglass Pool Financing Options',
-              itemListElement: financingOptions.map((option, index) => ({
-                '@type': 'Offer',
-                itemOffered: {
-                  '@type': 'FinancialProduct',
-                  name: option.name,
-                  description: option.description,
-                  provider: {
-                    '@type': 'Organization',
-                    name: option.name
-                  }
-                },
-                areaServed: {
-                  '@type': 'City',
-                  name: 'Palm Bay',
-                  '@context': 'Florida'
-                },
-                category: 'Fiberglass Pool Financing'
-              }))
-            }
-          })}
-        </script>
+   
         
         <title>Fiberglass Pool Financing Palm Bay FL | Pure Life Pools</title>
         <meta

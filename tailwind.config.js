@@ -7,7 +7,11 @@ module.exports = {
       "./src/containers/**/*.{js,ts,jsx,tsx,mdx}",
     ],
     theme: {
-      extend: {},
+      extend: {
+        colors: {
+          'plp-blue': '#133240'  // plp = Pure Life Pools
+        }
+      }
     },
     plugins: [],
   }
