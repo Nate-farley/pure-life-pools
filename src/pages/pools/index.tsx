@@ -553,17 +553,22 @@ const ProductsPage = () => {
   return (
     <Box sx={{ flex: 1 }}>
       <NextSeo
-        title="Premium Fiberglass Pools & Liners Palm Bay FL"
+        title="Premium fiberglass Pools in Melbourne, FL"
         description="Explore our collection of premium fiberglass pools, pool covers, and vinyl liners in Palm Bay, Florida, Melbourne and Titusville. Custom pool installations with industry-leading warranties for Brevard County."
         openGraph={{
           type: 'website',
-          locale: 'en_US',
-          url: "https://purelifepools.com/pools",
-          title: 'Premium Fiberglass Pools & Liners Palm Bay FL | Pure Life Pools',
-          description: 'Explore our collection of premium fiberglass pools, pool covers, and vinyl liners in Palm Bay, Florida and Brevard County. Custom pool installations with industry-leading warranties.',
+          url: 'https://purelifepools.com',
+          title: "Premium fiberglass Pools in Melbourne, FL",
+          description: "Explore our collection of premium fiberglass pools, pool covers, and vinyl liners in Palm Bay, Florida, Melbourne and Titusville. Custom pool installations with industry-leading warranties for Brevard County.",
           images: [
-            { url: 'https://purelifepools.com/assets/images/favicon-96x96.png' }
+            {
+              url: 'https://purelifepools.com/assets/images/logo96x96.png',
+              width: 96,
+              height: 96,
+              alt: 'Pure Life Pools Logo',
+            }
           ],
+          siteName: "Pure Life Pools | +1-321-831-3115",
         }}
         additionalMetaTags={[
           {

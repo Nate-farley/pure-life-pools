@@ -1,13 +1,19 @@
 // @ts-nocheck
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NavBar from '@/containers/Navbar/navbar';
-import { Typography } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
+import { NextSeo } from 'next-seo';
+import Footer from '@/containers/Footer';
 
 const SwipeGallery = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   const images = [
     { 
@@ -160,7 +166,7 @@ const SwipeGallery = () => {
       title: "Perfect Balance",
       description: "Harmonious integration of form and function."
     }
-   ];
+  ];
 
   const dragConstraints = { left: -100, right: 100 };
 
@@ -174,53 +180,125 @@ const SwipeGallery = () => {
     }
   };
 
-  return (
-    <>
-        <NextSeo
-            title="Pure Life Pools | Fiberglass pools in Indian River County"
-            description="Pictures and Videos of design and past installs."
-            canonical="https://purelifepools.com/gallery"
-            openGraph={{
-              title: "Pure Life Pools | Fiberglass pools in Indian River County",
-              description: "Pictures and Videos of design and past installs.",
-              images: [
-                { url: 'https://purelifepools.com/assets/images/favicon-96x96.png' }
-              ],
-              type: 'website',
-              locale: 'en_US',
-              siteName: 'Pure Life Pools'
-            }}
-            additionalMetaTags={[
-              {
-                name: 'keywords',
-                content: 'fiberglass pool financing Palm Bay, fiberglass pool installation Florida, swimming pool loans Florida, custom fiberglass pools Palm Bay, HFS Financial, Lyon Financial, LightStream, pool financing Brevard County'
-              }
-            ]}
-          />    <NextSeo
-                  title="Fiberglass Pool Financing Palm Bay FL | Low Interest Pool Loans | Pure Life Pools"
-                  description="Expert fiberglass pool financing in Palm Bay, FL. Flexible payment plans from 4.99% APR through HFS Financial, Lyon Financial & LightStream. Finance your custom fiberglass pool installation with loans up to $500,000 and same-day approval."
-                  canonical="https://purelifepools.com/financing"
-                  openGraph={{
-                    title: 'Fiberglass Pool Financing Palm Bay FL | Pure Life Pools',
-                    description: 'Expert fiberglass pool financing in Palm Bay, FL. Flexible payment plans from 4.99% APR through HFS Financial, Lyon Financial & LightStream.',
-                    images: [
-                      { url: '/assets/images/financing/financing-image-three.jpg' }
-                    ],
-                    type: 'website',
-                    locale: 'en_US',
-                    siteName: 'Pure Life Pools'
-                  }}
-                  additionalMetaTags={[
-                    {
-                      name: 'keywords',
-                      content: 'fiberglass pool financing Palm Bay, fiberglass pool installation Florida, swimming pool loans Florida, custom fiberglass pools Palm Bay, HFS Financial, Lyon Financial, LightStream, pool financing Brevard County'
-                    }
-                  ]}
-                />
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
     
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && currentIndex < images.length - 1) {
+      setDirection(1);
+      setCurrentIndex(prev => prev + 1);
+    }
+    
+    if (isRightSwipe && currentIndex > 0) {
+      setDirection(-1);
+      setCurrentIndex(prev => prev - 1);
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
+  useEffect(() => {
+    if (isMobile && isFullscreen) {
+      const interval = setInterval(() => {
+        if (currentIndex < images.length - 1) {
+          setDirection(1);
+          setCurrentIndex(prev => prev + 1);
+        } else {
+          setDirection(-1);
+          setCurrentIndex(0);
+        }
+      }, 5000);
+
+      return () => clearInterval(interval);
+    }
+  }, [currentIndex, isMobile, isFullscreen, images.length]);
+
+  const MobileFullscreenView = () => (
+    <motion.div 
+      className="fixed inset-0 bg-black z-50"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div 
+        className="w-full h-full"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={currentIndex}
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <img 
+              src={images[currentIndex].src}
+              alt={images[currentIndex].title}
+              className="w-full h-full object-cover"
+            />
+            
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
+              <div className="absolute bottom-0 left-0 right-0 p-8">
+                <motion.h2 
+                  className="text-3xl font-bold text-white mb-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  {images[currentIndex].title}
+                </motion.h2>
+                <motion.p 
+                  className="text-white/80"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  {images[currentIndex].description}
+                </motion.p>
+              </div>
+            </div>
+
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+              {images.map((_, index) => (
+                <div
+                  key={index}
+                  className={`h-1 rounded-full transition-all duration-300 ${
+                    index === currentIndex ? 'w-8 bg-white' : 'w-1 bg-white/50'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              className="absolute top-4 right-4 text-white p-2"
+              onClick={() => setIsFullscreen(false)}
+            >
+              ✕
+            </button>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+
+  const DesktopLayout = () => (
     <div className="min-h-screen bg-white-900 flex">
-    <NavBar />
-      {/* Left side - Text */}
       <div className="w-1/2 flex items-center justify-center p-12">
         <div className="max-w-xl">
           <motion.div 
@@ -230,7 +308,6 @@ const SwipeGallery = () => {
             key={currentIndex}
             className="space-y-8"
           >
-            {/* Image counter */}
             <motion.p 
               className="text-gray-500 font-medium"
               initial={{ opacity: 0 }}
@@ -239,7 +316,6 @@ const SwipeGallery = () => {
               {String(currentIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
             </motion.p>
 
-            {/* Main title */}
             <motion.h2 
               className="text-7xl font-bold mb-4 text-plp-blue leading-tight"
               initial={{ opacity: 0, x: -50 }}
@@ -249,7 +325,6 @@ const SwipeGallery = () => {
               {images[currentIndex].title}
             </motion.h2>
 
-            {/* Divider line */}
             <motion.div 
               className="w-24 h-1 bg-blue-500"
               initial={{ width: 0 }}
@@ -257,7 +332,6 @@ const SwipeGallery = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
             />
 
-            {/* Description */}
             <motion.p 
               className="text-xl text-gray-600 leading-relaxed"
               initial={{ opacity: 0, x: -50 }}
@@ -267,7 +341,6 @@ const SwipeGallery = () => {
               {images[currentIndex].description}
             </motion.p>
 
-            {/* Additional context section */}
             <motion.div
               className="pt-8 border-t border-gray-200"
               initial={{ opacity: 0, y: 20 }}
@@ -295,7 +368,6 @@ const SwipeGallery = () => {
               </div>
             </motion.div>
 
-            {/* Navigation dots */}
             <motion.div 
               className="flex gap-2 pt-8"
               initial={{ opacity: 0 }}
@@ -317,7 +389,6 @@ const SwipeGallery = () => {
               ))}
             </motion.div>
 
-            {/* Navigation arrows */}
             <motion.div 
               className="flex justify-between items-center pt-8"
               initial={{ opacity: 0 }}
@@ -326,13 +397,17 @@ const SwipeGallery = () => {
             >
               <button 
                 onClick={() => currentIndex > 0 && setCurrentIndex(prev => prev - 1)}
-                className={`p-2 text-gray-600 hover:text-blue-500 transition-colors ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`p-2 text-gray-600 hover:text-blue-500 transition-colors ${
+                  currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
                 ← Previous
               </button>
               <button 
                 onClick={() => currentIndex < images.length - 1 && setCurrentIndex(prev => prev + 1)}
-                className={`p-2 text-gray-600 hover:text-blue-500 transition-colors ${currentIndex === images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`p-2 text-gray-600 hover:text-blue-500 transition-colors ${
+                  currentIndex === images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
                 Next →
               </button>
@@ -341,8 +416,6 @@ const SwipeGallery = () => {
         </div>
       </div>
 
-
-      {/* Right side - Swipeable Cards */}
       <div className="w-1/2 flex items-center justify-center">
         <div className="relative w-[800px] h-[800px]">
           <AnimatePresence initial={false} custom={direction}>
@@ -377,7 +450,7 @@ const SwipeGallery = () => {
                 damping: 30
               }}
             >
-              <div className="w-full h-full rounded-md overflow-hidden  relative group">
+              <div className="w-full h-full rounded-md overflow-hidden relative group">
                 <img 
                   src={images[currentIndex].src} 
                   alt={images[currentIndex].title}
@@ -386,14 +459,111 @@ const SwipeGallery = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             </motion.div>
-            
           </AnimatePresence>
-          
         </div>
-    
       </div>
-      
     </div>
+  );
+
+  const MobileLayout = () => (
+    <div className="min-h-screen bg-white-900">
+      <div className="p-4">
+        <motion.div 
+          className="relative aspect-square mb-8"
+          onClick={() => setIsFullscreen(true)}
+        >
+          <img 
+            src={images[currentIndex].src}
+            alt={images[currentIndex].title}
+            className="w-full h-full object-cover rounded-lg"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
+            <div className="absolute bottom-0 left-0 right-0 p-6">
+              <h2 className="text-2xl font-bold text-white mb-2">
+                {images[currentIndex].title}
+              </h2>
+              <p className="text-white/80 text-sm">
+                {images[currentIndex].description}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="flex justify-center gap-2 mb-8">
+          {images.map((_, index) => (
+            <div
+              key={index}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                index === currentIndex ? 'w-8 bg-blue-500' : 'w-1 bg-gray-300'
+              }`}
+              onClick={() => setCurrentIndex(index)}
+            />
+          ))}
+        </div>
+
+        <div className="space-y-6">
+          <h3 className="text-xl font-semibold text-gray-800">Key Features</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full" />
+              <span className="text-gray-600">Custom Design</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-purple-500 rounded-full" />
+              <span className="text-gray-600">Premium Quality</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-cyan-500 rounded-full" />
+              <span className="text-gray-600">Expert Installation</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-indigo-500 rounded-full" />
+              <span className="text-gray-600">Lifetime Value</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      <NextSeo
+        title="Premium Fiberglass Pools in Indian River County"
+        description="Pictures and Videos of design and past installs around Palm Bay and Melbourne, Florida"
+        canonical="https://purelifepools.com/gallery"
+        openGraph={{
+          type: 'website',
+          url: 'https://purelifepools.com',
+          title: "Premium fiberglass pools in Indian River County",
+          description: "Pictures and Videos of design and past installs around Palm Bay and Melbourne, Florida",
+          images: [
+            {
+              url: 'https://purelifepools.com/assets/images/logo96x96.png',
+              width: 96,
+              height: 96,
+              alt: 'Pure Life Pools Logo',
+            }
+          ],
+          siteName: "Pure Life Pools | +1-321-831-3115",
+        }}
+        additionalMetaTags={[
+          {
+            name: 'keywords',
+            content: 'fiberglass pool financing Palm Bay, fiberglass pool installation Florida'
+          }
+        ]}
+      />
+      
+      <NavBar />
+      
+      {isMobile ? <MobileLayout /> : <DesktopLayout />}
+      
+      <AnimatePresence>
+        {isFullscreen && isMobile && <MobileFullscreenView />}
+      </AnimatePresence>
+
+      <Footer />
     </>
   );
 };

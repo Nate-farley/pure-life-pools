@@ -47,6 +47,7 @@ export default function NavBar() {
         break;
       case 'our company':
         router.push('/about')
+        break;
       case 'gallery':
         router.push('/gallery')
         break;

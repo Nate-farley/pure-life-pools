@@ -1,13 +1,40 @@
 import React from 'react';
 import { Shield, Lock, Eye, Database, Bell, UserCheck } from 'lucide-react';
+import { NextSeo } from 'next-seo';
 
 const PrivacyPolicy = () => {
   return (
+    <>
+       <NextSeo
+      title="Privacy Policy"
+      description="Privacy Policy"
+      openGraph={{
+        type: 'website',
+        url: 'https://purelifepools.com',
+        title: 'Privacy Policy',
+        description: 'Privacy Policy',
+        images: [
+          {
+            url: 'https://purelifepools.com/assets/images/logo96x96.png',
+            width: 96,
+            height: 96,
+            alt: 'Pure Life Pools Logo',
+          }
+        ],
+        siteName: "Pure Life Pools | +1-321-831-3115",
+      }}
+      twitter={{
+        handle: '@purelifepools',
+        site: '@purelifepools',
+        cardType: 'summary_large_image',
+      }}
+    />
+ 
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
-          <p className="text-lg text-gray-600">Last updated: January 26, 2025</p>
+          <p className="text-lg text-gray-600">Last updated: January 31, 2025</p>
         </div>
 
         <div className="space-y-12">
@@ -72,16 +99,17 @@ any other vendors who assist us in the delivery of text messages.
               <h2 className="text-2xl font-semibold text-gray-900">Your Rights</h2>
             </div>
             <p className="text-gray-600 leading-relaxed">
-              You have the right to access, update, or delete your personal information. Contact us at privacy@example.com for any privacy-related concerns or requests.
+              You have the right to access, update, or delete your personal information. Contact us at info@purelifepools.com for any privacy-related concerns or requests.
             </p>
           </section>
         </div>
 
         <div className="mt-16 text-center text-sm text-gray-500">
-          <p>For questions about our privacy policy, please contact us at privacy@example.com</p>
+          <p>For questions about our privacy policy, please contact us at info@purelifepools.com</p>
         </div>
       </div>
     </div>
+    </>
   );
 };
 

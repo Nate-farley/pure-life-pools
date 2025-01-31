@@ -33,7 +33,16 @@ const Footer = () => {
         router.push('https://maps.app.goo.gl/md8GxJmSxDZSJ7Kq9')
         break; 
       case "privacy policy":
-        router.push('/privacy_policy')
+        router.push('/privacy-policy')
+        break;
+      case "about":
+        router.push('/about')
+        break;
+      case "contact":
+        router.push('/contact')
+        break;
+      case "pools":
+        router.push('/pools')
         break;
       default:
         return item;
@@ -50,13 +59,13 @@ const Footer = () => {
          
             <Box sx={{ mb: 2 }}>
             <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 2 }}>
-  Palm Bay's premier fiberglass pool installer serving Brevard County with custom pool designs, professional installation, and expert service since 2015.
+  Palm Bay and Melbourne's premier fiberglass pool installer serving custom pool designs, professional installation, and expert service since 2015.
 </Typography>  
 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
   <strong>Hours:</strong> Monday - Friday: 10AM - 5PM
-</Typography>''
+</Typography>
 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
-  <strong>Service Area:</strong> Palm Bay, Melbourne, Vero Beach, and surrounding Brevard County
+  <strong>Service Area:</strong> Palm Bay, Melbourne, Indian River County, Vero Beach and surrounding Brevard County
 </Typography>
               <Typography 
                 variant="body2" 
@@ -163,7 +172,7 @@ onClick={() => window.open('https://www.facebook.com/people/Pure-Life-Pools/6156
             </IconButton>
            
             <IconButton
-              onClick={() => router.push('/')}
+              onClick={() =>    router.push('https://maps.app.goo.gl/md8GxJmSxDZSJ7Kq9')}
               aria-label="Google"
               sx={{
                 color: 'white',

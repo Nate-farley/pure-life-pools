@@ -318,10 +318,30 @@ const Home = () => {
 
   return (
     <>
-      <NextSeo
-        title="Custom Fiberglass Pools in Palm Bay, Melbourne and Titusville Florida"
-        description="Pure Life Pools specializes in transforming outdoor spaces in Palm Bay, Melbourne, and Titusville, Florida. Our services include custom fiberglass pool installation, pond creation, and hardscaping. Enhance your home's beauty and value with our expert craftsmanship and attention to detail."
-      />
+   <NextSeo
+  title="Premium Fiberglass Pools in Palm Bay"
+  description="Pure Life Pools specializes in transforming outdoor spaces in Palm Bay, Melbourne, and Titusville, Florida. Our services include custom fiberglass pool installation, pond creation, and hardscaping. Enhance your home's beauty and value with our expert craftsmanship and attention to detail."
+  openGraph={{
+    type: 'website',
+    url: 'https://purelifepools.com',
+    title: 'Premium Fiberglass Pools in Palm Bay',
+    description: 'Pure Life Pools specializes in transforming outdoor spaces in Palm Bay, Melbourne, and Titusville, Florida. Our services include custom fiberglass pool installation, pond creation, and hardscaping.',
+    images: [
+      {
+        url: 'https://purelifepools.com/assets/images/logo96x96.png',
+        width: 96,
+        height: 96,
+        alt: 'Pure Life Pools Logo',
+      }
+    ],
+    siteName: "Pure Life Pools | +1-321-831-3115",
+  }}
+  twitter={{
+    handle: '@purelifepools',
+    site: '@purelifepools',
+    cardType: 'summary_large_image',
+  }}
+/>
       <Box
         sx={{
           minHeight: '100vh',

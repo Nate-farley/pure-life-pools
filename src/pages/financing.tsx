@@ -101,18 +101,23 @@ const Financing = () => {
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
      <NextSeo
-        title="Fiberglass Pool Financing Palm Bay FL | Low Interest Pool Loans | Pure Life Pools"
+        title="Premium fiberglass Pool Financing in Palm Bay, FL | Low Interest Pool Loans"
         description="Expert fiberglass pool financing in Palm Bay, FL. Flexible payment plans from 4.99% APR through HFS Financial, Lyon Financial & LightStream. Finance your custom fiberglass pool installation with loans up to $500,000 and same-day approval."
         canonical="https://purelifepools.com/financing"
         openGraph={{
-          title: 'Fiberglass Pool Financing Palm Bay FL | Pure Life Pools',
-          description: 'Expert fiberglass pool financing in Palm Bay, FL. Flexible payment plans from 4.99% APR through HFS Financial, Lyon Financial & LightStream.',
-          images: [
-            { url: 'https://purelifepools.com/assets/images/favicon-96x96.png' }
-          ],
           type: 'website',
-          locale: 'en_US',
-          siteName: 'Pure Life Pools'
+          url: 'https://purelifepools.com',
+          title: "Premium fiberglass Pool Financing Palm Bay FL | Low Interest Pool Loans",
+          description: "Expert fiberglass pool financing in Palm Bay, FL. Flexible payment plans from 4.99% APR through HFS Financial, Lyon Financial & LightStream. Finance your custom fiberglass pool installation with loans up to $500,000 and same-day approval.",
+          images: [
+            {
+              url: 'https://purelifepools.com/assets/images/logo96x96.png',
+              width: 96,
+              height: 96,
+              alt: 'Pure Life Pools Logo',
+            }
+          ],
+          siteName: "Pure Life Pools | +1-321-831-3115",
         }}
         additionalMetaTags={[
           {
@@ -234,7 +239,7 @@ const Financing = () => {
                     <Divider />
 
                     {/* Features List */}
-                    <Box>
+                    {/* <Box>
                       <Typography
                         variant="subtitle2"
                         sx={{ mb: 2, color: '#5C83D6', fontWeight: 600 }}
@@ -256,7 +261,7 @@ const Financing = () => {
                           </Typography>
                         ))}
                       </Stack>
-                    </Box>
+                    </Box> */}
 
                     <Button
                       disableElevation

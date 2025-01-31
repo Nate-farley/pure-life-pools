@@ -101,6 +101,31 @@ const StatCard: React.FC<StatCardProps> = ({ number, label }) => (
 
 const AboutPage: React.FC = () => {
   return (
+    <>
+       <NextSeo
+      title="Premium Fiberglass Pools in Melbourne, FL"
+      description="Learn how our company services fiberglass pool installations in Brevard and Indian River County."
+      openGraph={{
+        type: 'website',
+        url: 'https://purelifepools.com',
+        title: 'Premium Fiberglass Pools in Melbourne, FL',
+        description: 'Pure Life Pools specializes in transforming outdoor spaces in Palm Bay, Melbourne, and Titusville, Florida. Our services include custom fiberglass pool installation, pond creation, and hardscaping.',
+        images: [
+          {
+            url: 'https://purelifepools.com/assets/images/logo96x96.png',
+            width: 96,
+            height: 96,
+            alt: 'Pure Life Pools Logo',
+          }
+        ],
+        siteName: "Pure Life Pools | +1-321-831-3115",
+      }}
+      twitter={{
+        handle: '@purelifepools',
+        site: '@purelifepools',
+        cardType: 'summary_large_image',
+      }}
+    />
     <section className="relative">
       {/* Fixed Background with Glass Effect */}
       {/* <div className="fixed inset-0 -z-10 overflow-hidden">
@@ -200,10 +225,10 @@ const AboutPage: React.FC = () => {
                 <ImageCarousel />
               </Paper>
               <div className="grid grid-cols-2 gap-6">
-                <StatCard number="3.5" label="Years Experience" />
+                <StatCard number="10+" label="Years Experience" />
                 <StatCard number="23" label="Project Challenge" />
-                <StatCard number="830+" label="Positive Reviews" />
-                <StatCard number="100K" label="Trusted Students" />
+                <StatCard number="100+" label="Positive Reviews" />
+                <StatCard number="100K" label="Trusted Customers" />
               </div>
             </div>
           </div>
@@ -221,6 +246,7 @@ const AboutPage: React.FC = () => {
 
       <Footer />
     </section>
+    </>
   );
 };
 

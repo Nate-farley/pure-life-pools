@@ -7,8 +7,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <DefaultSeo
-        titleTemplate={`%s | ${siteMetadata.businessName} | +1-321-831-3115`}
-        defaultTitle={`${siteMetadata.businessName} | +1-321-831-3115`}
+        titleTemplate={`Pure Life Pools | +1-321-831-3115 | %s`}
+        defaultTitle={`Pure Life Pools | +1-321-831-3115`}
        description="Pure Life Pools is your premier provider of custom fiberglass pools, ponds, and hardscaping in Palm Bay, Melbourne, and Titusville, Florida. Transform your backyard into a stunning outdoor oasis with our expert design and installation services."
         canonical={siteMetadata.siteUrl}
         openGraph={{

@@ -23,17 +23,18 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
+import { Link } from '@mui/material';
 import NavBar from '@/containers/Navbar/navbar';
 import Footer from '@/containers/Footer';
 import { NextSeo } from 'next-seo'
 import Head from 'next/head';
 
-// Define TypeScript interfaces
 interface ContactFormData {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
+  smsConsent: boolean; 
   message: string;
   poolModel: string;
   residenceType: {
@@ -225,6 +226,7 @@ const ContactPage: React.FC = () => {
     email: '',
     phone: '',
     message: '',
+    smsConsent: false, 
     poolModel: 'Select a pool type',
     residenceType: {
       personal: false,
@@ -267,7 +269,7 @@ const ContactPage: React.FC = () => {
     if (!validateForm()) {
       return;
     }
-  console.log('eee')
+
     setIsSubmitting(true);
   
     try {
@@ -328,15 +330,19 @@ const ContactPage: React.FC = () => {
       description="Get expert fiberglass pool installation in Palm Bay, FL and Brevard County. Request a free consultation for custom pool designs, installation, and financing. Visit our showroom at 105 Ring Avenue NE or call (321) 831-3115."
       canonical="https://purelifepools.com/contact"
       openGraph={{
-        title: 'Contact Pure Life Pools',
-        description: 'Get expert fiberglass pool installation in Palm Bay, FL and Brevard County. Request a free consultation for custom pool designs, installation, and financing.',
         type: 'website',
-        
-        locale: 'en_US',      
+        url: 'https://purelifepools.com',
+        title: "Contact Pure Life Pools",
+        description: "Get expert fiberglass pool installation in Palm Bay, FL and Brevard County. Request a free consultation for custom pool designs, installation, and financing. Visit our showroom at 105 Ring Avenue NE or call (321) 831-3115.",
         images: [
-          { url: 'https://purelifepools.com/assets/images/favicon-96x96.png' }
+          {
+            url: 'https://purelifepools.com/assets/images/logo96x96.png',
+            width: 96,
+            height: 96,
+            alt: 'Pure Life Pools Logo',
+          }
         ],
-        siteName: "Pure Life Pools  | +1-321-831-3115"
+        siteName: "Pure Life Pools | +1-321-831-3115",
       }}
       additionalMetaTags={[
         {
@@ -500,12 +506,40 @@ const ContactPage: React.FC = () => {
                     </PoolSelect>
                   </Grid>
                   <Grid item xs={12}>
+  <FormControlLabel
+    control={
+      <Checkbox
+        checked={formData.smsConsent}
+        onChange={(e) => setFormData({ ...formData, smsConsent: e.target.checked })}
+        disabled={isSubmitting}
+        sx={{
+          color: 'rgba(19, 50, 64, 0.6)',
+          '&.Mui-checked': {
+            color: '#133240',
+          },
+        }}
+      />
+    }
+    label={
+      <Typography variant="caption" sx={{ color: 'text.secondary', lineHeight: 1.4 }}>
+        You are agreeing to receive SMS messages from Pure Life Pools. Message frequency may vary. 
+        Standard Message and Data Rates may apply. Reply STOP to opt out. If you reply STOP you are 
+        unsubscribed and will receive no further messages. For HELP please reach out to 
+        info@purelifepools.com or call +1 (321) 831-3115. Consent is not a condition of participation.{' '}
+        <Link href="/privacy-policy" sx={{ color: '#133240' }}>
+          Privacy Policy
+        </Link>
+      </Typography>
+    }
+  />
+</Grid>
+                  <Grid item xs={12}>
                   <SubmitButton
                       type="submit"
                       variant="contained"
                       fullWidth
                       size="large"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !formData.smsConsent}
                       disableElevation
                     >
                       {isSubmitting ? 'Sending...' : 'Send Inquiry'}
