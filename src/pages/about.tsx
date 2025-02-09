@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -6,6 +6,7 @@ import Image from 'next/image';
 import NavBar from '@/containers/Navbar/navbar';
 import { Fade, Paper, Typography, Box, Chip, Card } from '@mui/material';
 import Footer from '@/containers/Footer';
+import { NextSeo } from 'next-seo';
 
 const perspectiveImages = [
   '/downloaded_images/1732569924035_39_FG-THUMBS_0010_Nirvana-5-OceanBlueG3-perspective.jpg',

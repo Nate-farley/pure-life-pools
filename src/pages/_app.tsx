@@ -2,8 +2,21 @@ import siteMetadata from '@/config/meta.json';
 import '@/styles/globals.css';
 import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
+
+  const router = useRouter();
+
+  // Set scroll to 0,0 to prevent starting at the bottom of the page
+  // after navigating
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
+  }, [router.pathname]);
+  
   return (
     <>
       <DefaultSeo

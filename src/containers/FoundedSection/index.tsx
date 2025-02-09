@@ -59,7 +59,7 @@ const FoundedSection = () => {
               lineHeight: { xs: 1.2, md: 1.1 }
             }}
           >
-            Specializing in pools, pavers, ponds and hardscaping.
+            Specializing in pools, pavers, ponds and hardscaping for Palm Bay, Melbourne, Titusville and Indian River County.
           </Typography>
           <Typography 
             color="textSecondary" 
@@ -69,7 +69,7 @@ const FoundedSection = () => {
               width: { xs: '100%', md: '40%' }
             }}
           >
-            We help you create your dream space at your home while ensuring high
+            We help Florida create dream spaces at home while ensuring high
             quality work.
           </Typography>
         </Stack>

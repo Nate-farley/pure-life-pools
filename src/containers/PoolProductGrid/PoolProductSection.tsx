@@ -32,16 +32,6 @@ const PoolProductsSection = ({ router }: { router: any }) => {
           >
             Fiberglass Pools
           </Typography>
-          <Typography
-            component="span"
-            sx={{ 
-              fontWeight: '600',
-              fontSize: { xs: 24, sm: 26, md: 30 },
-              color: '#133240'
-            }}
-          >
-            from our suppliers
-          </Typography>
         </Box>
 
         {/* Description and Button */}
@@ -60,13 +50,12 @@ const PoolProductsSection = ({ router }: { router: any }) => {
               fontSize: { xs: '0.875rem', sm: '1rem' }
             }}
           >
-            Have questions about pricing, products or service? Fill out the form
-            and our friendly team can get back to you within 24 hours.
+              Discover the perfect blend of durability and elegance with our premium fiberglass pools. Known for their low maintenance, quick installation, and stunning designs, fiberglass pools offer exceptional value for Florida homeowners. Our expert team specializes in creating beautiful backyard retreats that last a lifetime.
           </Typography>
 
           <Button
           title="See fiberglass pools"
-            onClick={() => router?.push('/pools')}
+            onClick={() => router?.push('/fiberglass')}
             variant="outlined"
             size="small"
             sx={{

@@ -30,6 +30,61 @@ import FoundedSection from '@/containers/FoundedSection';
 import { useRouter } from 'next/navigation';
 import { NextSeo } from 'next-seo';
 
+const ingroundPools = [
+  {
+    title: "Classic Design",
+    image: "/assets/images/product_images/inground/examples/inground-example1.jpg",
+    description: "Timeless elegance with modern functionality.",
+    href: "/pools/inground"
+  },
+  {
+    title: "Contemporary Style",
+    image: "/assets/images/product_images/inground/examples/inground-example2.jpg",
+    description: "Clean lines and sophisticated design for modern homes.",
+    href: "/pools/inground"
+  },
+  {
+    title: "Luxury Layout",
+    image: "/assets/images/product_images/inground/examples/inground-example3.jpg",
+    description: "Premium features and expansive swimming area.",
+    href: "/pools/inground"
+  },
+  {
+    title: "Resort Inspired",
+    image: "/assets/images/product_images/inground/examples/inground-example4.jpg",
+    description: "Bring vacation vibes to your backyard.",
+    href: "/pools/inground"
+  }
+];
+
+const aboveGroundPools = [
+  {
+    title: "Emerald Metric",
+    image: "/assets/images/product_images/above_ground/emerald_metric.jpg",
+    description: "The Emerald Metric design offers a perfect blend of elegance and functionality.",
+    href: "/above-ground-pools"
+  },
+  {
+    title: "Freeform Metric",
+    image: "/assets/images/product_images/above_ground/freeform_metric.jpg",
+    description: "Our Freeform Metric pool provides a natural, flowing design for your backyard.",
+    href: "/above-ground-pools"
+  },
+  {
+    title: "Grecian Metric",
+    image: "/assets/images/product_images/above_ground/grecian_metric.jpg",
+    description: "The Grecian Metric brings classical elegance to modern pool design.",
+    href: "/above-ground-pools"
+  },
+  {
+    title: "Oval Metric",
+    image: "/assets/images/product_images/above_ground/oval_metric.jpg",
+    description: "The Oval Metric maximizes swimming space with its efficient design.",
+    href: "/above-ground-pools"
+  }
+];
+
+
 const handleVideoError = (e) => {
   console.error('Video loading error:', e.target.error);
   console.log('Failed video source:', e.target.currentSrc);
@@ -310,7 +365,7 @@ const Home = () => {
     console.log(service);
     switch (service.title?.toLowerCase()) {
       case 'pools':
-        router.push('/pools');
+        router.push('/fiberglass');
         break;
       default:
     }
@@ -552,6 +607,286 @@ const Home = () => {
             expectations.
           </Typography>
         </Box>
+
+        
+
+        <Box
+        sx={{
+          backgroundColor: '#FAFAFA',
+          py: { xs: 6, sm: 8, md: 10 },
+          px: { xs: 2, sm: 4, md: 6, lg: 8 }
+        }}
+      >
+        <Container maxWidth="lg">
+          {/* Title Section */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: { xs: 'flex-start', sm: 'center' },
+              gap: { xs: 1, sm: 0 },
+              mb: { xs: 3, sm: 4 }
+            }}
+          >
+            <Typography
+              component="span"
+              sx={{
+                fontWeight: '600',
+                fontSize: { xs: 24, sm: 26, md: 30 },
+                color: '#5C83D6',
+                mr: 1
+              }}
+            >
+              Above Ground Pools
+            </Typography>
+          </Box>
+          {/* Description and Button */}
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            alignItems={{ xs: 'flex-start', md: 'center' }}
+            justifyContent="space-between"
+            spacing={{ xs: 2, md: 4 }}
+            mb={{ xs: 4, sm: 6 }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                color: '#585858',
+                maxWidth: { xs: '100%', md: 600 },
+                fontSize: { xs: '0.875rem', sm: '1rem' }
+              }}
+            >
+              Explore our selection of premium above ground pools, perfect for any backyard. Our expert team is ready to help you find the ideal pool for your space and budget.
+            </Typography>
+            <Button
+              title="See above ground pools"
+              onClick={() => router?.push('/pools/above-ground')}
+              variant="outlined"
+              size="small"
+              sx={{
+                backgroundColor: 'white',
+                borderColor: '#133240',
+                textTransform: 'none',
+                color: '#133240',
+                whiteSpace: 'nowrap',
+                minWidth: 'fit-content',
+                px: 3,
+                '&:hover': {
+                  borderColor: '#133240',
+                  backgroundColor: 'rgba(19, 50, 64, 0.04)'
+                }
+              }}
+            >
+              See More Above Ground Pools
+            </Button>
+          </Stack>
+
+        <Grid container spacing={4}>
+          {aboveGroundPools.map((pool, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Paper
+                elevation={0}
+                sx={{
+                  borderRadius: 2,
+                  overflow: 'hidden',
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-8px)',
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    position: 'relative',
+                    height: 240,
+                    width: '100%',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Image
+                    src={pool.image}
+                    alt={pool.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
+                </Box>
+                <Box sx={{ p: 2 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      mb: 1,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {pool.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 2 }}
+                  >
+                    {pool.description}
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    onClick={() => router.push(pool.href)}
+                    sx={{
+                      textTransform: 'none',
+                    }}
+                  >
+                    Learn More
+                  </Button>
+                </Box>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+      </Box>
+
+      {/* Inground Pools Section */}
+<Box
+  sx={{
+    backgroundColor: 'white',
+    py: { xs: 6, sm: 8, md: 10 },
+    px: { xs: 2, sm: 4, md: 6, lg: 8 }
+  }}
+>
+  <Container maxWidth="lg">
+    {/* Title Section */}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        alignItems: { xs: 'flex-start', sm: 'center' },
+        gap: { xs: 1, sm: 0 },
+        mb: { xs: 3, sm: 4 }
+      }}
+    >
+      <Typography
+        component="span"
+        sx={{
+          fontWeight: '600',
+          fontSize: { xs: 24, sm: 26, md: 30 },
+          color: '#5C83D6',
+          mr: 1
+        }}
+      >
+        Inground Pools
+      </Typography>
+    </Box>
+
+    {/* Description and Button */}
+    <Stack
+      direction={{ xs: 'column', md: 'row' }}
+      alignItems={{ xs: 'flex-start', md: 'center' }}
+      justifyContent="space-between"
+      spacing={{ xs: 2, md: 4 }}
+      mb={{ xs: 4, sm: 6 }}
+    >
+      <Typography
+        variant="body2"
+        sx={{
+          color: '#585858',
+          maxWidth: { xs: '100%', md: 600 },
+          fontSize: { xs: '0.875rem', sm: '1rem' }
+        }}
+      >
+        Create your dream backyard oasis with our custom inground pools. Our expert designers and installers will work with you to create the perfect swimming pool that complements your home and lifestyle.
+      </Typography>
+      <Button
+        title="See inground pools"
+        onClick={() => router?.push('/pools/inground')}
+        variant="outlined"
+        size="small"
+        sx={{
+          backgroundColor: 'white',
+          borderColor: '#133240',
+          textTransform: 'none',
+          color: '#133240',
+          whiteSpace: 'nowrap',
+          minWidth: 'fit-content',
+          px: 3,
+          '&:hover': {
+            borderColor: '#133240',
+            backgroundColor: 'rgba(19, 50, 64, 0.04)'
+          }
+        }}
+      >
+        See More Inground Pools
+      </Button>
+    </Stack>
+
+    <Grid container spacing={4}>
+      {ingroundPools.map((pool, index) => (
+        <Grid item xs={12} sm={6} md={3} key={index}>
+          <Paper
+            elevation={0}
+            sx={{
+              borderRadius: 2,
+              overflow: 'hidden',
+              transition: 'transform 0.3s ease-in-out',
+              border: '1px solid #e0e0e0',
+              '&:hover': {
+                transform: 'translateY(-8px)',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              },
+            }}
+          >
+            <Box
+              sx={{
+                position: 'relative',
+                height: 240,
+                width: '100%',
+                overflow: 'hidden',
+              }}
+            >
+              <Image
+                src={pool.image}
+                alt={pool.title}
+                fill
+                style={{ objectFit: 'cover' }}
+              />
+            </Box>
+            <Box sx={{ p: 2 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  mb: 1,
+                  fontWeight: 600,
+                }}
+              >
+                {pool.title}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mb: 2 }}
+              >
+                {pool.description}
+              </Typography>
+              <Button
+                variant="outlined"
+                onClick={() => router.push(pool.href)}
+                sx={{
+                  textTransform: 'none',
+                  borderColor: '#133240',
+                  color: '#133240',
+                  '&:hover': {
+                    borderColor: '#133240',
+                    backgroundColor: 'rgba(19, 50, 64, 0.04)'
+                  }
+                }}
+              >
+                Learn More
+              </Button>
+            </Box>
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+  </Container>
+</Box>
 
         <PoolProductsSection router={router} />
 

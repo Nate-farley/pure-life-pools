@@ -21,7 +21,7 @@ const Footer = () => {
 
   const menuItems = {
     "Quick Links": ["Google Maps"],
-    Products: ['Pools'],
+    Products: ['Fiberglass Pools', 'Inground Pools', 'Above Ground Pools'],
     Support: ['FAQ', 'Contact', 'Location', 'Privacy Policy'],
     Company: ['About', 'Leave a Review'],
   };
@@ -41,9 +41,15 @@ const Footer = () => {
       case "contact":
         router.push('/contact')
         break;
-      case "pools":
-        router.push('/pools')
+      case "fiberglass pools":
+        router.push('/pools/fiberglass')
         break;
+        case "inground pools":
+          router.push('/pools/metric-pools')
+          break;
+          case "above ground pools":
+            router.push('/pools/metric-pools')
+            break;
       default:
         return item;
     }
