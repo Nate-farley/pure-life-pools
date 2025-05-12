@@ -727,15 +727,6 @@ const Home = () => {
                   >
                     {pool.description}
                   </Typography>
-                  <Button
-                    variant="outlined"
-                    onClick={() => router.push(pool.href)}
-                    sx={{
-                      textTransform: 'none',
-                    }}
-                  >
-                    Learn More
-                  </Button>
                 </Box>
               </Paper>
             </Grid>
@@ -865,21 +856,6 @@ const Home = () => {
               >
                 {pool.description}
               </Typography>
-              <Button
-                variant="outlined"
-                onClick={() => router.push(pool.href)}
-                sx={{
-                  textTransform: 'none',
-                  borderColor: '#133240',
-                  color: '#133240',
-                  '&:hover': {
-                    borderColor: '#133240',
-                    backgroundColor: 'rgba(19, 50, 64, 0.04)'
-                  }
-                }}
-              >
-                Learn More
-              </Button>
             </Box>
           </Paper>
         </Grid>

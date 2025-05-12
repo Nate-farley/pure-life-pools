@@ -31,8 +31,8 @@ export default function NavBar() {
   
   const menuItems = ['Home', 'Pools', 'Financing', "Contact Us", "Our Company", "Gallery"];
   const poolsMenuItems = [
-    { label: 'Inground Pools', path: '/pools/metric-pools' },
-    { label: 'Above Ground Pools', path: '/pools/metric-pools' },
+    { label: 'Inground Pools', path: '/pools/metric-pools#inground' },
+    { label: 'Above Ground Pools', path: '/pools/metric-pools#above-ground' },
     { label: 'Fiberglass Pools', path: '/pools/fiberglass' },
   ];
   
@@ -47,6 +47,7 @@ export default function NavBar() {
   };
 
   const handlePoolsItemClick = (path: string) => {
+    alert(path)
     router.push(path);
     handlePoolsClose();
     setMobileMenuOpen(false);

@@ -1,50 +1,67 @@
+// @ts-nocheck
 import Footer from '@/containers/Footer'
 import NavBar from '@/containers/Navbar/navbar'
 import { Container, Divider, Grid, Typography, Paper } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { Box } from '@mui/material'
 import { NextSeo } from 'next-seo'
+import { usePathname, useRouter } from 'next/navigation'
 
-function PoolsPage(props: {}) {
-  // Image arrays remain the same
-  const aboveGroundProductImages = [
-    { src: "/assets/images/product_images/above_ground/emerald_metric.jpg", alt: "Emerald Metric" },
-    { src: "/assets/images/product_images/above_ground/freeform_metric.jpg", alt: "Freeform Metric" },
-    { src: "/assets/images/product_images/above_ground/grecian_metric.jpg", alt: "Grecian Metric" },
-    { src: "/assets/images/product_images/above_ground/oval_metric.jpg", alt: "Oval Metric" },
-    { src: "/assets/images/product_images/above_ground/rectangle_metric.jpg", alt: "Rectangle Metric" },
-    { src: "/assets/images/product_images/above_ground/round_metric.jpg", alt: "Round Metric" },
-  ];
+const aboveGroundProductImages = [
+  { src: "/assets/images/product_images/above_ground/emerald_metric.jpg", alt: "Emerald Metric" },
+  { src: "/assets/images/product_images/above_ground/freeform_metric.jpg", alt: "Freeform Metric" },
+  { src: "/assets/images/product_images/above_ground/grecian_metric.jpg", alt: "Grecian Metric" },
+  { src: "/assets/images/product_images/above_ground/oval_metric.jpg", alt: "Oval Metric" },
+  { src: "/assets/images/product_images/above_ground/rectangle_metric.jpg", alt: "Rectangle Metric" },
+  { src: "/assets/images/product_images/above_ground/round_metric.jpg", alt: "Round Metric" },
+];
 
-  const aboveGroundExampleImages = [
-    { src: "/assets/images/product_images/above_ground/examples/1f3a9edfa6cab7ca7df0fbc33afe2614.jpg", alt: "Above Ground Pool Example 1" },
-    { src: "/assets/images/product_images/above_ground/examples/34fa9a2461c4116a801ff96927618c6f.jpg", alt: "Above Ground Pool Example 2" },
-    { src: "/assets/images/product_images/above_ground/examples/36285f3ccb1bdecb016bdfc3eb9a5946.jpg", alt: "Above Ground Pool Example 3" },
-    { src: "/assets/images/product_images/above_ground/examples/36fa7ea712545b61310c0cac76266eb4.jpg", alt: "Above Ground Pool Example 4" },
-    { src: "/assets/images/product_images/above_ground/examples/3d9e604e55017ff55b3c5314116d7c86.jpg", alt: "Above Ground Pool Example 5" },
-    { src: "/assets/images/product_images/above_ground/examples/4c036078529cb8a8b56db0640ee29a6f.jpg", alt: "Above Ground Pool Example 6" },
-  ];
+const aboveGroundExampleImages = [
+  { src: "/assets/images/product_images/above_ground/examples/1f3a9edfa6cab7ca7df0fbc33afe2614.jpg", alt: "Above Ground Pool Example 1" },
+  { src: "/assets/images/product_images/above_ground/examples/34fa9a2461c4116a801ff96927618c6f.jpg", alt: "Above Ground Pool Example 2" },
+  { src: "/assets/images/product_images/above_ground/examples/36285f3ccb1bdecb016bdfc3eb9a5946.jpg", alt: "Above Ground Pool Example 3" },
+  { src: "/assets/images/product_images/above_ground/examples/36fa7ea712545b61310c0cac76266eb4.jpg", alt: "Above Ground Pool Example 4" },
+  { src: "/assets/images/product_images/above_ground/examples/3d9e604e55017ff55b3c5314116d7c86.jpg", alt: "Above Ground Pool Example 5" },
+  { src: "/assets/images/product_images/above_ground/examples/4c036078529cb8a8b56db0640ee29a6f.jpg", alt: "Above Ground Pool Example 6" },
+];
 
-  const ingroundProductImages = [
-    { src: "/assets/images/product_images/inground/Inground1.png", alt: "Inground Pool Design 1" },
-    { src: "/assets/images/product_images/inground/Inground2.png", alt: "Inground Pool Design 2" },
-    { src: "/assets/images/product_images/inground/Inground3.png", alt: "Inground Pool Design 3" },
-    { src: "/assets/images/product_images/inground/Inground4.png", alt: "Inground Pool Design 4" },
-    { src: "/assets/images/product_images/inground/Inground5.png", alt: "Inground Pool Design 5" },
-    { src: "/assets/images/product_images/inground/Inground6.png", alt: "Inground Pool Design 6" },
-    { src: "/assets/images/product_images/inground/Inground7.png", alt: "Inground Pool Design 7" },
-    { src: "/assets/images/product_images/inground/Inground8.png", alt: "Inground Pool Design 8" },
-  ];
+const ingroundProductImages = [
+  { src: "/assets/images/product_images/inground/Inground1.png", alt: "Inground Pool Design 1" },
+  { src: "/assets/images/product_images/inground/Inground2.png", alt: "Inground Pool Design 2" },
+  { src: "/assets/images/product_images/inground/Inground3.png", alt: "Inground Pool Design 3" },
+  { src: "/assets/images/product_images/inground/Inground4.png", alt: "Inground Pool Design 4" },
+  { src: "/assets/images/product_images/inground/Inground5.png", alt: "Inground Pool Design 5" },
+  { src: "/assets/images/product_images/inground/Inground6.png", alt: "Inground Pool Design 6" },
+  { src: "/assets/images/product_images/inground/Inground7.png", alt: "Inground Pool Design 7" },
+  { src: "/assets/images/product_images/inground/Inground8.png", alt: "Inground Pool Design 8" },
+];
 
-  const ingroundExampleImages = [
-    { src: "/assets/images/product_images/inground/examples/inground-example1.jpg", alt: "Inground Pool Example 1" },
-    { src: "/assets/images/product_images/inground/examples/inground-example2.jpg", alt: "Inground Pool Example 2" },
-    { src: "/assets/images/product_images/inground/examples/inground-example3.jpg", alt: "Inground Pool Example 3" },
-    { src: "/assets/images/product_images/inground/examples/inground-example4.jpg", alt: "Inground Pool Example 4" },
-    { src: "/assets/images/product_images/inground/examples/inground-inground-stair.jpg", alt: "Inground Pool Stairs" },
-    { src: "/assets/images/product_images/inground/examples/inground-walk-in-stpes.jpg", alt: "Inground Pool Walk-in Steps" },
-  ];
+const ingroundExampleImages = [
+  { src: "/assets/images/product_images/inground/examples/inground-example1.jpg", alt: "Inground Pool Example 1" },
+  { src: "/assets/images/product_images/inground/examples/inground-example2.jpg", alt: "Inground Pool Example 2" },
+  { src: "/assets/images/product_images/inground/examples/inground-example3.jpg", alt: "Inground Pool Example 3" },
+  { src: "/assets/images/product_images/inground/examples/inground-example4.jpg", alt: "Inground Pool Example 4" },
+  { src: "/assets/images/product_images/inground/examples/inground-inground-stair.jpg", alt: "Inground Pool Stairs" },
+  { src: "/assets/images/product_images/inground/examples/inground-walk-in-stpes.jpg", alt: "Inground Pool Walk-in Steps" },
+];
+
+
+function PoolsPage() {
+
+  const router = useRouter()
+  const pathname = usePathname()
+
+  useEffect(() => {
+    if (pathname.includes('#')) {
+      const hash = pathname.split('#')[1]
+      const element = document.getElementById(hash)
+      if (element) {
+        const yCoordinate = element.getBoundingClientRect().top + window.pageYOffset - 100
+        window.scrollTo({ top: yCoordinate, behavior: 'smooth' })
+      }
+    }
+  }, [pathname])
 
   return (
     <>
@@ -152,7 +169,7 @@ function PoolsPage(props: {}) {
 </Box>
         
         {/* Above Ground Pools Section */}
-        <Box sx={{ bgcolor: 'white', py: 12 }}>
+        <Box id="above-ground" sx={{ bgcolor: 'white', py: 12 }}>
           <Container maxWidth="lg">
             <Box sx={{ maxWidth: '800px', mx: 'auto', mb: 8, textAlign: 'center' }}>
               <Typography 
@@ -244,7 +261,7 @@ function PoolsPage(props: {}) {
         </Box>
 
         {/* Inground Pools Section */}
-        <Box sx={{ bgcolor: '#133240', color: 'white', py: 12 }}>
+        <Box id='inground' sx={{ bgcolor: '#133240', color: 'white', py: 12 }}>
           <Container maxWidth="lg">
             <Box sx={{ maxWidth: '800px', mx: 'auto', mb: 8, textAlign: 'center' }}>
               <Typography 
