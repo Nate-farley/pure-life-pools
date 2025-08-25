@@ -15,7 +15,6 @@ import {
 import { styled, useTheme } from '@mui/material/styles';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import specs from '../../scrape/pool-spec.json';
@@ -430,21 +429,6 @@ const ProductsPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [loadedImages, setLoadedImages] = useState({});
   const [showScrollTop, setShowScrollTop] = useState(false);
-
-  const router = useRouter()
-  useEffect(() => {
-    const handleRouteChange = () => {
-      window.scrollTo(0, 0)
-    }
-
-    router.events.on('routeChangeComplete', handleRouteChange)
-
-    // Clean up the event listener
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
-    }
-  }, [router.events])
-
 
   // Scroll handler
   useEffect(() => {

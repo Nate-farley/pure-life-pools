@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
   },
   compress: true,
   poweredByHeader: false,
+  experimental: {
+    scrollRestoration: false, // Disable browser scroll restoration
+  },
   async headers() {
     return [
       {
