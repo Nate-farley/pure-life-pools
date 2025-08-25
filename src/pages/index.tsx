@@ -653,7 +653,7 @@ const Home = () => {
               </Typography>
               <Button
                 title="See above ground pools"
-                onClick={() => router?.push('/pools/above-ground')}
+                onClick={() => router?.push('/pools/metric-pools#above-ground')}
                 variant="outlined"
                 size="small"
                 sx={{
@@ -780,7 +780,7 @@ const Home = () => {
               </Typography>
               <Button
                 title="See inground pools"
-                onClick={() => router?.push('/pools/inground')}
+                onClick={() => router?.push('/pools/inground/metric-pools#inground')}
                 variant="outlined"
                 size="small"
                 sx={{
