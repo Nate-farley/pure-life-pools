@@ -47,7 +47,6 @@ export default function NavBar() {
   };
 
   const handlePoolsItemClick = (path: string) => {
-    alert(path)
     router.push(path);
     handlePoolsClose();
     setMobileMenuOpen(false);

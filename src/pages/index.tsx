@@ -1,34 +1,27 @@
 // @ts-nocheck
 'use client';
-import React, { useState, useRef, useEffect, useMemo } from 'react';
-import Head from 'next/head';
-import Image from 'next/image';
-import {
-  Box,
-  Container,
-  TextField,
-  Typography,
-  Link,
-  Grid,
-  Paper,
-  MobileStepper,
-  IconButton,
-  Divider,
-  Stack,
-  Button,
-  useMediaQuery,
-} from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
-import SwipeableViews from 'react-swipeable-views';
-import PoolProductGrid from '@/containers/PoolProductGrid';
-import TestimonialsSection from '@/containers/Testimonials';
-import Footer from '@/containers/Footer';
 import BlockSection from '@/containers/ExploreSection';
+import Footer from '@/containers/Footer';
+import FoundedSection from '@/containers/FoundedSection';
 import NavBar from '@/containers/Navbar/navbar';
 import PoolProductsSection from '@/containers/PoolProductGrid/PoolProductSection';
-import FoundedSection from '@/containers/FoundedSection';
-import { useRouter } from 'next/navigation';
+import TestimonialsSection from '@/containers/Testimonials';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+  useMediaQuery
+} from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 import { NextSeo } from 'next-seo';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import SwipeableViews from 'react-swipeable-views';
 
 const ingroundPools = [
   {
@@ -365,7 +358,7 @@ const Home = () => {
     console.log(service);
     switch (service.title?.toLowerCase()) {
       case 'pools':
-        router.push('/fiberglass');
+        router.push('/pools/fiberglass');
         break;
       default:
     }
@@ -373,30 +366,30 @@ const Home = () => {
 
   return (
     <>
-   <NextSeo
-  title="Premium Fiberglass Pools in Palm Bay"
-  description="Pure Life Pools specializes in transforming outdoor spaces in Palm Bay, Melbourne, and Titusville, Florida. Our services include custom fiberglass pool installation, pond creation, and hardscaping. Enhance your home's beauty and value with our expert craftsmanship and attention to detail."
-  openGraph={{
-    type: 'website',
-    url: 'https://purelifepools.com',
-    title: 'Premium Fiberglass Pools in Palm Bay',
-    description: 'Pure Life Pools specializes in transforming outdoor spaces in Palm Bay, Melbourne, and Titusville, Florida. Our services include custom fiberglass pool installation, pond creation, and hardscaping.',
-    images: [
-      {
-        url: 'https://purelifepools.com/assets/images/logo96x96.png',
-        width: 96,
-        height: 96,
-        alt: 'Pure Life Pools Logo',
-      }
-    ],
-    siteName: "Pure Life Pools | +1-321-831-3115",
-  }}
-  twitter={{
-    handle: '@purelifepools',
-    site: '@purelifepools',
-    cardType: 'summary_large_image',
-  }}
-/>
+      <NextSeo
+        title="Premium Fiberglass Pools in Palm Bay"
+        description="Pure Life Pools specializes in transforming outdoor spaces in Palm Bay, Melbourne, and Titusville, Florida. Our services include custom fiberglass pool installation, pond creation, and hardscaping. Enhance your home's beauty and value with our expert craftsmanship and attention to detail."
+        openGraph={{
+          type: 'website',
+          url: 'https://purelifepools.com',
+          title: 'Premium Fiberglass Pools in Palm Bay',
+          description: 'Pure Life Pools specializes in transforming outdoor spaces in Palm Bay, Melbourne, and Titusville, Florida. Our services include custom fiberglass pool installation, pond creation, and hardscaping.',
+          images: [
+            {
+              url: 'https://purelifepools.com/assets/images/logo96x96.png',
+              width: 96,
+              height: 96,
+              alt: 'Pure Life Pools Logo',
+            }
+          ],
+          siteName: "Pure Life Pools | +1-321-831-3115",
+        }}
+        twitter={{
+          handle: '@purelifepools',
+          site: '@purelifepools',
+          cardType: 'summary_large_image',
+        }}
+      />
       <Box
         sx={{
           minHeight: '100vh',
@@ -608,261 +601,261 @@ const Home = () => {
           </Typography>
         </Box>
 
-        
+
 
         <Box
-        sx={{
-          backgroundColor: '#FAFAFA',
-          py: { xs: 6, sm: 8, md: 10 },
-          px: { xs: 2, sm: 4, md: 6, lg: 8 }
-        }}
-      >
-        <Container maxWidth="lg">
-          {/* Title Section */}
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              alignItems: { xs: 'flex-start', sm: 'center' },
-              gap: { xs: 1, sm: 0 },
-              mb: { xs: 3, sm: 4 }
-            }}
-          >
-            <Typography
-              component="span"
-              sx={{
-                fontWeight: '600',
-                fontSize: { xs: 24, sm: 26, md: 30 },
-                color: '#5C83D6',
-                mr: 1
-              }}
-            >
-              Above Ground Pools
-            </Typography>
-          </Box>
-          {/* Description and Button */}
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            alignItems={{ xs: 'flex-start', md: 'center' }}
-            justifyContent="space-between"
-            spacing={{ xs: 2, md: 4 }}
-            mb={{ xs: 4, sm: 6 }}
-          >
-            <Typography
-              variant="body2"
-              sx={{
-                color: '#585858',
-                maxWidth: { xs: '100%', md: 600 },
-                fontSize: { xs: '0.875rem', sm: '1rem' }
-              }}
-            >
-              Explore our selection of premium above ground pools, perfect for any backyard. Our expert team is ready to help you find the ideal pool for your space and budget.
-            </Typography>
-            <Button
-              title="See above ground pools"
-              onClick={() => router?.push('/pools/above-ground')}
-              variant="outlined"
-              size="small"
-              sx={{
-                backgroundColor: 'white',
-                borderColor: '#133240',
-                textTransform: 'none',
-                color: '#133240',
-                whiteSpace: 'nowrap',
-                minWidth: 'fit-content',
-                px: 3,
-                '&:hover': {
-                  borderColor: '#133240',
-                  backgroundColor: 'rgba(19, 50, 64, 0.04)'
-                }
-              }}
-            >
-              See More Above Ground Pools
-            </Button>
-          </Stack>
-
-        <Grid container spacing={4}>
-          {aboveGroundPools.map((pool, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <Paper
-                elevation={0}
-                sx={{
-                  borderRadius: 2,
-                  overflow: 'hidden',
-                  transition: 'transform 0.3s ease-in-out',
-                  '&:hover': {
-                    transform: 'translateY(-8px)',
-                  },
-                }}
-              >
-                <Box
-                  sx={{
-                    position: 'relative',
-                    height: 240,
-                    width: '100%',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <Image
-                    src={pool.image}
-                    alt={pool.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                  />
-                </Box>
-                <Box sx={{ p: 2 }}>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      mb: 1,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {pool.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 2 }}
-                  >
-                    {pool.description}
-                  </Typography>
-                </Box>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-      </Box>
-
-      {/* Inground Pools Section */}
-<Box
-  sx={{
-    backgroundColor: 'white',
-    py: { xs: 6, sm: 8, md: 10 },
-    px: { xs: 2, sm: 4, md: 6, lg: 8 }
-  }}
->
-  <Container maxWidth="lg">
-    {/* Title Section */}
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: { xs: 'column', sm: 'row' },
-        alignItems: { xs: 'flex-start', sm: 'center' },
-        gap: { xs: 1, sm: 0 },
-        mb: { xs: 3, sm: 4 }
-      }}
-    >
-      <Typography
-        component="span"
-        sx={{
-          fontWeight: '600',
-          fontSize: { xs: 24, sm: 26, md: 30 },
-          color: '#5C83D6',
-          mr: 1
-        }}
-      >
-        Inground Pools
-      </Typography>
-    </Box>
-
-    {/* Description and Button */}
-    <Stack
-      direction={{ xs: 'column', md: 'row' }}
-      alignItems={{ xs: 'flex-start', md: 'center' }}
-      justifyContent="space-between"
-      spacing={{ xs: 2, md: 4 }}
-      mb={{ xs: 4, sm: 6 }}
-    >
-      <Typography
-        variant="body2"
-        sx={{
-          color: '#585858',
-          maxWidth: { xs: '100%', md: 600 },
-          fontSize: { xs: '0.875rem', sm: '1rem' }
-        }}
-      >
-        Create your dream backyard oasis with our custom inground pools. Our expert designers and installers will work with you to create the perfect swimming pool that complements your home and lifestyle.
-      </Typography>
-      <Button
-        title="See inground pools"
-        onClick={() => router?.push('/pools/inground')}
-        variant="outlined"
-        size="small"
-        sx={{
-          backgroundColor: 'white',
-          borderColor: '#133240',
-          textTransform: 'none',
-          color: '#133240',
-          whiteSpace: 'nowrap',
-          minWidth: 'fit-content',
-          px: 3,
-          '&:hover': {
-            borderColor: '#133240',
-            backgroundColor: 'rgba(19, 50, 64, 0.04)'
-          }
-        }}
-      >
-        See More Inground Pools
-      </Button>
-    </Stack>
-
-    <Grid container spacing={4}>
-      {ingroundPools.map((pool, index) => (
-        <Grid item xs={12} sm={6} md={3} key={index}>
-          <Paper
-            elevation={0}
-            sx={{
-              borderRadius: 2,
-              overflow: 'hidden',
-              transition: 'transform 0.3s ease-in-out',
-              border: '1px solid #e0e0e0',
-              '&:hover': {
-                transform: 'translateY(-8px)',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-              },
-            }}
-          >
+          sx={{
+            backgroundColor: '#FAFAFA',
+            py: { xs: 6, sm: 8, md: 10 },
+            px: { xs: 2, sm: 4, md: 6, lg: 8 }
+          }}
+        >
+          <Container maxWidth="lg">
+            {/* Title Section */}
             <Box
               sx={{
-                position: 'relative',
-                height: 240,
-                width: '100%',
-                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'flex-start', sm: 'center' },
+                gap: { xs: 1, sm: 0 },
+                mb: { xs: 3, sm: 4 }
               }}
             >
-              <Image
-                src={pool.image}
-                alt={pool.title}
-                fill
-                style={{ objectFit: 'cover' }}
-              />
-            </Box>
-            <Box sx={{ p: 2 }}>
               <Typography
-                variant="h6"
+                component="span"
                 sx={{
-                  mb: 1,
-                  fontWeight: 600,
+                  fontWeight: '600',
+                  fontSize: { xs: 24, sm: 26, md: 30 },
+                  color: '#5C83D6',
+                  mr: 1
                 }}
               >
-                {pool.title}
-              </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ mb: 2 }}
-              >
-                {pool.description}
+                Above Ground Pools
               </Typography>
             </Box>
-          </Paper>
-        </Grid>
-      ))}
-    </Grid>
-  </Container>
-</Box>
+            {/* Description and Button */}
+            <Stack
+              direction={{ xs: 'column', md: 'row' }}
+              alignItems={{ xs: 'flex-start', md: 'center' }}
+              justifyContent="space-between"
+              spacing={{ xs: 2, md: 4 }}
+              mb={{ xs: 4, sm: 6 }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  color: '#585858',
+                  maxWidth: { xs: '100%', md: 600 },
+                  fontSize: { xs: '0.875rem', sm: '1rem' }
+                }}
+              >
+                Explore our selection of premium above ground pools, perfect for any backyard. Our expert team is ready to help you find the ideal pool for your space and budget.
+              </Typography>
+              <Button
+                title="See above ground pools"
+                onClick={() => router?.push('/pools/above-ground')}
+                variant="outlined"
+                size="small"
+                sx={{
+                  backgroundColor: 'white',
+                  borderColor: '#133240',
+                  textTransform: 'none',
+                  color: '#133240',
+                  whiteSpace: 'nowrap',
+                  minWidth: 'fit-content',
+                  px: 3,
+                  '&:hover': {
+                    borderColor: '#133240',
+                    backgroundColor: 'rgba(19, 50, 64, 0.04)'
+                  }
+                }}
+              >
+                See More Above Ground Pools
+              </Button>
+            </Stack>
+
+            <Grid container spacing={4}>
+              {aboveGroundPools.map((pool, index) => (
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      borderRadius: 2,
+                      overflow: 'hidden',
+                      transition: 'transform 0.3s ease-in-out',
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        height: 240,
+                        width: '100%',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Image
+                        src={pool.image}
+                        alt={pool.title}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </Box>
+                    <Box sx={{ p: 2 }}>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          mb: 1,
+                          fontWeight: 600,
+                        }}
+                      >
+                        {pool.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
+                      >
+                        {pool.description}
+                      </Typography>
+                    </Box>
+                  </Paper>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </Box>
+
+        {/* Inground Pools Section */}
+        <Box
+          sx={{
+            backgroundColor: 'white',
+            py: { xs: 6, sm: 8, md: 10 },
+            px: { xs: 2, sm: 4, md: 6, lg: 8 }
+          }}
+        >
+          <Container maxWidth="lg">
+            {/* Title Section */}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'flex-start', sm: 'center' },
+                gap: { xs: 1, sm: 0 },
+                mb: { xs: 3, sm: 4 }
+              }}
+            >
+              <Typography
+                component="span"
+                sx={{
+                  fontWeight: '600',
+                  fontSize: { xs: 24, sm: 26, md: 30 },
+                  color: '#5C83D6',
+                  mr: 1
+                }}
+              >
+                Inground Pools
+              </Typography>
+            </Box>
+
+            {/* Description and Button */}
+            <Stack
+              direction={{ xs: 'column', md: 'row' }}
+              alignItems={{ xs: 'flex-start', md: 'center' }}
+              justifyContent="space-between"
+              spacing={{ xs: 2, md: 4 }}
+              mb={{ xs: 4, sm: 6 }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  color: '#585858',
+                  maxWidth: { xs: '100%', md: 600 },
+                  fontSize: { xs: '0.875rem', sm: '1rem' }
+                }}
+              >
+                Create your dream backyard oasis with our custom inground pools. Our expert designers and installers will work with you to create the perfect swimming pool that complements your home and lifestyle.
+              </Typography>
+              <Button
+                title="See inground pools"
+                onClick={() => router?.push('/pools/inground')}
+                variant="outlined"
+                size="small"
+                sx={{
+                  backgroundColor: 'white',
+                  borderColor: '#133240',
+                  textTransform: 'none',
+                  color: '#133240',
+                  whiteSpace: 'nowrap',
+                  minWidth: 'fit-content',
+                  px: 3,
+                  '&:hover': {
+                    borderColor: '#133240',
+                    backgroundColor: 'rgba(19, 50, 64, 0.04)'
+                  }
+                }}
+              >
+                See More Inground Pools
+              </Button>
+            </Stack>
+
+            <Grid container spacing={4}>
+              {ingroundPools.map((pool, index) => (
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      borderRadius: 2,
+                      overflow: 'hidden',
+                      transition: 'transform 0.3s ease-in-out',
+                      border: '1px solid #e0e0e0',
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        height: 240,
+                        width: '100%',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Image
+                        src={pool.image}
+                        alt={pool.title}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </Box>
+                    <Box sx={{ p: 2 }}>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          mb: 1,
+                          fontWeight: 600,
+                        }}
+                      >
+                        {pool.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
+                      >
+                        {pool.description}
+                      </Typography>
+                    </Box>
+                  </Paper>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </Box>
 
         <PoolProductsSection router={router} />
 
