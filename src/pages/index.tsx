@@ -780,7 +780,7 @@ const Home = () => {
               </Typography>
               <Button
                 title="See inground pools"
-                onClick={() => router?.push('/pools/inground/metric-pools#inground')}
+                onClick={() => router?.push('/pools/metric-pools#inground')}
                 variant="outlined"
                 size="small"
                 sx={{

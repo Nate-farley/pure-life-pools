@@ -1,29 +1,24 @@
 // @ts-nocheck
 'use client'
-import React, { useState, useEffect, useMemo, memo, useCallback, useRef } from 'react';
-import SwipeableViews from 'react-swipeable-views';
+import Footer from '@/containers/Footer';
+import NavBar from '@/containers/Navbar/navbar';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   Box,
+  Grid,
   Paper,
   Stack,
-  Typography,
   TextField,
-  InputAdornment,
-  Grid,
-  Button,
-  useMediaQuery,
-  Fade,
-  CircularProgress,
+  Typography,
+  useMediaQuery
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
-import { Search } from 'lucide-react';
-import NavBar from '@/containers/Navbar/navbar';
-import Footer from '@/containers/Footer';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
-import { Info } from '@mui/icons-material';
-import specs from '../../scrape/pool-spec.json'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { useRouter } from 'next/router';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import SwipeableViews from 'react-swipeable-views';
+import specs from '../../scrape/pool-spec.json';
 // Carousel images constant
 const CAROUSEL_IMAGES = [
   '/assets/images/products-page/product-page-image-two.jpg',
@@ -169,7 +164,7 @@ const TitleOverlay = styled(Box)(({ theme }) => ({
 
 // Optimized PoolCard component
 const PoolCard = memo(({ pool }) => {
- //const [specs, setSpecs] = useState(null);
+  //const [specs, setSpecs] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const hoverTimeoutRef = useRef(null);
@@ -201,67 +196,67 @@ const PoolCard = memo(({ pool }) => {
   const getSpecsKey = (poolName) => {
     console.log(poolName)
     console.log(poolName.toLowerCase()
-    .replace(/\s+/g, '-')  // Replace spaces with hyphens
-    .replace(/\./g, '-'))
+      .replace(/\s+/g, '-')  // Replace spaces with hyphens
+      .replace(/\./g, '-'))
     return poolName.toLowerCase()
-    .replace(/\s+/g, '-')  // Replace spaces with hyphens
-    .replace(/\./g, '-');
+      .replace(/\s+/g, '-')  // Replace spaces with hyphens
+      .replace(/\./g, '-');
   };
 
 
   const poolSpecs = specs?.data?.[getSpecsKey(pool.name)];
 
-const [showSpecs, setShowSpecs] = useState(false);
+  const [showSpecs, setShowSpecs] = useState(false);
   return (
     <Box>
-   
-    <PoolImageContainer>
-      
-      <ImageOverlay
-        component="img"
-        src={pool.angleImage}
-        alt={`${pool.name} angle view`}
-        loading="lazy"
-      />
 
-{!pool.name.toLowerCase().includes('corinthian') && 
- !pool.name.toLowerCase().includes('cove') && (
-  <ImageOverlay
-  component="img"
-  src={pool.viewImage}
-  alt={`${pool.name} view`}
-  sx={{
-    opacity: 0,
-    zIndex: 2,
-    ':hover': {  // Target the parent Box component
-      opacity: 1,
-    },
-  }}
-  loading="lazy"
-/>
-)}
+      <PoolImageContainer>
+
+        <ImageOverlay
+          component="img"
+          src={pool.angleImage}
+          alt={`${pool.name} angle view`}
+          loading="lazy"
+        />
+
+        {!pool.name.toLowerCase().includes('corinthian') &&
+          !pool.name.toLowerCase().includes('cove') && (
+            <ImageOverlay
+              component="img"
+              src={pool.viewImage}
+              alt={`${pool.name} view`}
+              sx={{
+                opacity: 0,
+                zIndex: 2,
+                ':hover': {  // Target the parent Box component
+                  opacity: 1,
+                },
+              }}
+              loading="lazy"
+            />
+          )}
 
 
-<TitleOverlay sx={{ zIndex: 999,  }}>  {/* Ensure title bar stays on top */}
-  <Box sx={{ 
-    display: 'flex', 
-    alignItems: 'center', 
-    justifyContent: 'space-between',
-    
-    position: 'relative',  // Add this
-  }}>
-    <Typography 
-      variant="subtitle1" 
-      sx={{ 
-        color: '#2F2F2F', 
-        fontWeight: 700,
-        fontSize: '1rem',
-        lineHeight: 1.2
-      }}
-    >
-      {pool.name}
-    </Typography>
-    <Box
+        <TitleOverlay sx={{ zIndex: 999, }}>  {/* Ensure title bar stays on top */}
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+
+            position: 'relative',  // Add this
+          }}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                color: '#2F2F2F',
+                fontWeight: 700,
+                fontSize: '1rem',
+                lineHeight: 1.2
+              }}
+            >
+              {pool.name}
+            </Typography>
+            <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -280,15 +275,15 @@ const [showSpecs, setShowSpecs] = useState(false);
               onMouseEnter={handleInfoMouseEnter}
               onMouseLeave={handleInfoMouseLeave}
             >
-              <InfoOutlinedIcon 
-                sx={{ 
+              <InfoOutlinedIcon
+                sx={{
                   color: '#133240',
                   fontSize: 16
-                }} 
+                }}
               />
-              <Typography 
-                variant="caption" 
-                sx={{ 
+              <Typography
+                variant="caption"
+                sx={{
                   color: '#133240',
                   fontWeight: 500,
                   letterSpacing: '0.02em'
@@ -297,131 +292,131 @@ const [showSpecs, setShowSpecs] = useState(false);
                 View Specs
               </Typography>
             </Box>
-  </Box>
-</TitleOverlay>
+          </Box>
+        </TitleOverlay>
 
-       {/* Specs Overlay */}
-       <Box
-     className="specs-overlay"
-     sx={{
-       position: 'absolute',
-       top: 0,
-       left: 0,
-       right: 0,
-       bottom: 0,
-       bgcolor: 'rgba(255, 255, 255, 0.95)',
-       display: 'flex',
-       flexDirection: 'column',
-       justifyContent: 'center',
-       alignItems: 'center',
-       opacity: showSpecs ? 1 : 0,
-       zIndex: showSpecs ? 4 : 1,
-       transition: 'opacity 0.3s ease-in-out',
-       p: 3,
-       pointerEvents: showSpecs ? 'auto' : 'none'
-     }}
-      >
-        <Typography 
-          variant="h6" 
-          sx={{ 
-            color: '#133240', 
-            mb: 2,
-            fontWeight: 600 
+        {/* Specs Overlay */}
+        <Box
+          className="specs-overlay"
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            bgcolor: 'rgba(255, 255, 255, 0.95)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            opacity: showSpecs ? 1 : 0,
+            zIndex: showSpecs ? 4 : 1,
+            transition: 'opacity 0.3s ease-in-out',
+            p: 3,
+            pointerEvents: showSpecs ? 'auto' : 'none'
           }}
         >
-          {pool.name}
-        </Typography>
-        
-        {poolSpecs ? (
-          <Box sx={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: 1.5,
-            width: '100%' 
-          }}>
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'space-between',
-              borderBottom: '1px solid rgba(19, 50, 64, 0.1)',
-              pb: 1
+          <Typography
+            variant="h6"
+            sx={{
+              color: '#133240',
+              mb: 2,
+              fontWeight: 600
+            }}
+          >
+            {pool.name}
+          </Typography>
+
+          {poolSpecs ? (
+            <Box sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1.5,
+              width: '100%'
             }}>
-              <Typography 
-                variant="body2" 
-                sx={{ color: '#666' }}
-              >
-                Size
-              </Typography>
-              <Typography 
-                variant="body2" 
-                sx={{ 
-                  color: '#133240',
-                  fontWeight: 500 
-                }}
-              >
-                {poolSpecs.size}
-              </Typography>
-            </Box>
-            
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'space-between',
-              borderBottom: '1px solid rgba(19, 50, 64, 0.1)',
-              pb: 1
-            }}>
-              <Typography 
-                variant="body2" 
-                sx={{ color: '#666' }}
-              >
-                Depth
-              </Typography>
-              <Typography 
-                variant="body2" 
-                sx={{ 
-                  color: '#133240',
-                  fontWeight: 500 
-                }}
-              >
-                {poolSpecs.depth}
-              </Typography>
-            </Box>
-            
-            {poolSpecs.gallons !== 'N/A' && (
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
+              <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
                 justifyContent: 'space-between',
+                borderBottom: '1px solid rgba(19, 50, 64, 0.1)',
                 pb: 1
               }}>
-                <Typography 
-                  variant="body2" 
+                <Typography
+                  variant="body2"
                   sx={{ color: '#666' }}
                 >
-                  Capacity
+                  Size
                 </Typography>
-                <Typography 
-                  variant="body2" 
-                  sx={{ 
+                <Typography
+                  variant="body2"
+                  sx={{
                     color: '#133240',
-                    fontWeight: 500 
+                    fontWeight: 500
                   }}
                 >
-                  {poolSpecs.gallons}
+                  {poolSpecs.size}
                 </Typography>
               </Box>
-            )}
-          </Box>
-        ) : (
-          <Typography 
-            variant="body1" 
-            sx={{ color: '#666' }}
-          >
-            Specifications not available
-          </Typography>
-        )}
-      </Box>
-    </PoolImageContainer>
+
+              <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderBottom: '1px solid rgba(19, 50, 64, 0.1)',
+                pb: 1
+              }}>
+                <Typography
+                  variant="body2"
+                  sx={{ color: '#666' }}
+                >
+                  Depth
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: '#133240',
+                    fontWeight: 500
+                  }}
+                >
+                  {poolSpecs.depth}
+                </Typography>
+              </Box>
+
+              {poolSpecs.gallons !== 'N/A' && (
+                <Box sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  pb: 1
+                }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: '#666' }}
+                  >
+                    Capacity
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: '#133240',
+                      fontWeight: 500
+                    }}
+                  >
+                    {poolSpecs.gallons}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          ) : (
+            <Typography
+              variant="body1"
+              sx={{ color: '#666' }}
+            >
+              Specifications not available
+            </Typography>
+          )}
+        </Box>
+      </PoolImageContainer>
     </Box>
   );
 });
@@ -435,6 +430,21 @@ const ProductsPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [loadedImages, setLoadedImages] = useState({});
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const router = useRouter()
+  useEffect(() => {
+    const handleRouteChange = () => {
+      window.scrollTo(0, 0)
+    }
+
+    router.events.on('routeChangeComplete', handleRouteChange)
+
+    // Clean up the event listener
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
+
 
   // Scroll handler
   useEffect(() => {
@@ -584,7 +594,7 @@ const ProductsPage = () => {
       <Head>
         <script type="application/ld+json">
           {JSON.stringify({
-          '@context': 'https://schema.org',
+            '@context': 'https://schema.org',
             '@type': 'ItemList',
             itemListElement: poolImagePairs.map((pool, index) => ({
               '@type': 'Product',
@@ -603,7 +613,7 @@ const ProductsPage = () => {
             }))
           })}
         </script>
-        
+
         {/* Local Business Schema Markup for SEO */}
         <script type="application/ld+json">
           {JSON.stringify({
@@ -749,7 +759,7 @@ const ProductsPage = () => {
                       solutions
                     </Typography>
                   </Stack>
-                  
+
                   {/* Carousel pagination dots */}
                   <PaginationContainer>
                     {CAROUSEL_IMAGES.map((_, i) => (
@@ -773,11 +783,10 @@ const ProductsPage = () => {
                 sx={{
                   width: '100%',
                   height: '100%',
-                  backgroundImage: `url(${
-                    loadedImages[CAROUSEL_IMAGES[getNextImageIndex()]]
-                      ? CAROUSEL_IMAGES[getNextImageIndex()]
-                      : CAROUSEL_IMAGES[activeStep]
-                  })`,
+                  backgroundImage: `url(${loadedImages[CAROUSEL_IMAGES[getNextImageIndex()]]
+                    ? CAROUSEL_IMAGES[getNextImageIndex()]
+                    : CAROUSEL_IMAGES[activeStep]
+                    })`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   filter: 'brightness(0.7)',
