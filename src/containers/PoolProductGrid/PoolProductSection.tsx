@@ -55,7 +55,9 @@ const PoolProductsSection = ({ router }: { router: any }) => {
 
           <Button
             title="See fiberglass pools"
-            onClick={() => router?.push('/pools/fiberglass')}
+            onClick={() => router?.push('/pools/fiberglass', {
+              scroll: false
+            })}
             variant="outlined"
             size="small"
             sx={{

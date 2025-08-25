@@ -15,6 +15,7 @@ import {
 import { styled, useTheme } from '@mui/material/styles';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import specs from '../../scrape/pool-spec.json';
@@ -167,6 +168,34 @@ const PoolCard = memo(({ pool }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const hoverTimeoutRef = useRef(null);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // Multiple approaches to ensure scroll reset
+    const resetScroll = () => {
+      // Method 1: Standard scroll to top
+      window.scrollTo(0, 0);
+
+      // Method 2: Set scroll position on document
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+
+      // Method 3: Force scroll on next frame
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+      });
+    };
+
+    // Reset immediately
+    resetScroll();
+
+    // Reset after a short delay to override any other scroll restoration
+    const timer = setTimeout(resetScroll, 50);
+
+    return () => clearTimeout(timer);
+  }, [router.asPath]); // Dependencies on the full path
+
 
   const handleMouseEnter = () => {
     if (hoverTimeoutRef.current) {
@@ -430,19 +459,6 @@ const ProductsPage = () => {
   const [loadedImages, setLoadedImages] = useState({});
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Scroll handler
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 200);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   // Image preloading
   useEffect(() => {
