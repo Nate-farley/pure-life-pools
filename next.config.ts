@@ -15,7 +15,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
     scrollRestoration: false, // Disable browser scroll restoration
+        esmExternals: 'loose',
+
   },
+  skipTrailingSlashRedirect: true,
   async headers() {
     return [
       {

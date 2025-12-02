@@ -1,0 +1,198 @@
+[
+  {
+    "name": "aruba",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=82387e31-66f1-477d-9d3c-a4dcf4188eb1&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "astoria_collection",
+    "model_url": null
+  },
+  {
+    "name": "axiom_12",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=9925ad68-a43d-4cb0-9a75-408919bbac8a&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "axiom_12_deluxe",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=9b586be2-5ab3-4184-b400-eb76892aea87&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "axiom_14",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=c4007ce7-7549-4355-ba6e-53d82440b6de&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "axiom_16",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=c7e6e85c-8f54-4663-9afc-a2d9cd885f61&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "barcelona",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=2f890e40-3088-4916-82dc-9fc9f05dc730&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "bay_isle",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=cf98c238-86e6-460e-b4d2-a4acff7dfe44&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "bermuda",
+    "model_url": null
+  },
+  {
+    "name": "cambridge",
+    "model_url": null
+  },
+  {
+    "name": "cancun",
+    "model_url": null
+  },
+  {
+    "name": "cancun_deluxe",
+    "model_url": null
+  },
+  {
+    "name": "cape_cod",
+    "model_url": null
+  },
+  {
+    "name": "caribbean",
+    "model_url": null
+  },
+  {
+    "name": "claremont",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=2f9c0501-89dd-44ff-8574-800f6946dbce&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "corinthian_12",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=a777affb-3edd-4394-9b7f-6198a4ba1d66&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "corinthian_14",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=6111bcbb-8333-43cf-aac7-6bf9576a1cab&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "corinthian_16",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=650f9d3d-2c04-4573-92bc-132415203658&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "coronado",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=daaa61b9-190a-4914-b6a9-6b22b0c59e28&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "delray",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=4f17c364-777b-4afa-bab0-74087c93a6b3&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "enchantment_9.17",
+    "model_url": null
+  },
+  {
+    "name": "enchantment_9.21",
+    "model_url": null
+  },
+  {
+    "name": "enchantment_9.24",
+    "model_url": null
+  },
+  {
+    "name": "fiji",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=36148439-3399-469f-b3e5-48e174f6904d&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "genesis",
+    "model_url": null
+  },
+  {
+    "name": "jamaica",
+    "model_url": null
+  },
+  {
+    "name": "java",
+    "model_url": null
+  },
+  {
+    "name": "key_west",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=af9e0810-b0ee-4425-a38e-69293c3c5d95&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "kingston",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=2d84cb6b-c9fa-44ce-b971-e16a97df0a91&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "laguna",
+    "model_url": null
+  },
+  {
+    "name": "laguna_deluxe",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=b18d1c8f-b33f-420b-80c1-9b00020d68ea&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "lake_shore",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=07e53e61-7b76-4a3d-b96f-c4003c847b83&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "milan",
+    "model_url": null
+  },
+  {
+    "name": "monaco",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=894085f7-d0aa-4879-a54d-fc5dae9cbd02&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "olympia_12",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=a304c3a4-9fb7-4501-88d5-82f96cf52a76&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "olympia_14",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=d42c699f-aea4-4c0c-8d12-ffcced4c7c4e&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "olympia_16",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=1ee30622-d258-40eb-9af7-70ba783ff278&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "pleasant_cove",
+    "model_url": null
+  },
+  {
+    "name": "providence_14",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=24b504ab-b377-4a09-a534-8079781aa0c0&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "st_lucia",
+    "model_url": null
+  },
+  {
+    "name": "st_thomas",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=db347d9a-702d-4c0b-8d10-17955f08fb1a&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "synergy",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=7c546dd7-8659-43fa-bff2-70ddda2398c1&env=cedarbridge&showInteractionPrompt=0"
+  },
+  {
+    "name": "tuscan_11.20",
+    "model_url": null
+  },
+  {
+    "name": "tuscan_13.24",
+    "model_url": null
+  },
+  {
+    "name": "tuscan_14.27",
+    "model_url": null
+  },
+  {
+    "name": "tuscan_14.30",
+    "model_url": null
+  },
+  {
+    "name": "tuscan_14.40",
+    "model_url": null
+  },
+  {
+    "name": "valencia",
+    "model_url": null
+  },
+  {
+    "name": "vista_isle",
+    "model_url": "https://www.vectary.com/viewer/v1/?model=d60f7cff-eec2-478b-95a7-f55200916912&env=cedarbridge&showInteractionPrompt=0"
+  }
+]

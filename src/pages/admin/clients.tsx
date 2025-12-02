@@ -1,9 +1,9 @@
 // pages/admin/clients.js
 // @ts-nocheck
 import React, { useState, useEffect } from 'react'
-import { 
-  Container, 
-  Typography, 
+import {
+  Container,
+  Typography,
   Box,
   TextField,
   Button,
@@ -30,7 +30,10 @@ import {
   Card,
   Stack,
   alpha,
-  Grid
+  Grid,
+  Tooltip,
+  Fade,
+  Slide
 } from '@mui/material'
 import { NextSeo } from 'next-seo'
 import LockIcon from '@mui/icons-material/Lock'
@@ -41,18 +44,22 @@ import AddIcon from '@mui/icons-material/Add'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import SaveIcon from '@mui/icons-material/Save'
 import PhoneIcon from '@mui/icons-material/Phone'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import PeopleIcon from '@mui/icons-material/People'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 function AdminClientsPage() {
   // State for password authentication
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState(false)
-  
+
   // State for clients data
   const [clients, setClients] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  
+
   // State for create/edit dialog
   const [openDialog, setOpenDialog] = useState(false)
   const [editingClient, setEditingClient] = useState(null)
@@ -73,56 +80,57 @@ function AdminClientsPage() {
     final: 'TBD',
     progress: 0
   })
-  
+
   // State for delete confirmation
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
   const [clientToDelete, setClientToDelete] = useState(null)
-  
+
   // State for notifications
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
     severity: 'success'
   })
-  
+  console.log(password)
+
   // State for polling interval
   const [pollingInterval, setPollingInterval] = useState(null)
-  
+
   // Handle password submission
   // @ts-ignore
   const handlePasswordSubmit = (e) => {
     e.preventDefault()
-    
+    console.log(password)
     // Simple password check - you would want to replace this with a more secure solution
     if (password === 'admin123') {
       setIsAuthenticated(true)
       setPasswordError(false)
       fetchClients()
-      
+
       // Set up polling for real-time updates
       const interval = setInterval(() => {
         fetchClients(false) // Fetch without showing loading state
       }, 10000) // Poll every 10 seconds
-      
+
       setPollingInterval(interval)
     } else {
       setPasswordError(true)
     }
   }
-  
+
   // Fetch clients from the API
   const fetchClients = async (showLoading = true) => {
     if (showLoading) {
       setLoading(true)
     }
-    
+
     try {
       const response = await fetch('/api/clients')
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch clients')
       }
-      
+
       const data = await response.json()
       setClients(data.clients)
       setError(null)
@@ -140,7 +148,7 @@ function AdminClientsPage() {
       }
     }
   }
-  
+
   // Handle dialog open for create/edit
   const handleOpenDialog = (client = null) => {
     if (client) {
@@ -182,16 +190,16 @@ function AdminClientsPage() {
         progress: 0
       })
     }
-    
+
     setOpenDialog(true)
   }
-  
+
   // Handle dialog close
   const handleCloseDialog = () => {
     setOpenDialog(false)
     setEditingClient(null)
   }
-  
+
   // Handle form input change
   const handleFormChange = (e) => {
     const { name, value } = e.target
@@ -200,20 +208,20 @@ function AdminClientsPage() {
       [name]: name === 'progress' ? parseInt(value, 10) : value
     }))
   }
-  
+
   // Handle form submission
   const handleSubmitClient = async (e) => {
     e.preventDefault()
-    
+
     try {
       setLoading(true)
-      
-      const url = editingClient 
-        ? `/api/clients/${editingClient.id}` 
+
+      const url = editingClient
+        ? `/api/clients/${editingClient.id}`
         : '/api/clients'
-      
+
       const method = editingClient ? 'PUT' : 'POST'
-      
+
       const response = await fetch(url, {
         method,
         headers: {
@@ -221,19 +229,19 @@ function AdminClientsPage() {
         },
         body: JSON.stringify(clientForm)
       })
-      
+
       if (!response.ok) {
         throw new Error(`Failed to ${editingClient ? 'update' : 'create'} client`)
       }
-      
+
       await fetchClients()
-      
+
       setSnackbar({
         open: true,
         message: `Client ${editingClient ? 'updated' : 'created'} successfully`,
         severity: 'success'
       })
-      
+
       handleCloseDialog()
     } catch (err) {
       console.error(`Error ${editingClient ? 'updating' : 'creating'} client:`, err)
@@ -246,30 +254,30 @@ function AdminClientsPage() {
       setLoading(false)
     }
   }
-  
+
   // Handle delete client - open confirmation
   const handleDeleteClick = (client) => {
     setClientToDelete(client)
     setDeleteConfirmOpen(true)
   }
-  
+
   // Handle delete confirmation
   const handleDeleteConfirm = async () => {
     if (!clientToDelete) return
-    
+
     try {
       setLoading(true)
-      
+
       const response = await fetch(`/api/clients/${clientToDelete.id}`, {
         method: 'DELETE'
       })
-      
+
       if (!response.ok) {
         throw new Error('Failed to delete client')
       }
-      
+
       await fetchClients()
-      
+
       setSnackbar({
         open: true,
         message: 'Client deleted successfully',
@@ -288,12 +296,12 @@ function AdminClientsPage() {
       setLoading(false)
     }
   }
-  
+
   // Handle snackbar close
   const handleSnackbarClose = () => {
     setSnackbar(prev => ({ ...prev, open: false }))
   }
-  
+
   // Cleanup polling interval on unmount
   useEffect(() => {
     return () => {
@@ -302,7 +310,19 @@ function AdminClientsPage() {
       }
     }
   }, [pollingInterval])
-  
+
+  // Calculate dashboard statistics
+  const getDashboardStats = () => {
+    const totalClients = clients.length
+    const activeProjects = clients.filter(c => c.progress > 0 && c.progress < 100).length
+    const completedProjects = clients.filter(c => c.progress === 100).length
+    const avgProgress = clients.length > 0
+      ? Math.round(clients.reduce((sum, c) => sum + c.progress, 0) / clients.length)
+      : 0
+
+    return { totalClients, activeProjects, completedProjects, avgProgress }
+  }
+
   // Status options for dropdowns
   const permitOptions = ['Approved', 'Pending', 'Rejected', 'In Review']
   const orderStatusOptions = ['Completed', 'In Progress', 'Confirmed', 'On Hold']
@@ -311,459 +331,704 @@ function AdminClientsPage() {
   // Status color mapping
   const getStatusColor = (status) => {
     const statusColors = {
-      'Approved': '#4caf50',
-      'Pending': '#ff9800',
-      'Rejected': '#f44336',
-      'In Review': '#2196f3',
-      'Completed': '#4caf50',
-      'In Progress': '#2196f3',
-      'On Hold': '#ff9800',
-      'Scheduled': '#2196f3',
-      'Passed': '#4caf50',
-      'Not Started': '#9e9e9e'
+      'Approved': '#10b981',
+      'Pending': '#f59e0b',
+      'Rejected': '#ef4444',
+      'In Review': '#3b82f6',
+      'Completed': '#10b981',
+      'In Progress': '#3b82f6',
+      'On Hold': '#f59e0b',
+      'Confirmed': '#8b5cf6',
+      'Scheduled': '#3b82f6',
+      'Passed': '#10b981',
+      'Not Started': '#6b7280'
     }
-    return statusColors[status] || '#757575'
+    return statusColors[status] || '#6b7280'
   }
 
   // Get progress color
   const getProgressColor = (progress) => {
-    if (progress === 100) return '#4caf50'
-    if (progress > 60) return '#2196f3' 
-    if (progress > 30) return '#ff9800'
-    return '#f44336'
+    if (progress === 100) return '#10b981'
+    if (progress >= 75) return '#3b82f6'
+    if (progress >= 50) return '#8b5cf6'
+    if (progress >= 25) return '#f59e0b'
+    return '#ef4444'
   }
+
+  const stats = getDashboardStats()
 
   // Render password screen or table view based on authentication state
   return (
     <>
-      <div className="relative min-h-screen w-full bg-gray-50">
+      <NextSeo
+        title="Admin Dashboard - Client Management"
+        description="Manage your clients and projects"
+      />
+      <Box sx={{
+        minHeight: '100vh',
+        bgcolor: '#f8fafc',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
         {!isAuthenticated ? (
           // Password Screen
-          <Container maxWidth="sm" sx={{ pt: 8, pb: 8 }}>
-            <Card 
-              elevation={2} 
-              sx={{ 
-                borderRadius: 3,
-                overflow: 'hidden',
-              }}
-            >
-              <Box sx={{ 
-                p: 4, 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center',
-                bgcolor: 'background.paper'
-              }}>
-                <Box sx={{ 
-                  backgroundColor: alpha('#1976d2', 0.1), 
-                  p: 2,
-                  borderRadius: '50%',
-                  mb: 3
+          <Fade in={!isAuthenticated} timeout={600}>
+            <Container maxWidth="sm" sx={{ py: 4 }}>
+              <Card
+                elevation={0}
+                sx={{
+                  border: '1px solid #e5e7eb',
+                  overflow: 'hidden',
+                  bgcolor: '#ffffff'
+                }}
+              >
+                <Box sx={{
+                  p: 5,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
                 }}>
-                  <LockIcon sx={{ fontSize: 40, color: 'primary.main' }} />
-                </Box>
-                <Typography 
-                  variant="h4" 
-                  component="h1" 
-                  gutterBottom 
-                  sx={{ fontWeight: 600, mb: 1 }}
-                >
-                  Admin Login
-                </Typography>
-                <Typography 
-                  variant="body1" 
-                  color="text.secondary" 
-                  align="center" 
-                  sx={{ mb: 4 }}
-                >
-                  Enter your password to access the dashboard
-                </Typography>
-                
-                <Box component="form" onSubmit={handlePasswordSubmit} sx={{ width: '100%' }}>
-                  <TextField
-                    fullWidth
-                    type="password"
-                    label="Password"
-                    variant="outlined"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    error={passwordError}
-                    helperText={passwordError ? "Incorrect password" : ""}
-                    sx={{ 
-                      mb: 3,
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: 2,
-                      }
-                    }}
-                    autoFocus
-                  />
-                  
-                  <Button 
-                    type="submit" 
-                    fullWidth 
-                    variant="contained" 
-                    size="large"
-                    sx={{ 
-                      py: 1.5,
-                      borderRadius: 2,
-                      textTransform: 'none',
-                      fontWeight: 600
+                  <Box sx={{
+                    bgcolor: '#1e293b',
+                    p: 2.5,
+                    mb: 3
+                  }}>
+                    <LockIcon sx={{ fontSize: 48, color: 'white' }} />
+                  </Box>
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    gutterBottom
+                    sx={{
+                      fontWeight: 700,
+                      mb: 1,
+                      color: '#1e293b'
                     }}
                   >
-                    Sign In
-                  </Button>
+                    Admin Dashboard
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    align="center"
+                    sx={{ mb: 4, fontSize: '1rem' }}
+                  >
+                    Please authenticate to access the client management system
+                  </Typography>
+
+                  <Box component="form" onSubmit={handlePasswordSubmit} sx={{ width: '100%' }}>
+                    <TextField
+                      fullWidth
+                      type="password"
+                      label="Password"
+                      variant="outlined"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      error={passwordError}
+                      helperText={passwordError ? "Incorrect password. Please try again." : ""}
+                      sx={{ mb: 3 }}
+                      autoFocus
+                    />
+
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      size="large"
+                      sx={{
+                        py: 1.75,
+                        textTransform: 'none',
+                        fontWeight: 600,
+                        fontSize: '1rem',
+                        bgcolor: '#1e293b',
+                        '&:hover': {
+                          bgcolor: '#0f172a'
+                        }
+                      }}
+                    >
+                      Access Dashboard
+                    </Button>
+                  </Box>
                 </Box>
-              </Box>
-            </Card>
-          </Container>
+              </Card>
+            </Container>
+          </Fade>
         ) : (
-          // Admin Table View
-          <Box sx={{ px: 3, py: 3, maxWidth: '100vw' }}>
-            {/* Header and action toolbar */}
-            <Box sx={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center',
-              mb: 3
-            }}>
-              <Typography variant="h5" component="h1" sx={{ fontWeight: 600 }}>
-                Clients Dashboard
-              </Typography>
-              
-              <Stack direction="row" spacing={1}>
-                <Button 
-                  variant="contained" 
-                  color="primary" 
-                  startIcon={<AddIcon />}
-                  onClick={() => handleOpenDialog()}
-                  sx={{ 
-                    borderRadius: 2,
-                    textTransform: 'none',
-                    fontWeight: 500
-                  }}
-                >
-                  Add Client
-                </Button>
-                <Button 
-                  variant="outlined" 
-                  startIcon={<RefreshIcon />}
-                  onClick={() => fetchClients()}
-                  disabled={loading}
-                  sx={{ 
-                    borderRadius: 2,
-                    textTransform: 'none'
-                  }}
-                >
-                  Refresh
-                </Button>
-              </Stack>
-            </Box>
-            
-            {/* Loading indicator */}
-            {loading && (
-              <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-                <CircularProgress size={24} thickness={4} />
+          // Admin Dashboard View
+          <Box sx={{
+            width: '100%',
+            minHeight: '100vh',
+            bgcolor: '#f8fafc',
+            py: 4
+          }}>
+            <Container maxWidth="xl">
+              {/* Header */}
+              <Box sx={{ mb: 4 }}>
+                <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
+                  <Box sx={{
+                    bgcolor: '#1e293b',
+                    p: 1.5,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <DashboardIcon sx={{ fontSize: 32, color: 'white' }} />
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="h4"
+                      component="h1"
+                      sx={{
+                        fontWeight: 700,
+                        color: '#1e293b',
+                        mb: 0.5
+                      }}
+                    >
+                      Client Dashboard
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Manage and monitor all client projects
+                    </Typography>
+                  </Box>
+                </Stack>
+
+                {/* Stats Cards */}
+                <Grid container spacing={3} sx={{ mb: 4 }}>
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Card
+                      elevation={0}
+                      sx={{
+                        p: 3,
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        bgcolor: 'white'
+                      }}
+                    >
+                      <Stack direction="row" alignItems="center" justifyContent="space-between">
+                        <Box>
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 1, fontWeight: 500 }}>
+                            Total Clients
+                          </Typography>
+                          <Typography variant="h4" sx={{ fontWeight: 700, color: '#1e293b' }}>
+                            {stats.totalClients}
+                          </Typography>
+                        </Box>
+                        <Box sx={{
+                          bgcolor: '#f1f5f9',
+                          p: 2
+                        }}>
+                          <PeopleIcon sx={{ fontSize: 32, color: '#1e293b' }} />
+                        </Box>
+                      </Stack>
+                    </Card>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Card
+                      elevation={0}
+                      sx={{
+                        p: 3,
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        bgcolor: 'white'
+                      }}
+                    >
+                      <Stack direction="row" alignItems="center" justifyContent="space-between">
+                        <Box>
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 1, fontWeight: 500 }}>
+                            Active Projects
+                          </Typography>
+                          <Typography variant="h4" sx={{ fontWeight: 700, color: '#3b82f6' }}>
+                            {stats.activeProjects}
+                          </Typography>
+                        </Box>
+                        <Box sx={{
+                          bgcolor: '#eff6ff',
+                          p: 2
+                        }}>
+                          <TrendingUpIcon sx={{ fontSize: 32, color: '#3b82f6' }} />
+                        </Box>
+                      </Stack>
+                    </Card>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Card
+                      elevation={0}
+                      sx={{
+                        p: 3,
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        bgcolor: 'white'
+                      }}
+                    >
+                      <Stack direction="row" alignItems="center" justifyContent="space-between">
+                        <Box>
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 1, fontWeight: 500 }}>
+                            Completed
+                          </Typography>
+                          <Typography variant="h4" sx={{ fontWeight: 700, color: '#10b981' }}>
+                            {stats.completedProjects}
+                          </Typography>
+                        </Box>
+                        <Box sx={{
+                          bgcolor: '#f0fdf4',
+                          p: 2
+                        }}>
+                          <CheckCircleIcon sx={{ fontSize: 32, color: '#10b981' }} />
+                        </Box>
+                      </Stack>
+                    </Card>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Card
+                      elevation={0}
+                      sx={{
+                        p: 3,
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        bgcolor: 'white'
+                      }}
+                    >
+                      <Box>
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1, fontWeight: 500 }}>
+                          Average Progress
+                        </Typography>
+                        <Typography variant="h4" sx={{ fontWeight: 700, color: '#8b5cf6', mb: 1.5 }}>
+                          {stats.avgProgress}%
+                        </Typography>
+                        <LinearProgress
+                          variant="determinate"
+                          value={stats.avgProgress}
+                          sx={{
+                            height: 6,
+                            bgcolor: '#f3f4f6',
+                            '& .MuiLinearProgress-bar': {
+                              bgcolor: '#8b5cf6'
+                            }
+                          }}
+                        />
+                      </Box>
+                    </Card>
+                  </Grid>
+                </Grid>
+
+                {/* Action Buttons */}
+                <Stack direction="row" spacing={2} justifyContent="flex-end">
+                  <Button
+                    variant="outlined"
+                    startIcon={<RefreshIcon />}
+                    onClick={() => fetchClients()}
+                    disabled={loading}
+                    sx={{
+                      textTransform: 'none',
+                      fontWeight: 500,
+                      borderColor: '#e2e8f0',
+                      color: '#64748b',
+                      '&:hover': {
+                        borderColor: '#cbd5e1',
+                        bgcolor: '#f8fafc'
+                      }
+                    }}
+                  >
+                    Refresh
+                  </Button>
+                  <Button
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={() => handleOpenDialog()}
+                    sx={{
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      bgcolor: '#1e293b',
+                      '&:hover': {
+                        bgcolor: '#0f172a'
+                      }
+                    }}
+                  >
+                    Add New Client
+                  </Button>
+                </Stack>
               </Box>
-            )}
-            
-            {/* Error message */}
-            {error && (
-              <Alert 
-                severity="error" 
-                sx={{ mb: 2, borderRadius: 2 }}
+
+              {/* Loading indicator */}
+              {loading && (
+                <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+                  <CircularProgress size={28} thickness={4} sx={{ color: '#1e293b' }} />
+                </Box>
+              )}
+
+              {/* Error message */}
+              {error && (
+                <Alert
+                  severity="error"
+                  sx={{
+                    mb: 3,
+                    border: '1px solid',
+                    borderColor: '#fee2e2'
+                  }}
+                >
+                  {error}
+                </Alert>
+              )}
+
+              {/* Clients table */}
+              <Card
+                elevation={0}
+                sx={{
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  overflow: 'hidden',
+                  bgcolor: 'white'
+                }}
               >
-                {error}
-              </Alert>
-            )}
-            
-            {/* Clients table */}
-            <Card 
-              elevation={0} 
-              sx={{ 
-                borderRadius: 3,
-                border: '1px solid',
-                borderColor: 'divider',
-                overflow: 'hidden',
-                mb: 3
-              }}
-            >
-              <TableContainer sx={{ maxHeight: 'calc(100vh - 180px)' }}>
-                <Table stickyHeader size="medium">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Customer
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Permitting
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Order Status
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Shell Delivery
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Dig Date
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Shell Drop
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Plumbing Test
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Backfill Date
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Equipment Set
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Footer Pour
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Decking
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Inspection Status
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Final
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Progress
-                      </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
-                      }}>
-                        Actions
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {clients.map((client) => (
-                      <TableRow 
-                        key={client.id}
-                        sx={{ 
-                          '&:hover': { 
-                            backgroundColor: alpha('#1976d2', 0.03) 
-                          }
-                        }}
-                      >
-                        <TableCell>
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography fontWeight={500} sx={{ mr: 1 }}>
-                              {client.customer}
-                            </Typography>
-                            {client.phone && (
-                              <IconButton 
-                                size="small" 
-                                color="primary"
-                                sx={{ 
-                                  ml: 0.5, 
-                                  backgroundColor: alpha('#1976d2', 0.1),
-                                  '&:hover': {
-                                    backgroundColor: alpha('#1976d2', 0.2),
-                                  } 
-                                }}
-                                onClick={() => window.open(`/clients/${client.phone}`, '_blank')}
-                              >
-                                <PhoneIcon fontSize="small" />
-                              </IconButton>
-                            )}
-                          </Box>
+                <TableContainer sx={{ maxHeight: 'calc(100vh - 500px)' }}>
+                  <Table stickyHeader size="medium">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Customer
                         </TableCell>
-                        <TableCell>
-                          <Chip
-                            label={client.permitting}
-                            size="small"
-                            sx={{ 
-                              backgroundColor: alpha(getStatusColor(client.permitting), 0.1),
-                              color: getStatusColor(client.permitting),
-                              fontWeight: 500,
-                              borderRadius: 1.5
-                            }}
-                          />
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Permitting
                         </TableCell>
-                        <TableCell>
-                          <Chip
-                            label={client.order_status}
-                            size="small"
-                            sx={{ 
-                              backgroundColor: alpha(getStatusColor(client.order_status), 0.1),
-                              color: getStatusColor(client.order_status),
-                              fontWeight: 500,
-                              borderRadius: 1.5
-                            }}
-                          />
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Order Status
                         </TableCell>
-                        <TableCell>{client.shell_delivery_date}</TableCell>
-                        <TableCell>{client.opening_date}</TableCell>
-                        <TableCell>{client.shell_drop}</TableCell>
-                        <TableCell>{client.plumbing_pressure_test}</TableCell>
-                        <TableCell>{client.closing_date}</TableCell>
-                        <TableCell>{client.equipment_set}</TableCell>
-                        <TableCell>{client.collar_footer_pour}</TableCell>
-                        <TableCell>{client.decking}</TableCell>
-                        <TableCell>
-                          <Chip
-                            label={client.inspection_status}
-                            size="small"
-                            sx={{ 
-                              backgroundColor: alpha(getStatusColor(client.inspection_status), 0.1),
-                              color: getStatusColor(client.inspection_status),
-                              fontWeight: 500,
-                              borderRadius: 1.5
-                            }}
-                          />
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Shell Delivery
                         </TableCell>
-                        <TableCell>{client.final}</TableCell>
-                        <TableCell>
-                          <Box sx={{ width: '150px', display: 'flex', alignItems: 'center' }}>
-                            <Box sx={{ width: '100%', mr: 1 }}>
-                              <LinearProgress 
-                                variant="determinate" 
-                                value={client.progress} 
-                                sx={{ 
-                                  height: 8, 
-                                  borderRadius: 4,
-                                  backgroundColor: alpha(getProgressColor(client.progress), 0.15),
-                                  '& .MuiLinearProgress-bar': {
-                                    backgroundColor: getProgressColor(client.progress)
-                                  }
-                                }}
-                              />
-                            </Box>
-                            <Typography 
-                              variant="body2" 
-                              sx={{ 
-                                color: getProgressColor(client.progress),
-                                fontWeight: 600,
-                                width: 40
-                              }}
-                            >
-                              {`${client.progress}%`}
-                            </Typography>
-                          </Box>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Dig Date
                         </TableCell>
-                        <TableCell>
-                          <Stack direction="row" spacing={0.5}>
-                            <IconButton 
-                              size="small"
-                              onClick={() => handleOpenDialog(client)}
-                              sx={{ 
-                                color: 'primary.main',
-                                backgroundColor: alpha('#1976d2', 0.1),
-                                '&:hover': {
-                                  backgroundColor: alpha('#1976d2', 0.2),
-                                }
-                              }}
-                            >
-                              <EditIcon fontSize="small" />
-                            </IconButton>
-                            <IconButton 
-                              size="small"
-                              onClick={() => handleDeleteClick(client)}
-                              sx={{ 
-                                color: 'error.main',
-                                backgroundColor: alpha('#f44336', 0.1),
-                                '&:hover': {
-                                  backgroundColor: alpha('#f44336', 0.2),
-                                }
-                              }}
-                            >
-                              <DeleteIcon fontSize="small" />
-                            </IconButton>
-                          </Stack>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Shell Drop
+                        </TableCell>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Plumbing Test
+                        </TableCell>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Backfill Date
+                        </TableCell>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Equipment Set
+                        </TableCell>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Footer Pour
+                        </TableCell>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Decking
+                        </TableCell>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Inspection
+                        </TableCell>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Final
+                        </TableCell>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Progress
+                        </TableCell>
+                        <TableCell sx={{
+                          bgcolor: '#f8fafc',
+                          fontWeight: 600,
+                          py: 2.5,
+                          color: '#475569',
+                          fontSize: '0.875rem',
+                          borderBottom: '2px solid',
+                          borderColor: '#e2e8f0'
+                        }}>
+                          Actions
                         </TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Card>
-            
+                    </TableHead>
+                    <TableBody>
+                      {clients.map((client) => (
+                        <TableRow
+                          key={client.id}
+                          sx={{
+                            '&:hover': {
+                              bgcolor: '#f8fafc'
+                            },
+                            transition: 'background-color 0.2s ease'
+                          }}
+                        >
+                          <TableCell>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <Typography fontWeight={600} sx={{ color: '#1e293b' }}>
+                                {client.customer}
+                              </Typography>
+                              {client.phone && (
+                                <Tooltip title="View client portal">
+                                  <IconButton
+                                    size="small"
+                                    sx={{
+                                      bgcolor: '#f1f5f9',
+                                      color: '#1e293b',
+                                      '&:hover': {
+                                        bgcolor: '#e2e8f0',
+                                      }
+                                    }}
+                                    onClick={() => window.open(`/clients/${client.phone}`, '_blank')}
+                                  >
+                                    <PhoneIcon fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                              )}
+                            </Box>
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={client.permitting}
+                              size="small"
+                              sx={{
+                                bgcolor: alpha(getStatusColor(client.permitting), 0.1),
+                                color: getStatusColor(client.permitting),
+                                fontWeight: 600,
+                                fontSize: '0.813rem'
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={client.order_status}
+                              size="small"
+                              sx={{
+                                bgcolor: alpha(getStatusColor(client.order_status), 0.1),
+                                color: getStatusColor(client.order_status),
+                                fontWeight: 600,
+                                fontSize: '0.813rem'
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ color: '#64748b' }}>{client.shell_delivery_date}</TableCell>
+                          <TableCell sx={{ color: '#64748b' }}>{client.opening_date}</TableCell>
+                          <TableCell sx={{ color: '#64748b' }}>{client.shell_drop}</TableCell>
+                          <TableCell sx={{ color: '#64748b' }}>{client.plumbing_pressure_test}</TableCell>
+                          <TableCell sx={{ color: '#64748b' }}>{client.closing_date}</TableCell>
+                          <TableCell sx={{ color: '#64748b' }}>{client.equipment_set}</TableCell>
+                          <TableCell sx={{ color: '#64748b' }}>{client.collar_footer_pour}</TableCell>
+                          <TableCell sx={{ color: '#64748b' }}>{client.decking}</TableCell>
+                          <TableCell>
+                            <Chip
+                              label={client.inspection_status}
+                              size="small"
+                              sx={{
+                                bgcolor: alpha(getStatusColor(client.inspection_status), 0.1),
+                                color: getStatusColor(client.inspection_status),
+                                fontWeight: 600,
+                                fontSize: '0.813rem'
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ color: '#64748b' }}>{client.final}</TableCell>
+                          <TableCell>
+                            <Box sx={{ width: '160px', display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                              <Box sx={{ flex: 1 }}>
+                                <LinearProgress
+                                  variant="determinate"
+                                  value={client.progress}
+                                  sx={{
+                                    height: 8,
+                                    bgcolor: '#f3f4f6',
+                                    '& .MuiLinearProgress-bar': {
+                                      bgcolor: getProgressColor(client.progress)
+                                    }
+                                  }}
+                                />
+                              </Box>
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  color: getProgressColor(client.progress),
+                                  fontWeight: 700,
+                                  minWidth: 42,
+                                  fontSize: '0.875rem'
+                                }}
+                              >
+                                {`${client.progress}%`}
+                              </Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell>
+                            <Stack direction="row" spacing={1}>
+                              <Tooltip title="Edit client">
+                                <IconButton
+                                  size="small"
+                                  onClick={() => handleOpenDialog(client)}
+                                  sx={{
+                                    color: '#1e293b',
+                                    bgcolor: '#f1f5f9',
+                                    '&:hover': {
+                                      bgcolor: '#e2e8f0',
+                                    }
+                                  }}
+                                >
+                                  <EditIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="Delete client">
+                                <IconButton
+                                  size="small"
+                                  onClick={() => handleDeleteClick(client)}
+                                  sx={{
+                                    color: '#ef4444',
+                                    bgcolor: alpha('#ef4444', 0.1),
+                                    '&:hover': {
+                                      bgcolor: alpha('#ef4444', 0.2),
+                                    }
+                                  }}
+                                >
+                                  <DeleteIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Card>
+            </Container>
+
             {/* Create/Edit Dialog */}
-            <Dialog 
-              open={openDialog} 
+            <Dialog
+              open={openDialog}
               onClose={handleCloseDialog}
               fullWidth
               maxWidth="md"
+              TransitionComponent={Slide}
+              TransitionProps={{ direction: 'up' }}
               PaperProps={{
                 sx: {
-                  borderRadius: 3,
                   overflow: 'hidden'
                 }
               }}
             >
-              <DialogTitle sx={{ 
-                py: 2,
-                px: 3,
+              <DialogTitle sx={{
+                py: 3,
+                px: 4,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                borderBottom: '1px solid',
-                borderColor: 'divider'
+                bgcolor: '#1e293b',
+                color: 'white'
               }}>
-                <Typography variant="h6" fontWeight={600}>
+                <Typography variant="h6" fontWeight={700}>
                   {editingClient ? 'Edit Client' : 'Add New Client'}
                 </Typography>
                 <IconButton
@@ -771,20 +1036,20 @@ function AdminClientsPage() {
                   onClick={handleCloseDialog}
                   size="small"
                   sx={{
-                    color: 'text.secondary',
-                    bgcolor: 'action.hover',
+                    color: 'white',
+                    bgcolor: 'rgba(255,255,255,0.2)',
                     '&:hover': {
-                      bgcolor: 'action.selected',
+                      bgcolor: 'rgba(255,255,255,0.3)',
                     }
                   }}
                 >
                   <CloseIcon fontSize="small" />
                 </IconButton>
               </DialogTitle>
-              
+
               <form onSubmit={handleSubmitClient}>
-                <DialogContent sx={{ p: 3 }}>
-                  <Grid container spacing={2}>
+                <DialogContent sx={{ p: 4 }}>
+                  <Grid container spacing={3}>
                     {/* Customer Name */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -795,14 +1060,9 @@ function AdminClientsPage() {
                         value={clientForm.customer}
                         onChange={handleFormChange}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
-                    
+
                     {/* Phone Number */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -813,14 +1073,9 @@ function AdminClientsPage() {
                         onChange={handleFormChange}
                         variant="outlined"
                         placeholder="For client portal access"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
-                    
+
                     {/* Permitting Status */}
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
@@ -830,9 +1085,6 @@ function AdminClientsPage() {
                           value={clientForm.permitting}
                           onChange={handleFormChange}
                           label="Permitting Status"
-                          sx={{
-                            borderRadius: 2
-                          }}
                         >
                           {permitOptions.map(option => (
                             <MenuItem key={option} value={option}>{option}</MenuItem>
@@ -840,7 +1092,7 @@ function AdminClientsPage() {
                         </Select>
                       </FormControl>
                     </Grid>
-                    
+
                     {/* Order Status */}
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
@@ -850,9 +1102,6 @@ function AdminClientsPage() {
                           value={clientForm.order_status}
                           onChange={handleFormChange}
                           label="Order Status"
-                          sx={{
-                            borderRadius: 2
-                          }}
                         >
                           {orderStatusOptions.map(option => (
                             <MenuItem key={option} value={option}>{option}</MenuItem>
@@ -860,7 +1109,7 @@ function AdminClientsPage() {
                         </Select>
                       </FormControl>
                     </Grid>
-                    
+
                     {/* Progress */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -872,14 +1121,9 @@ function AdminClientsPage() {
                         onChange={handleFormChange}
                         InputProps={{ inputProps: { min: 0, max: 100 } }}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
-                    
+
                     {/* Shell Delivery Date */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -889,14 +1133,9 @@ function AdminClientsPage() {
                         value={clientForm.shell_delivery_date}
                         onChange={handleFormChange}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
-                    
+
                     {/* Opening Date */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -906,14 +1145,9 @@ function AdminClientsPage() {
                         value={clientForm.opening_date}
                         onChange={handleFormChange}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
-                    
+
                     {/* Shell Drop */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -923,11 +1157,6 @@ function AdminClientsPage() {
                         value={clientForm.shell_drop}
                         onChange={handleFormChange}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
 
@@ -940,14 +1169,9 @@ function AdminClientsPage() {
                         value={clientForm.plumbing_pressure_test}
                         onChange={handleFormChange}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
-                    
+
                     {/* Closing Date */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -957,14 +1181,9 @@ function AdminClientsPage() {
                         value={clientForm.closing_date}
                         onChange={handleFormChange}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
-                    
+
                     {/* Equipment Set */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -974,14 +1193,9 @@ function AdminClientsPage() {
                         value={clientForm.equipment_set}
                         onChange={handleFormChange}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
-                      </Grid>
-                    
+                    </Grid>
+
                     {/* Collar/Footer Pour */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -991,14 +1205,9 @@ function AdminClientsPage() {
                         value={clientForm.collar_footer_pour}
                         onChange={handleFormChange}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
-                    
+
                     {/* Decking */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -1008,14 +1217,9 @@ function AdminClientsPage() {
                         value={clientForm.decking}
                         onChange={handleFormChange}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
-                    
+
                     {/* Inspection Status */}
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
@@ -1025,9 +1229,6 @@ function AdminClientsPage() {
                           value={clientForm.inspection_status}
                           onChange={handleFormChange}
                           label="Inspection Status"
-                          sx={{
-                            borderRadius: 2
-                          }}
                         >
                           {inspectionStatusOptions.map(option => (
                             <MenuItem key={option} value={option}>{option}</MenuItem>
@@ -1035,7 +1236,7 @@ function AdminClientsPage() {
                         </Select>
                       </FormControl>
                     </Grid>
-                    
+
                     {/* Final */}
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -1045,108 +1246,116 @@ function AdminClientsPage() {
                         value={clientForm.final}
                         onChange={handleFormChange}
                         variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2
-                          }
-                        }}
                       />
                     </Grid>
                   </Grid>
                 </DialogContent>
-                
-                <DialogActions sx={{ 
-                  p: 3, 
+
+                <DialogActions sx={{
+                  p: 3,
                   borderTop: '1px solid',
                   borderColor: 'divider',
-                  justifyContent: 'flex-end'
+                  justifyContent: 'flex-end',
+                  gap: 1.5
                 }}>
-                  <Button 
-                    variant="outlined" 
+                  <Button
+                    variant="outlined"
                     onClick={handleCloseDialog}
-                    sx={{ 
-                      borderRadius: 2,
-                      textTransform: 'none', 
-                      mr: 1
+                    sx={{
+                      textTransform: 'none',
+                      fontWeight: 500,
+                      borderColor: '#e2e8f0',
+                      color: '#64748b',
+                      '&:hover': {
+                        borderColor: '#cbd5e1',
+                        bgcolor: '#f8fafc'
+                      }
                     }}
                   >
                     Cancel
                   </Button>
-                  <Button 
+                  <Button
                     type="submit"
-                    variant="contained" 
-                    color="primary"
+                    variant="contained"
                     disabled={loading}
-                    startIcon={loading ? <CircularProgress size={16} thickness={4} /> : <SaveIcon />}
-                    sx={{ 
-                      borderRadius: 2,
+                    startIcon={loading ? <CircularProgress size={16} thickness={4} sx={{ color: 'white' }} /> : <SaveIcon />}
+                    sx={{
                       textTransform: 'none',
-                      fontWeight: 500
+                      fontWeight: 600,
+                      bgcolor: '#1e293b',
+                      '&:hover': {
+                        bgcolor: '#0f172a'
+                      }
                     }}
                   >
-                    {loading ? 'Saving...' : 'Save'}
+                    {loading ? 'Saving...' : 'Save Client'}
                   </Button>
                 </DialogActions>
               </form>
             </Dialog>
-            
+
             {/* Delete Confirmation Dialog */}
             <Dialog
               open={deleteConfirmOpen}
               onClose={() => setDeleteConfirmOpen(false)}
               PaperProps={{
                 sx: {
-                  borderRadius: 2,
                   overflow: 'hidden'
                 }
               }}
             >
-              <DialogTitle sx={{ 
-                py: 2,
+              <DialogTitle sx={{
+                py: 2.5,
                 px: 3,
                 borderBottom: '1px solid',
                 borderColor: 'divider'
               }}>
-                <Typography variant="h6" fontWeight={600}>
-                  Confirm Delete
+                <Typography variant="h6" fontWeight={700} sx={{ color: '#1e293b' }}>
+                  Delete Client
                 </Typography>
               </DialogTitle>
-              <DialogContent sx={{ p: 3, pt: 2 }}>
-                <Typography variant="body1">
-                  Are you sure you want to delete <strong>{clientToDelete?.customer}</strong>? 
+              <DialogContent sx={{ p: 3, pt: 3 }}>
+                <Typography variant="body1" sx={{ color: '#64748b' }}>
+                  Are you sure you want to delete <strong style={{ color: '#1e293b' }}>{clientToDelete?.customer}</strong>?
                   This action cannot be undone.
                 </Typography>
               </DialogContent>
-              <DialogActions sx={{ 
-                p: 2,
-                px: 3,
+              <DialogActions sx={{
+                p: 3,
+                pt: 2,
                 borderTop: '1px solid',
-                borderColor: 'divider'
+                borderColor: 'divider',
+                gap: 1.5
               }}>
-                <Button 
-                  onClick={() => setDeleteConfirmOpen(false)} 
-                  sx={{ 
-                    borderRadius: 2,
-                    textTransform: 'none'
+                <Button
+                  onClick={() => setDeleteConfirmOpen(false)}
+                  sx={{
+                    textTransform: 'none',
+                    fontWeight: 500,
+                    color: '#64748b'
                   }}
                 >
                   Cancel
                 </Button>
-                <Button 
-                  onClick={handleDeleteConfirm} 
-                  color="error" 
+                <Button
+                  onClick={handleDeleteConfirm}
+                  color="error"
                   variant="contained"
                   disabled={loading}
-                  sx={{ 
-                    borderRadius: 2,
-                    textTransform: 'none'
+                  sx={{
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    bgcolor: '#ef4444',
+                    '&:hover': {
+                      bgcolor: '#dc2626'
+                    }
                   }}
                 >
-                  {loading ? 'Deleting...' : 'Delete'}
+                  {loading ? 'Deleting...' : 'Delete Client'}
                 </Button>
               </DialogActions>
             </Dialog>
-            
+
             {/* Snackbar notifications */}
             <Snackbar
               open={snackbar.open}
@@ -1154,12 +1363,11 @@ function AdminClientsPage() {
               onClose={handleSnackbarClose}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             >
-              <Alert 
-                onClose={handleSnackbarClose} 
+              <Alert
+                onClose={handleSnackbarClose}
                 severity={snackbar.severity}
-                variant="filled" 
-                sx={{ 
-                  borderRadius: 2,
+                variant="filled"
+                sx={{
                   fontWeight: 500
                 }}
               >
@@ -1168,9 +1376,13 @@ function AdminClientsPage() {
             </Snackbar>
           </Box>
         )}
-      </div>
+      </Box>
     </>
   )
 }
+
+AdminClientsPage.getInitialProps = async () => {
+  return {};
+};
 
 export default AdminClientsPage

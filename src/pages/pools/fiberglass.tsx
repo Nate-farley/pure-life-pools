@@ -1,8 +1,11 @@
 // @ts-nocheck
+
 'use client'
 import Footer from '@/containers/Footer';
 import NavBar from '@/containers/Navbar/navbar';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Grid,
@@ -10,7 +13,9 @@ import {
   Stack,
   TextField,
   Typography,
-  useMediaQuery
+  useMediaQuery,
+  Dialog,
+  IconButton
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { NextSeo } from 'next-seo';
@@ -19,6 +24,8 @@ import { useRouter } from 'next/router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import specs from '../../scrape/pool-spec.json';
+import modelData from '../../models/fiberglass_models.json';
+
 // Carousel images constant
 const CAROUSEL_IMAGES = [
   '/assets/images/products-page/product-page-image-two.jpg',
@@ -162,40 +169,51 @@ const TitleOverlay = styled(Box)(({ theme }) => ({
   borderTop: `1px solid ${theme.palette.divider}`,
 }));
 
+const View3DButton = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: 12,
+  right: 12,
+  backgroundColor: 'rgba(19, 50, 64, 0.85)',
+  backdropFilter: 'blur(10px)',
+  borderRadius: '8px',
+  padding: '8px 12px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '6px',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease',
+  zIndex: 3,
+  '&:hover': {
+    backgroundColor: 'rgba(19, 50, 64, 0.95)',
+    transform: 'translateY(-2px)',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+  },
+}));
+
 // Optimized PoolCard component
 const PoolCard = memo(({ pool }) => {
-  //const [specs, setSpecs] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [showSpecs, setShowSpecs] = useState(false);
+  const [open3DViewer, setOpen3DViewer] = useState(false);
   const hoverTimeoutRef = useRef(null);
 
   const router = useRouter();
 
   useEffect(() => {
-    // Multiple approaches to ensure scroll reset
     const resetScroll = () => {
-      // Method 1: Standard scroll to top
       window.scrollTo(0, 0);
-
-      // Method 2: Set scroll position on document
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
-
-      // Method 3: Force scroll on next frame
       requestAnimationFrame(() => {
         window.scrollTo(0, 0);
       });
     };
 
-    // Reset immediately
     resetScroll();
-
-    // Reset after a short delay to override any other scroll restoration
     const timer = setTimeout(resetScroll, 50);
-
     return () => clearTimeout(timer);
-  }, [router.asPath]); // Dependencies on the full path
-
+  }, [router.asPath]);
 
   const handleMouseEnter = () => {
     if (hoverTimeoutRef.current) {
@@ -208,7 +226,7 @@ const PoolCard = memo(({ pool }) => {
     hoverTimeoutRef.current = setTimeout(() => {
       setIsHovering(false);
       setShowSpecs(false);
-    }, 100); // Small delay to prevent flickering
+    }, 100);
   };
 
   const handleInfoMouseEnter = (e) => {
@@ -221,25 +239,26 @@ const PoolCard = memo(({ pool }) => {
     setShowSpecs(false);
   };
 
+  const handle3DClick = (e) => {
+    e.stopPropagation();
+    setOpen3DViewer(true);
+  };
+
+  const handleClose3DViewer = () => {
+    setOpen3DViewer(false);
+  };
+
   const getSpecsKey = (poolName) => {
-    console.log(poolName)
-    console.log(poolName.toLowerCase()
-      .replace(/\s+/g, '-')  // Replace spaces with hyphens
-      .replace(/\./g, '-'))
     return poolName.toLowerCase()
-      .replace(/\s+/g, '-')  // Replace spaces with hyphens
+      .replace(/\s+/g, '-')
       .replace(/\./g, '-');
   };
 
-
   const poolSpecs = specs?.data?.[getSpecsKey(pool.name)];
 
-  const [showSpecs, setShowSpecs] = useState(false);
   return (
     <Box>
-
       <PoolImageContainer>
-
         <ImageOverlay
           component="img"
           src={pool.angleImage}
@@ -256,7 +275,7 @@ const PoolCard = memo(({ pool }) => {
               sx={{
                 opacity: 0,
                 zIndex: 2,
-                ':hover': {  // Target the parent Box component
+                ':hover': {
                   opacity: 1,
                 },
               }}
@@ -264,14 +283,35 @@ const PoolCard = memo(({ pool }) => {
             />
           )}
 
+        {/* 3D View Button */}
+        {pool.modelUrl && (
+          <View3DButton onClick={handle3DClick}>
+            <ViewInArIcon
+              sx={{
+                color: 'white',
+                fontSize: 18
+              }}
+            />
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'white',
+                fontWeight: 600,
+                letterSpacing: '0.02em',
+                fontSize: '0.75rem'
+              }}
+            >
+              View in 3D
+            </Typography>
+          </View3DButton>
+        )}
 
-        <TitleOverlay sx={{ zIndex: 999, }}>  {/* Ensure title bar stays on top */}
+        <TitleOverlay sx={{ zIndex: 999 }}>
           <Box sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-
-            position: 'relative',  // Add this
+            position: 'relative',
           }}>
             <Typography
               variant="subtitle1"
@@ -445,6 +485,72 @@ const PoolCard = memo(({ pool }) => {
           )}
         </Box>
       </PoolImageContainer>
+
+      {/* 3D Viewer Dialog */}
+      <Dialog
+        open={open3DViewer}
+        onClose={handleClose3DViewer}
+        maxWidth={false}
+        PaperProps={{
+          sx: {
+            width: '90vw',
+            height: '90vh',
+            maxWidth: 'none',
+            m: 0,
+            backgroundColor: '#f5f5f5'
+          }
+        }}
+      >
+        <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
+          <IconButton
+            onClick={handleClose3DViewer}
+            sx={{
+              position: 'absolute',
+              top: 16,
+              right: 16,
+              zIndex: 10,
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 1)',
+              }
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+
+          {/* <Box
+            sx={{
+              position: 'absolute',
+              top: 16,
+              left: 16,
+              zIndex: 10,
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              borderRadius: '8px',
+              padding: '12px 20px',
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                color: '#133240',
+                fontWeight: 600
+              }}
+            >
+              {pool.name} - 3D Model
+            </Typography>
+          </Box> */}
+
+          <iframe
+            src={pool.modelUrl}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none'
+            }}
+            title={`${pool.name} 3D Model`}
+          />
+        </Box>
+      </Dialog>
     </Box>
   );
 });
@@ -459,8 +565,6 @@ const ProductsPage = () => {
   const [loadedImages, setLoadedImages] = useState({});
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-
-  // Image preloading
   useEffect(() => {
     const preloadImages = () => {
       CAROUSEL_IMAGES.forEach((src) => {
@@ -478,7 +582,6 @@ const ProductsPage = () => {
     preloadImages();
   }, []);
 
-  // Carousel autoplay
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveStep((prevStep) => (prevStep + 1) % CAROUSEL_IMAGES.length);
@@ -550,6 +653,12 @@ const ProductsPage = () => {
       'vista_isle',
     ];
 
+    // Create a map for quick lookup of model URLs
+    const modelMap = {};
+    modelData.forEach(item => {
+      modelMap[item.name] = item.model_url;
+    });
+
     return productImages.map((name) => ({
       name: name
         .split('_')
@@ -557,6 +666,7 @@ const ProductsPage = () => {
         .join(' '),
       angleImage: `/assets/images/product_images/${name}_angle.jpg`,
       viewImage: `/assets/images/product_images/${name}_view.jpg`,
+      modelUrl: modelMap[name] || null,
     }));
   }, []);
 
@@ -614,7 +724,6 @@ const ProductsPage = () => {
           })}
         </script>
 
-        {/* Local Business Schema Markup for SEO */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -636,7 +745,6 @@ const ProductsPage = () => {
 
       <NavBar />
 
-      {/* Scroll to top button - only shows when scrolled down */}
       {showScrollTop && (
         <ScrollTopButton onClick={scrollToTop}>
           <svg
@@ -654,7 +762,6 @@ const ProductsPage = () => {
         </ScrollTopButton>
       )}
 
-      {/* Hero section with carousel */}
       <Box sx={{ position: 'relative', width: '100%', height: '85vh' }}>
         <Paper
           elevation={0}
@@ -665,7 +772,6 @@ const ProductsPage = () => {
             height: '100%',
           }}
         >
-          {/* Hero content overlay */}
           <Box
             sx={{
               position: 'absolute',
@@ -704,7 +810,6 @@ const ProductsPage = () => {
             </Typography>
           </Box>
 
-          {/* Image carousel */}
           <SwipeableViews
             axis="x"
             index={activeStep}
@@ -760,7 +865,6 @@ const ProductsPage = () => {
                     </Typography>
                   </Stack>
 
-                  {/* Carousel pagination dots */}
                   <PaginationContainer>
                     {CAROUSEL_IMAGES.map((_, i) => (
                       <PaginationLine
@@ -776,7 +880,6 @@ const ProductsPage = () => {
             ))}
           </SwipeableViews>
 
-          {/* Preview box for next slide (desktop only) */}
           {!isMobile && (
             <PreviewBox elevation={6}>
               <Box
@@ -798,7 +901,6 @@ const ProductsPage = () => {
         </Paper>
       </Box>
 
-      {/* Pool collection section */}
       <Box sx={{ px: 8, py: 6 }}>
         <Box
           sx={{
@@ -821,7 +923,6 @@ const ProductsPage = () => {
           </Box>
         </Box>
 
-        {/* Pool grid display */}
         <Grid container spacing={2}>
           {poolImagePairs.map((pool, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
@@ -834,6 +935,10 @@ const ProductsPage = () => {
       <Footer />
     </Box>
   );
+};
+
+ProductsPage.getInitialProps = async () => {
+  return {};
 };
 
 export default ProductsPage;
