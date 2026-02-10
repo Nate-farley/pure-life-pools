@@ -5,18 +5,16 @@ const nextConfig: NextConfig = {
     domains: [
       'picsum.photos',
       'images.unsplash.com',
-      'https://randomuser.me/api/*',
       'randomuser.me',
       'www.lathampool.com',
-      "images.pexels.com"
+      'images.pexels.com'
     ],
   },
   compress: true,
   poweredByHeader: false,
   experimental: {
-    scrollRestoration: false, // Disable browser scroll restoration
-        esmExternals: 'loose',
-
+    scrollRestoration: false,
+    esmExternals: 'loose',
   },
   skipTrailingSlashRedirect: true,
   async headers() {
@@ -29,6 +27,14 @@ const nextConfig: NextConfig = {
             value: 'application/xml',
           },
         ],
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/admin/:path*',
+        destination: 'https://pure-life-crm.vercel.app/:path*',
       },
     ];
   },
