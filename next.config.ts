@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
       'images.pexels.com'
     ],
   },
+  turbopack: {},
   compress: true,
   poweredByHeader: false,
   experimental: {
