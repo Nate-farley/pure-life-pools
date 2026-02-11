@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
     scrollRestoration: false,
-    esmExternals: 'loose',
+
   },
   skipTrailingSlashRedirect: true,
   async headers() {
@@ -39,20 +39,6 @@ async redirects() {
         permanent: true,           // 308 (best for SEO) or false for 307 temporary
       },
     ];
-  },
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.(mp4|webm)$/,
-      use: {
-        loader: 'file-loader',
-        options: {
-          publicPath: '/_next/static/videos/',
-          outputPath: 'static/videos/',
-          name: '[name].[hash].[ext]',
-        },
-      },
-    });
-    return config;
   },
 };
 
