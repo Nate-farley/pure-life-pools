@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-async redirects() {
+async rewrites() {
     return [
       {
         source: '/admin/:path*',
