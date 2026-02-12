@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { ChevronRight, Search, Users, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { searchCustomers } from '@/app/actions/admin/customers';
+import { searchCustomers } from '@/app/actions/customers';
 
 interface CustomerResult {
   id: string;

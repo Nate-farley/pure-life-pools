@@ -1,6 +1,3 @@
-
-import * as React from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronRight, Search, Users, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';

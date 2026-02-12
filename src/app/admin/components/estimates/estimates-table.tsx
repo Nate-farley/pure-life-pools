@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { EstimateStatusBadge } from './estimate-status-badge';
 import { formatCents } from '@/lib/utils/currency';
-import { duplicateEstimate, deleteEstimate } from '@/app/actions/admin/estimates';
+import { duplicateEstimate, deleteEstimate } from '@/app/actions/estimates';
 import type { EstimateSummary } from '@/lib/types/estimate';
 
 // ============================================================================

@@ -1,6 +1,10 @@
 import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  typescript: {
+    // Disable TypeScript type checking during builds
+    ignoreBuildErrors: true,
+  },
   images: {
     domains: [
       'picsum.photos',

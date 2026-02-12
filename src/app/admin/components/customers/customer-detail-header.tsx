@@ -32,6 +32,7 @@ import { LogCommunicationModal } from '../communications/log-communication-modal
 import { CommunicationType } from '@/lib/database.types';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { deleteCustomer } from '@/app/actions/customers';
 
 /**
  * Customer Detail Header Component
@@ -219,6 +220,7 @@ export function CustomerDetailHeader({ customer }: CustomerDetailHeaderProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem
+              className="cursor-pointer"
                 onClick={() => router.push(`/admin/customers/${customer.id}/edit`)}
               >
                 <Pencil className="w-4 h-4 mr-2" />
@@ -226,9 +228,10 @@ export function CustomerDetailHeader({ customer }: CustomerDetailHeaderProps) {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
                 onClick={() => {
-                  // TODO: Implement delete with confirmation dialog
+                  deleteCustomer(customer.id);
+                  router.push('/admin/customers')
                 }}
               >
                 <Trash2 className="w-4 h-4 mr-2" />
