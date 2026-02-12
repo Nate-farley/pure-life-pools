@@ -31,15 +31,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-async rewrites() {
-    return [
-      {
-        source: '/admin/:path*',
-        destination: 'https://pure-life-crm.vercel.app/:path*',
-       // 308 (best for SEO) or false for 307 temporary
-      },
-    ];
-  },
 };
 
 export default nextConfig;

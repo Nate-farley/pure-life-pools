@@ -1,0 +1,399 @@
+/**
+ * FullCalendar Custom Styles
+ *
+ * @file src/styles/fullcalendar.css
+ *
+ * Custom CSS overrides for FullCalendar to match the Pure Life Pools CRM design system.
+ * Import this file in your layout or global styles.
+ */
+
+/* =============================================================================
+ * General Calendar Styling
+ * ============================================================================= */
+
+.fc {
+  /* Use design system font */
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+}
+
+/* =============================================================================
+ * Toolbar (Header)
+ * ============================================================================= */
+
+.fc .fc-toolbar {
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #09090b; /* zinc-950 */
+}
+
+/* Toolbar buttons */
+.fc .fc-button {
+  background-color: #ffffff;
+  border: 1px solid #e4e4e7; /* zinc-200 */
+  color: #3f3f46; /* zinc-700 */
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 0.875rem;
+  border-radius: 6px;
+  transition: all 150ms ease;
+  text-transform: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.fc .fc-button:hover {
+  background-color: #f4f4f5; /* zinc-100 */
+  border-color: #d4d4d8; /* zinc-300 */
+  color: #18181b; /* zinc-900 */
+}
+
+.fc .fc-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #18181b;
+}
+
+.fc .fc-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Active/pressed button state */
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+  background-color: #18181b; /* zinc-900 */
+  border-color: #18181b;
+  color: #ffffff;
+}
+
+/* Button group styling */
+.fc .fc-button-group {
+  gap: 0;
+}
+
+.fc .fc-button-group > .fc-button {
+  border-radius: 0;
+}
+
+.fc .fc-button-group > .fc-button:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.fc .fc-button-group > .fc-button:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.fc .fc-button-group > .fc-button:not(:first-child) {
+  margin-left: -1px;
+}
+
+/* Today button */
+.fc .fc-today-button {
+  background-color: #ffffff;
+}
+
+/* =============================================================================
+ * Day Grid (Month View)
+ * ============================================================================= */
+
+.fc .fc-daygrid {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Day header */
+.fc .fc-col-header-cell {
+  background-color: #f4f4f5; /* zinc-100 */
+  border-color: #e4e4e7; /* zinc-200 */
+  padding: 0.75rem 0.5rem;
+}
+
+.fc .fc-col-header-cell-cushion {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #52525b; /* zinc-600 */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Day cells */
+.fc .fc-daygrid-day {
+  border-color: #e4e4e7; /* zinc-200 */
+}
+
+.fc .fc-daygrid-day:hover {
+  background-color: #fafafa; /* zinc-50 */
+}
+
+.fc .fc-daygrid-day-frame {
+  min-height: 100px;
+}
+
+.fc .fc-daygrid-day-number {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #3f3f46; /* zinc-700 */
+  padding: 0.5rem;
+}
+
+/* Today highlight */
+.fc .fc-day-today {
+  background-color: #eff6ff !important; /* blue-50 */
+}
+
+.fc .fc-day-today .fc-daygrid-day-number {
+  background-color: #2563eb; /* blue-600 */
+  color: #ffffff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.25rem;
+}
+
+/* Other month days */
+.fc .fc-day-other .fc-daygrid-day-number {
+  color: #a1a1aa; /* zinc-400 */
+}
+
+/* Weekend days */
+.fc .fc-day-sat,
+.fc .fc-day-sun {
+  background-color: #fafafa; /* zinc-50 */
+}
+
+/* =============================================================================
+ * Time Grid (Week/Day View)
+ * ============================================================================= */
+
+.fc .fc-timegrid {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Time slots */
+.fc .fc-timegrid-slot {
+  height: 3rem;
+  border-color: #e4e4e7; /* zinc-200 */
+}
+
+.fc .fc-timegrid-slot-label {
+  font-size: 0.75rem;
+  color: #71717a; /* zinc-500 */
+  padding: 0 0.5rem;
+}
+
+.fc .fc-timegrid-slot-minor {
+  border-top-style: dotted;
+  border-top-color: #f4f4f5; /* zinc-100 */
+}
+
+/* Time axis */
+.fc .fc-timegrid-axis {
+  padding: 0 0.5rem;
+  width: 60px;
+}
+
+/* All-day section */
+.fc .fc-timegrid-divider {
+  padding: 0;
+  border-color: #e4e4e7;
+}
+
+.fc .fc-daygrid-body {
+  border-color: #e4e4e7;
+}
+
+/* =============================================================================
+ * Events
+ * ============================================================================= */
+
+.fc .fc-event {
+  border-radius: 4px;
+  border-width: 0;
+  border-left-width: 3px;
+  padding: 2px 4px;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.fc .fc-event:hover {
+  filter: brightness(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fc .fc-event-main {
+  padding: 0;
+}
+
+.fc .fc-event-title {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fc .fc-event-time {
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* Day grid events (month view) */
+.fc .fc-daygrid-event {
+  margin: 1px 2px;
+}
+
+.fc .fc-daygrid-event-dot {
+  display: none;
+}
+
+/* Time grid events (week/day view) */
+.fc .fc-timegrid-event {
+  border-radius: 4px;
+}
+
+.fc .fc-timegrid-event .fc-event-main {
+  padding: 4px 6px;
+}
+
+/* More events link */
+.fc .fc-daygrid-more-link {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2563eb; /* blue-600 */
+  padding: 2px 4px;
+  margin: 2px;
+  border-radius: 4px;
+}
+
+.fc .fc-daygrid-more-link:hover {
+  background-color: #eff6ff; /* blue-50 */
+}
+
+/* =============================================================================
+ * Now Indicator
+ * ============================================================================= */
+
+.fc .fc-timegrid-now-indicator-line {
+  border-color: #dc2626; /* red-600 */
+  border-width: 2px;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: #dc2626;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+
+/* =============================================================================
+ * Selection (for creating new events)
+ * ============================================================================= */
+
+.fc .fc-highlight {
+  background-color: #dbeafe; /* blue-100 */
+  opacity: 0.5;
+}
+
+/* =============================================================================
+ * Popover (more events popup)
+ * ============================================================================= */
+
+.fc .fc-popover {
+  border-radius: 8px;
+  border-color: #e4e4e7;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.fc .fc-popover-header {
+  background-color: #f4f4f5;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 8px 8px 0 0;
+}
+
+.fc .fc-popover-body {
+  padding: 0.5rem;
+}
+
+/* =============================================================================
+ * Scrollbar Styling
+ * ============================================================================= */
+
+.fc .fc-scroller::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.fc .fc-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.fc .fc-scroller::-webkit-scrollbar-thumb {
+  background-color: #d4d4d8;
+  border-radius: 4px;
+}
+
+.fc .fc-scroller::-webkit-scrollbar-thumb:hover {
+  background-color: #a1a1aa;
+}
+
+/* =============================================================================
+ * Responsive Adjustments
+ * ============================================================================= */
+
+@media (max-width: 768px) {
+  .fc .fc-toolbar {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .fc .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.125rem;
+  }
+
+  .fc .fc-daygrid-day-frame {
+    min-height: 80px;
+  }
+
+  .fc .fc-button {
+    padding: 0.375rem 0.625rem;
+    font-size: 0.8125rem;
+  }
+}
+
+/* =============================================================================
+ * Print Styles
+ * ============================================================================= */
+
+@media print {
+  .fc .fc-toolbar {
+    margin-bottom: 1rem;
+  }
+
+  .fc .fc-button {
+    display: none;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.5rem;
+  }
+
+  .fc .fc-event {
+    break-inside: avoid;
+  }
+}
