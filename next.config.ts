@@ -36,7 +36,7 @@ async rewrites() {
       {
         source: '/admin/:path*',
         destination: 'https://pure-life-crm.vercel.app/:path*',
-        permanent: true,           // 308 (best for SEO) or false for 307 temporary
+       // 308 (best for SEO) or false for 307 temporary
       },
     ];
   },
