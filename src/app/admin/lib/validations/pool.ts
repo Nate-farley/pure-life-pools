@@ -12,7 +12,6 @@ import { z } from 'zod';
  */
 export const POOL_TYPES = [
   { value: 'inground', label: 'Inground' },
-  { value: 'above_ground', label: 'Above Ground' },
   { value: 'spa', label: 'Spa' },
   { value: 'other', label: 'Other' },
 ] as const;
@@ -23,10 +22,6 @@ export type PoolType = (typeof POOL_TYPES)[number]['value'];
  * Pool surface type options
  */
 export const POOL_SURFACE_TYPES = [
-  { value: 'plaster', label: 'Plaster' },
-  { value: 'pebble', label: 'Pebble' },
-  { value: 'tile', label: 'Tile' },
-  { value: 'vinyl', label: 'Vinyl' },
   { value: 'fiberglass', label: 'Fiberglass' },
 ] as const;
 
@@ -44,7 +39,7 @@ const poolTypeSchema = z.enum(['inground', 'above_ground', 'spa', 'other'], {
  * Pool surface type schema (optional)
  */
 const poolSurfaceTypeSchema = z
-  .enum(['plaster', 'pebble', 'tile', 'vinyl', 'fiberglass'])
+  .enum(['fiberglass'])
   .nullable()
   .optional()
   .transform((val) => val || null);
@@ -53,7 +48,7 @@ const poolSurfaceTypeSchema = z
  * Dimension schema - positive number with reasonable limits
  */
 const dimensionSchema = z
-  .union([z.string(), z.number()])
+  .union([z.string(), z.number(), z.null()])
   .transform((val) => {
     if (val === '' || val === null || val === undefined) return null;
     const num = typeof val === 'string' ? parseFloat(val) : val;
@@ -72,7 +67,7 @@ const dimensionSchema = z
  * Volume schema - positive integer with reasonable limits
  */
 const volumeSchema = z
-  .union([z.string(), z.number()])
+  .union([z.string(), z.number(), z.null()])
   .transform((val) => {
     if (val === '' || val === null || val === undefined) return null;
     const num = typeof val === 'string' ? parseInt(val, 10) : Math.round(val);
@@ -95,6 +90,7 @@ const equipmentNotesSchema = z
   .string()
   .max(1000, 'Equipment notes must be 1000 characters or less')
   .trim()
+  .nullable()
   .optional()
   .or(z.literal(''))
   .transform((val) => val || null);

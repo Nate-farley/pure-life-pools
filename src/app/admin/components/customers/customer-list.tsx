@@ -68,7 +68,6 @@ export function CustomerList({ initialData }: CustomerListProps) {
     };
 
     const result = await listCustomers(params);
-    console.log(result)
     if (result.success) {
       setCustomers(result.data.items);
       setTotal(result.data.total);

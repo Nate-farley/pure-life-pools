@@ -68,10 +68,8 @@ export async function createProperty(
       };
     }
 
-    console.log(input)
     // Validate input
     const validationResult = createPropertySchema.safeParse(input);
-  console.log("Validation result:", validationResult);
     if (!validationResult.success) {
       return {
         success: false,
@@ -84,13 +82,11 @@ export async function createProperty(
     const data = validationResult.data;
 
     const adminClient = createAdminClient();
-    console.log("Server admin client created");
     const service = new PropertyService(adminClient);
 
     // Verify customer exists
     const customerExists = await service.customerExists(data.customerId);
 
-    console.log('Customer exists:', customerExists);
     if (!customerExists) {
       return {
         success: false,
@@ -99,7 +95,6 @@ export async function createProperty(
       };
     }
 
-    console.log('Creating property for customer:', data.customerId);
     const property = await service.create({
       customerId: data.customerId,
       addressLine1: data.addressLine1,
@@ -336,7 +331,7 @@ export async function deleteProperty(
     if (!belongsToCustomer) {
       return {
         success: false,
-        error: 'Property not found',
+        error: 'Customer for property not found',
         code: 'NOT_FOUND',
       };
     }
@@ -359,6 +354,7 @@ export async function deleteProperty(
       data: { deleted: true },
     };
   } catch (error) {
+    console.log("ERROR: ", error)
     console.error('Error deleting property:', error);
     return {
       success: false,

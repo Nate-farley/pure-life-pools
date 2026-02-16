@@ -81,7 +81,6 @@ export function CustomerEditFormClient({ customer }: CustomerEditFormClientProps
     e.preventDefault();
 
     const values = form.getValues();
-    console.log('Form values:', values);
 
     // Transform __none__ back to empty string before validation
     const transformedValues = {
@@ -92,7 +91,6 @@ export function CustomerEditFormClient({ customer }: CustomerEditFormClientProps
 
     const validationResult = updateCustomerSchema.safeParse(transformedValues);
     if (!validationResult.success) {
-      console.log('Validation errors:', validationResult.error.errors);
       toast.error(validationResult.error.errors[0]?.message || 'Validation failed');
       return;
     }
@@ -100,10 +98,7 @@ export function CustomerEditFormClient({ customer }: CustomerEditFormClientProps
     setIsSubmitting(true);
 
     try {
-      console.log('Calling updateCustomer with:', customer.id, validationResult.data);
-      console.log("@@@@@@@@@@")
       const result = await updateCustomer(customer.id, validationResult.data);
-      console.log('Result:', result);
 
       if (result.success) {
         toast.success('Customer updated successfully');

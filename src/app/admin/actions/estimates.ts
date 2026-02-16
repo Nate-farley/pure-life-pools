@@ -126,12 +126,10 @@ export async function createEstimate(
   input: CreateEstimateInput
 ): Promise<ActionResult<Estimate>> {
   try {
-    console.log(input)
     const admin = await getCurrentAdmin();
 
     // Validate input
     const validation = createEstimateSchema.safeParse(input);
-    console.log(validation)
     if (!validation.success) {
       const errorMessage = validation.error.errors
         .map((e) => e.message)
@@ -143,7 +141,6 @@ export async function createEstimate(
     const estimateService = new EstimateService(supabase);
 
     // Verify customer exists
-    console.log(input)
     const customerExists = await estimateService.customerExists(input.customerId);
     if (!customerExists) {
       return errorResult('Customer not found', 'NOT_FOUND');

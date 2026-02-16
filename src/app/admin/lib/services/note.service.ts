@@ -269,7 +269,7 @@ export class NoteService {
     // Delete the note
     const { error, count } = await this.supabase
       .from('customer_notes')
-      .delete()
+      .delete({ count: "exact"})
       .eq('id', id);
 
     if (error) {

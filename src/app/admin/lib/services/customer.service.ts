@@ -363,9 +363,7 @@ export class CustomerService {
    * Search customers by phone or name
    */
   async search(query: string, limit = 10): Promise<Customer[]> {
-    console.log(query)
     const normalized = normalizePhone(query);
-    console.log(query)
     const isPhoneSearch = /^\d+$/.test(query.replace(/[\s\-().+]/g, ''));
 
     let dbQuery = this.supabase

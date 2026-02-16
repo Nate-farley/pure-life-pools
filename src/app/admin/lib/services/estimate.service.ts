@@ -526,7 +526,7 @@ export class EstimateService {
   async delete(id: string): Promise<boolean> {
     const { error, count } = await this.supabase
       .from('estimates')
-      .delete()
+      .delete({ count: "exact" })
       .eq('id', id);
 
     if (error) {

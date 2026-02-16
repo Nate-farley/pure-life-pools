@@ -124,7 +124,6 @@ export function EstimateForm({
 
   // Watch form values for calculations
   const lineItems = watch('lineItems');
-  console.log(lineItems)
   const taxRate = watch('taxRate');
   const selectedPoolId = watch('poolId');
 

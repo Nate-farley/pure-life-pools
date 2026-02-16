@@ -83,8 +83,6 @@ export function EstimateList({
   const [isDuplicating, setIsDuplicating] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
-  console.log(estimates)
-
   // Pagination state
   const [isLoadingMore, setIsLoadingMore] = React.useState(false);
   const [hasMore, setHasMore] = React.useState(initialEstimates.length >= 25);

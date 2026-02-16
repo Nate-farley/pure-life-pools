@@ -200,8 +200,8 @@ export class PropertyService {
    * This is a hard delete that also cascades to the associated pool.
    *
    * @param id - Property UUID
-   * @returns true if deleted, false if not found
-   */
+   * @returns true if deleted, false if not foundexport async function deleteProperty(
+*/
   async delete(id: string): Promise<boolean> {
     // First, delete associated pool (if any)
     await this.supabase
@@ -212,10 +212,11 @@ export class PropertyService {
     // Then delete the property
     const { error, count } = await this.supabase
       .from('properties')
-      .delete()
+      .delete({ count: "exact" })
       .eq('id', id);
 
     if (error) {
+      console.log("Throw error deleting")
       console.error('Error deleting property:', error);
       throw new Error(`Failed to delete property: ${error.message}`);
     }

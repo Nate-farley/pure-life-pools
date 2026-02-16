@@ -27,26 +27,25 @@ function ClientDetail() {
   const router = useRouter()
   const { id } = router.query
 const PHONE_NUMBER = id
-  console.log(PHONE_NUMBER)
-  
+
   // State for client data
   const [client, setClient] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  
+
   // Fetch client by phone number
   useEffect(() => {
     const fetchClient = async () => {
       if (!PHONE_NUMBER) return
-      
+
       try {
         setLoading(true)
         const response = await fetch(`/api/clients/phone/${PHONE_NUMBER}`)
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch client')
         }
-        
+
         const data = await response.json()
         setClient(data.client)
         setError(null)
@@ -57,10 +56,10 @@ const PHONE_NUMBER = id
         setLoading(false)
       }
     }
-    
+
     fetchClient()
   }, [PHONE_NUMBER])
-  
+
   // Status color mapping
   const getStatusColor = (status) => {
     const statusColors = {
@@ -77,7 +76,7 @@ const PHONE_NUMBER = id
     }
     return statusColors[status] || '#757575'
   }
-  
+
   // Get progress color
   const getProgressColor = (progress) => {
     if (progress === 100) return '#4caf50'
@@ -85,19 +84,19 @@ const PHONE_NUMBER = id
     if (progress > 30) return '#ff9800'
     return '#f44336'
   }
-  
+
   return (
     <div className="relative min-h-screen w-full bg-gray-50">
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <NextSeo 
+        <NextSeo
           title="Client Project Status"
           description="View your swimming pool project status and timeline"
         />
-        
+
         <Typography variant="h4" component="h1" sx={{ mb: 3, fontWeight: 600 }}>
           Client Project Status
         </Typography>
-        
+
         {loading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
             <CircularProgress />
@@ -112,9 +111,9 @@ const PHONE_NUMBER = id
           </Alert>
         ) : (
           <>
-            <Card 
-              elevation={0} 
-              sx={{ 
+            <Card
+              elevation={0}
+              sx={{
                 borderRadius: 3,
                 border: '1px solid',
                 borderColor: 'divider',
@@ -125,18 +124,18 @@ const PHONE_NUMBER = id
                 <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
                   {client.customer} - Project Overview
                 </Typography>
-                
+
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="body2" color="text.secondary" gutterBottom>
                     Overall Progress
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Box sx={{ width: '100%', mr: 1 }}>
-                      <LinearProgress 
-                        variant="determinate" 
-                        value={client.progress} 
-                        sx={{ 
-                          height: 10, 
+                      <LinearProgress
+                        variant="determinate"
+                        value={client.progress}
+                        sx={{
+                          height: 10,
                           borderRadius: 5,
                           backgroundColor: alpha(getProgressColor(client.progress), 0.15),
                           '& .MuiLinearProgress-bar': {
@@ -145,9 +144,9 @@ const PHONE_NUMBER = id
                         }}
                       />
                     </Box>
-                    <Typography 
-                      variant="body2" 
-                      sx={{ 
+                    <Typography
+                      variant="body2"
+                      sx={{
                         color: getProgressColor(client.progress),
                         fontWeight: 600,
                         minWidth: 45
@@ -157,7 +156,7 @@ const PHONE_NUMBER = id
                     </Typography>
                   </Box>
                 </Box>
-                
+
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
                   <Box>
                     <Typography variant="body2" color="text.secondary" gutterBottom>
@@ -166,7 +165,7 @@ const PHONE_NUMBER = id
                     <Chip
                       label={client.permitting}
                       size="small"
-                      sx={{ 
+                      sx={{
                         backgroundColor: alpha(getStatusColor(client.permitting), 0.1),
                         color: getStatusColor(client.permitting),
                         fontWeight: 500,
@@ -174,7 +173,7 @@ const PHONE_NUMBER = id
                       }}
                     />
                   </Box>
-                  
+
                   <Box>
                     <Typography variant="body2" color="text.secondary" gutterBottom>
                       Order Status
@@ -182,7 +181,7 @@ const PHONE_NUMBER = id
                     <Chip
                       label={client.order_status}
                       size="small"
-                      sx={{ 
+                      sx={{
                         backgroundColor: alpha(getStatusColor(client.order_status), 0.1),
                         color: getStatusColor(client.order_status),
                         fontWeight: 500,
@@ -190,7 +189,7 @@ const PHONE_NUMBER = id
                       }}
                     />
                   </Box>
-                  
+
                   <Box>
                     <Typography variant="body2" color="text.secondary" gutterBottom>
                       Inspection Status
@@ -198,7 +197,7 @@ const PHONE_NUMBER = id
                     <Chip
                       label={client.inspection_status}
                       size="small"
-                      sx={{ 
+                      sx={{
                         backgroundColor: alpha(getStatusColor(client.inspection_status), 0.1),
                         color: getStatusColor(client.inspection_status),
                         fontWeight: 500,
@@ -209,10 +208,10 @@ const PHONE_NUMBER = id
                 </Box>
               </CardContent>
             </Card>
-            
-            <Card 
-              elevation={0} 
-              sx={{ 
+
+            <Card
+              elevation={0}
+              sx={{
                 borderRadius: 3,
                 border: '1px solid',
                 borderColor: 'divider',
@@ -223,17 +222,17 @@ const PHONE_NUMBER = id
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
+                      <TableCell sx={{
+                        bgcolor: 'background.paper',
+                        fontWeight: 600,
+                        py: 2
                       }}>
                         Project Milestone
                       </TableCell>
-                      <TableCell sx={{ 
-                        bgcolor: 'background.paper', 
-                        fontWeight: 600, 
-                        py: 2 
+                      <TableCell sx={{
+                        bgcolor: 'background.paper',
+                        fontWeight: 600,
+                        py: 2
                       }}>
                         Date
                       </TableCell>

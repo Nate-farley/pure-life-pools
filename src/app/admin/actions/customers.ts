@@ -457,7 +457,6 @@ export async function updateCustomer(
   input: UpdateCustomerInput
 ): Promise<ActionResult<Customer>> {
   try {
-    console.log("UPDATE: ", id)
     const adminId = await getAuthenticatedAdminId();
     if (!adminId) {
       return {
@@ -469,8 +468,6 @@ export async function updateCustomer(
 
     // Validate input
     const validationResult = updateCustomerSchema.safeParse(input);
-    console.log(validationResult)
-    console.log(validationResult.error)
     if (!validationResult.success) {
       return {
         success: false,
@@ -571,8 +568,6 @@ export async function listCustomers(
       sortBy: params.sortBy ?? 'created_at',
       sortOrder: params.sortOrder ?? 'desc',
     });
-
-    console.log(result)
 
     return {
       success: true,

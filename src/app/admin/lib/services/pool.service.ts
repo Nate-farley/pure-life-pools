@@ -235,7 +235,7 @@ export class PoolService {
   async delete(id: string): Promise<boolean> {
     const { error, count } = await this.supabase
       .from('pools')
-      .delete()
+      .delete({ count: "exact" })
       .eq('id', id);
 
     if (error) {
